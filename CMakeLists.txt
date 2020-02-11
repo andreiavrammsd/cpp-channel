@@ -1,0 +1,32 @@
+cmake_minimum_required(VERSION 3.15)
+project(cpp_channel)
+
+set(CMAKE_CXX_STANDARD 11)
+set(PROJECT_VERSION 0.1.0)
+
+add_library(shared SHARED channel.h)
+set_target_properties(shared PROPERTIES LINKER_LANGUAGE CXX)
+set_target_properties(shared PROPERTIES VERSION ${PROJECT_VERSION})
+install(TARGETS shared
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
+# Testing framework
+include(FetchContent)
+if (NOT googletest_POPULATED)
+    FetchContent_Declare(googletest URL https://github.com/google/googletest/archive/release-1.10.0.zip)
+    FetchContent_Populate(googletest)
+    include_directories(${googletest_SOURCE_DIR}/googletest/include/)
+    include_directories(${googletest_SOURCE_DIR}/googlemock/include/)
+    add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR})
+endif ()
+
+# Test macro
+macro(package_add_test TESTNAME)
+    add_executable(${TESTNAME} ${ARGN})
+    target_link_libraries(${TESTNAME} gtest gmock gtest_main)
+    add_test(NAME ${TESTNAME} COMMAND ${TESTNAME})
+endmacro()
+
+# Test
+package_add_test(test channel_test.cpp)
