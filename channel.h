@@ -3,11 +3,13 @@
 
 #include <cstdlib>
 #include <queue>
+#include <mutex>
+#include <condition_variable>
 
 template<typename T>
 class Channel {
 public:
-    explicit Channel(size_t cap = 0) : cap(cap) {}
+    explicit Channel(size_t capacity = 0);
 
     template<typename Q>
     friend void operator>>(Q, Channel<Q> &);
@@ -20,19 +22,37 @@ public:
 private:
     size_t cap;
     std::queue<T> queue;
+    std::mutex mtx;
+    std::condition_variable cnd;
 };
+
+template<typename T>
+Channel<T>::Channel(size_t capacity) : cap(capacity) {}
 
 template<typename Q>
 void operator>>(Q in, Channel<Q> &ch) {
-    ch.queue.push(in);
+    std::unique_lock<std::mutex> lock(ch.mtx);
+
+    if (ch.cap > 0 && ch.queue.size() == ch.cap) {
+        ch.cnd.wait(lock, [&ch]() { return ch.queue.size() < ch.cap; });
+    }
+
+    ch.queue.push(std::move(in));
+
+    ch.cnd.notify_one();
 }
 
 template<typename Q>
 Q operator<<(Q &out, Channel<Q> &ch) {
+    std::unique_lock<std::mutex> lock(ch.mtx);
+
+    ch.cnd.wait(lock, [&ch] { return ch.queue.size() > 0; });
+
     auto value = ch.queue.front();
+    out = value;
     ch.queue.pop();
 
-    out = value;
+    ch.cnd.notify_one();
 
     return out;
 }

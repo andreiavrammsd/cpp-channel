@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(PROJECT_VERSION 0.1.0)
 
 add_library(shared SHARED channel.h)
+target_link_libraries(shared pthread)
 set_target_properties(shared PROPERTIES LINKER_LANGUAGE CXX)
 set_target_properties(shared PROPERTIES VERSION ${PROJECT_VERSION})
 install(TARGETS shared
@@ -24,7 +25,7 @@ endif ()
 # Test macro
 macro(package_add_test TESTNAME)
     add_executable(${TESTNAME} ${ARGN})
-    target_link_libraries(${TESTNAME} gtest gmock gtest_main)
+    target_link_libraries(${TESTNAME} gtest gmock gtest_main pthread)
     add_test(NAME ${TESTNAME} COMMAND ${TESTNAME})
 endmacro()
 
