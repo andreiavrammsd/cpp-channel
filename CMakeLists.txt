@@ -25,9 +25,19 @@ endif ()
 # Test macro
 macro(package_add_test TESTNAME)
     add_executable(${TESTNAME} ${ARGN})
-    target_link_libraries(${TESTNAME} gtest gmock gtest_main pthread)
+    target_link_libraries(${TESTNAME} gtest gtest_main pthread)
     add_test(NAME ${TESTNAME} COMMAND ${TESTNAME})
 endmacro()
 
 # Test
 package_add_test(test channel_test.cpp)
+
+# Benchmark
+if (NOT benchmark_POPULATED)
+    FetchContent_Declare(benchmark URL https://github.com/google/benchmark/archive/v1.5.0.zip)
+    FetchContent_Populate(benchmark)
+    add_subdirectory(${benchmark_SOURCE_DIR})
+endif ()
+
+add_executable(benchmarking channel_benchmark.cpp)
+target_link_libraries(benchmarking benchmark)
