@@ -1,5 +1,7 @@
 # Channel
 
+**Under development**
+
 Thread safe communication object.
 
 ## Requirements
