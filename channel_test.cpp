@@ -26,8 +26,8 @@ TEST_F(ChannelTest, test) {
 }
 
 TEST_F(ChannelTest, multithread) {
-    const int numbers = 1000000 * 2;
-    const long long expected = 2000001000000;
+    const int numbers = 100000;
+    const long long expected = 5000050000;
     const int threads_to_read_from = 100;
 
     Channel<int> channel{10};
