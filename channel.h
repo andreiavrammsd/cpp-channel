@@ -11,7 +11,7 @@ class Channel {
 public:
     explicit Channel(size_t capacity = 0);
 
-    Channel(Channel &) = delete;
+    Channel(const Channel &) = delete;
 
     template<typename Q>
     friend void operator>>(Q, Channel<Q> &);
