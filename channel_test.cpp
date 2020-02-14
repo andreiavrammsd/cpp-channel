@@ -9,7 +9,7 @@ class ChannelTest : public ::testing::Test {
 };
 
 TEST_F(ChannelTest, test) {
-    Channel<int> channel{};
+    Channel<int> channel;
 
     ASSERT_EQ(channel.size(), 0);
 
@@ -47,7 +47,7 @@ TEST_F(ChannelTest, multithread) {
         (std::thread{
                 [&channel, &mtx_read, i, &cond_read, &ready_to_read, &count_numbers, &sum_numbers, &wait_counter, &cond_wait] {
                     // Wait until there is data on the channel
-                    std::unique_lock<std::mutex> lock(mtx_read);
+                    std::unique_lock<std::mutex> lock{mtx_read};
                     cond_read.wait(lock, [&ready_to_read] { return ready_to_read; });
 
                     // Read until all items have been read from the channel
@@ -75,7 +75,7 @@ TEST_F(ChannelTest, multithread) {
     }
 
     // Wait until all items have been read
-    std::unique_lock<std::mutex> lock(mtx_wait);
+    std::unique_lock<std::mutex> lock{mtx_wait};
     cond_wait.wait(lock, [&wait_counter]() { return wait_counter == 0; });
 
     ASSERT_EQ(sum_numbers, expected);

@@ -29,11 +29,11 @@ private:
 };
 
 template<typename T>
-Channel<T>::Channel(size_t capacity) : cap(capacity) {}
+Channel<T>::Channel(size_t capacity) : cap{capacity} {}
 
 template<typename Q>
 void operator>>(Q in, Channel<Q> &ch) {
-    std::unique_lock<std::mutex> lock(ch.mtx);
+    std::unique_lock<std::mutex> lock{ch.mtx};
 
     if (ch.cap > 0 && ch.queue.size() == ch.cap) {
         ch.cnd.wait(lock, [&ch]() { return ch.queue.size() < ch.cap; });
@@ -46,7 +46,7 @@ void operator>>(Q in, Channel<Q> &ch) {
 
 template<typename Q>
 Q operator<<(Q &out, Channel<Q> &ch) {
-    std::unique_lock<std::mutex> lock(ch.mtx);
+    std::unique_lock<std::mutex> lock{ch.mtx};
 
     ch.cnd.wait(lock, [&ch] { return ch.queue.size() > 0; });
 

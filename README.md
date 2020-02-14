@@ -37,7 +37,7 @@ int main() {
 #include "channel.h"
 
 int main() {
-    Channel<int> channel(2); // buffered
+    Channel<int> channel{2}; // buffered
 
     int in = 1;
 
@@ -52,7 +52,7 @@ int main() {
 #include "channel.h"
 
 int main() {
-    Channel<int> channel(2); // buffered
+    Channel<int> channel{2}; // buffered
 
     int in = 1;
     int out = 0;
