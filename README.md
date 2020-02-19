@@ -15,6 +15,7 @@ TBD
 
 ```c++
 #include <cassert>
+
 #include "channel.h"
 
 int main() {
@@ -67,3 +68,5 @@ int main() {
     out << channel; // blocking because channel is empty (and no one writes on it)
 }
 ```
+
+See [example app](example.cpp).
