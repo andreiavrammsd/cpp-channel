@@ -6,7 +6,7 @@ Thread safe communication object.
 
 ## Requirements
 * C++11
-* CMake 3.15+
+* CMake 3.12+
 
 ## Installation
 TBD

@@ -1,0 +1,10 @@
+language: cpp
+os: linux
+compiler: gcc
+
+install:
+  - cmake -D CMAKE_INSTALL_LIBDIR=lib .
+
+script:
+  - make test
+  - ./test
