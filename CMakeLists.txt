@@ -8,6 +8,7 @@ add_library(shared SHARED channel.h)
 target_link_libraries(shared pthread)
 set_target_properties(shared PROPERTIES LINKER_LANGUAGE CXX)
 set_target_properties(shared PROPERTIES VERSION ${PROJECT_VERSION})
+set_target_properties(shared PROPERTIES LIBRARY_OUTPUT_NAME channel)
 install(TARGETS shared
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
