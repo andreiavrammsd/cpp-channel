@@ -19,7 +19,7 @@ public:
     template<typename Q>
     friend Q operator<<(Q &, Channel<Q> &);
 
-    size_t size();
+    size_t size() const;
 
 private:
     size_t cap;

@@ -32,6 +32,6 @@ Q operator<<(Q &out, Channel<Q> &ch) {
 }
 
 template<typename T>
-size_t Channel<T>::size() {
+size_t Channel<T>::size() const {
     return queue.size();
 }
