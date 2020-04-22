@@ -7,6 +7,9 @@
 #include <condition_variable>
 
 template<typename T>
+class const_iterator;
+
+template<typename T>
 class Channel {
 public:
     explicit Channel(size_t capacity = 0);
@@ -21,11 +24,38 @@ public:
 
     size_t size() const;
 
+    const_iterator<T> begin() noexcept;
+
+    const_iterator<T> end() noexcept;
+
 private:
     size_t cap;
     std::queue<T> queue;
     std::mutex mtx;
     std::condition_variable cnd;
+};
+
+template<typename T>
+class const_iterator {
+public:
+    explicit const_iterator(Channel<T> *ch) : ch{ch} {}
+
+    const_iterator<T> operator++() {
+        return *this;
+    }
+
+    T operator*() {
+        T i{};
+        i << *ch;
+        return std::move(i);
+    }
+
+    bool operator!=(const_iterator<T>) {
+        return true;
+    }
+
+private:
+    Channel<T> *ch;
 };
 
 #include "channel.cpp"

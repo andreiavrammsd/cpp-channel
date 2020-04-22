@@ -28,10 +28,20 @@ Q operator<<(Q &out, Channel<Q> &ch) {
 
     ch.cnd.notify_one();
 
-    return out;
+    return std::move(out);
 }
 
 template<typename T>
 size_t Channel<T>::size() const {
     return queue.size();
+}
+
+template<typename T>
+const_iterator<T> Channel<T>::begin() noexcept {
+    return const_iterator<T>{this};
+}
+
+template<typename T>
+const_iterator<T> Channel<T>::end() noexcept {
+    return const_iterator<T>{this};
 }

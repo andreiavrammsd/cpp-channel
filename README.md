@@ -1,6 +1,6 @@
 # Channel
 
-**Under development**
+**Not tested in production**
 
 Thread safe communication object.
 
