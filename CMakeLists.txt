@@ -31,7 +31,7 @@ macro(package_add_test TESTNAME)
 endmacro()
 
 # Test
-package_add_test(test channel_test.cpp)
+package_add_test(channel_test channel_test.cpp)
 
 # Benchmark
 if (NOT benchmark_POPULATED)
@@ -40,9 +40,9 @@ if (NOT benchmark_POPULATED)
     add_subdirectory(${benchmark_SOURCE_DIR})
 endif ()
 
-add_executable(benchmarking channel_benchmark.cpp)
-target_link_libraries(benchmarking benchmark)
+add_executable(channel_benchmark channel_benchmark.cpp)
+target_link_libraries(channel_benchmark benchmark)
 
 # Example app
-add_executable(example example.cpp)
-target_link_libraries(example pthread)
+add_executable(channel_example example.cpp)
+target_link_libraries(channel_example pthread)
