@@ -1,6 +1,8 @@
 language: cpp
 os: linux
-compiler: gcc
+compiler:
+  - gcc
+  - clang
 
 install:
   - cmake -D CMAKE_INSTALL_LIBDIR=lib .
