@@ -2,7 +2,11 @@
 
 **Not tested in production**
 
-Thread safe communication object. Tested with GCC and Clang.
+Thread safe communication object.
+
+Use stream operators to push (>>) and fetch (<<) items. Range-based for loop supported.
+
+Tested with GCC and Clang. 
 
 ## Requirements
 * C++11/14/17
