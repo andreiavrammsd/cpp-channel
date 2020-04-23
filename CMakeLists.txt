@@ -3,6 +3,7 @@ project(cpp_channel)
 
 set(CMAKE_CXX_STANDARD 11)
 set(PROJECT_VERSION 0.1.0)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
 add_library(shared SHARED channel.h)
 target_link_libraries(shared pthread)

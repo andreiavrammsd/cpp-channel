@@ -20,7 +20,7 @@ int main() {
         }
     };
 
-    for (auto i = 0; i < threads; i++) {
+    for (size_t i = 0; i < threads; i++) {
         (std::thread{out, std::ref(ch), i}).detach();
     }
 
