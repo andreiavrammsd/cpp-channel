@@ -2,8 +2,11 @@ cmake_minimum_required(VERSION 3.12)
 project(cpp_channel)
 
 set(CMAKE_CXX_STANDARD 11)
-set(PROJECT_VERSION 0.1.0)
+set(CMAKE_CXX_STANDARD_REQUIRED YES)
+set(CXX_EXTENSIONS NO YES)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+
+set(PROJECT_VERSION 0.1.0)
 
 add_library(shared SHARED channel.h)
 target_link_libraries(shared pthread)
@@ -32,7 +35,12 @@ macro(package_add_test TESTNAME)
 endmacro()
 
 # Test
-package_add_test(channel_test channel_test.cpp)
+package_add_test(channel_test11 channel_test.cpp)
+package_add_test(channel_test14 channel_test.cpp)
+package_add_test(channel_test17 channel_test.cpp)
+
+set_target_properties(channel_test14 PROPERTIES CXX_STANDARD 14 CMAKE_CXX_STANDARD_REQUIRED YES)
+set_target_properties(channel_test17 PROPERTIES CXX_STANDARD 17 CMAKE_CXX_STANDARD_REQUIRED YES)
 
 # Benchmark
 if (NOT benchmark_POPULATED)
