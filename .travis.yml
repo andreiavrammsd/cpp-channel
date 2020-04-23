@@ -8,5 +8,5 @@ install:
   - cmake -D CMAKE_INSTALL_LIBDIR=lib .
 
 script:
-  - make test
+  - make channel_test
   - ./test
