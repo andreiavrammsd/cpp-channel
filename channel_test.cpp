@@ -80,3 +80,18 @@ TEST_F(ChannelTest, multithread) {
 
     ASSERT_EQ(sum_numbers, expected);
 }
+
+TEST_F(ChannelTest, iterator_test) {
+    Channel<int> channel;
+    const_iterator<int> it(&channel);
+
+    int in{};
+
+    in = 2;
+    in >> channel;
+    ASSERT_EQ(*it, 2);
+
+    in = 1;
+    in >> channel;
+    ASSERT_EQ(*it, 1);
+}
