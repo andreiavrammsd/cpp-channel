@@ -9,4 +9,4 @@ install:
 
 script:
   - make channel_test
-  - ./test
+  - ./channel_test
