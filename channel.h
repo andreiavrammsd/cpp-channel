@@ -1,7 +1,6 @@
 #ifndef CHANNEL_H_
 #define CHANNEL_H_
 
-#include <cstdlib>
 #include <queue>
 #include <mutex>
 #include <condition_variable>
@@ -13,6 +12,8 @@ template<typename T>
 class Channel {
 public:
     explicit Channel(size_t capacity = 0);
+
+    friend class const_iterator<T>;
 
     Channel(const Channel &) = delete;
 
@@ -33,6 +34,8 @@ private:
     std::queue<T> queue;
     std::mutex mtx;
     std::condition_variable cnd;
+
+    inline T get();
 };
 
 template<typename T>
@@ -45,9 +48,7 @@ public:
     }
 
     T operator*() {
-        T i{};
-        i << *ch;
-        return std::move(i);
+        return ch->get();
     }
 
     bool operator!=(const_iterator<T>) {
