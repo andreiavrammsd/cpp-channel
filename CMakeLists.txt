@@ -3,8 +3,8 @@ project(cpp_channel)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
-set(CXX_EXTENSIONS NO YES)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+set(CXX_EXTENSIONS NO)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -Werror")
 
 set(PROJECT_VERSION 0.1.0)
 
