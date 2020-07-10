@@ -11,18 +11,18 @@ class ChannelTest : public ::testing::Test {
 TEST_F(ChannelTest, test) {
     Channel<int> channel;
 
-    ASSERT_EQ(channel.size(), 0);
+    EXPECT_EQ(channel.size(), 0);
 
     int in = 2;
     in >> channel;
     in >> channel;
-    ASSERT_EQ(channel.size(), 2);
+    EXPECT_EQ(channel.size(), 2);
 
     int out;
     out << channel;
     out << channel;
-    ASSERT_EQ(out, in);
-    ASSERT_EQ(channel.size(), 0);
+    EXPECT_EQ(out, in);
+    EXPECT_EQ(channel.size(), 0);
 }
 
 TEST_F(ChannelTest, multithread) {
@@ -78,7 +78,7 @@ TEST_F(ChannelTest, multithread) {
     std::unique_lock<std::mutex> lock{mtx_wait};
     cond_wait.wait(lock, [&wait_counter]() { return wait_counter == 0; });
 
-    ASSERT_EQ(sum_numbers, expected);
+    EXPECT_EQ(sum_numbers, expected);
 }
 
 TEST_F(ChannelTest, iterator_test) {
@@ -89,9 +89,9 @@ TEST_F(ChannelTest, iterator_test) {
 
     in = 2;
     in >> channel;
-    ASSERT_EQ(*it, 2);
+    EXPECT_EQ(*it, 2);
 
     in = 1;
     in >> channel;
-    ASSERT_EQ(*it, 1);
+    EXPECT_EQ(*it, 1);
 }
