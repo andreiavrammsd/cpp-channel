@@ -1,10 +1,10 @@
 #include <utility>
 
 template<typename T>
-Channel<T>::Channel(size_t capacity) : cap{capacity} {}
+constexpr Channel<T>::Channel(const size_t capacity) : cap{capacity} {}
 
 template<typename Q>
-void operator>>(Q in, Channel<Q> &ch) {
+void operator>>(const Q in, Channel<Q> &ch) {
     std::unique_lock<std::mutex> lock{ch.mtx};
 
     if (ch.cap > 0 && ch.queue.size() == ch.cap) {
@@ -23,7 +23,7 @@ Q operator<<(Q &out, Channel<Q> &ch) {
 }
 
 template<typename T>
-size_t Channel<T>::size() const {
+constexpr size_t Channel<T>::size() const {
     return queue.size();
 }
 

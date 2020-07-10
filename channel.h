@@ -28,7 +28,7 @@ public:
      *
      * @param capacity Number of elements the channel can store before blocking
      */
-    explicit Channel(size_t capacity = 0);
+    explicit constexpr Channel(size_t capacity = 0);
 
     /**
      * Channel cannot be copied
@@ -57,14 +57,14 @@ public:
      *
      * @return number of elements in channel
      */
-    size_t size() const;
+    size_t constexpr size() const;
 
     const_iterator<T> begin() noexcept;
 
     const_iterator<T> end() noexcept;
 
 private:
-    size_t cap;
+    const size_t cap;
     std::queue<T> queue;
     std::mutex mtx;
     std::condition_variable cnd;
