@@ -31,9 +31,15 @@ public:
     explicit constexpr Channel(size_t capacity = 0);
 
     /**
-     * Channel cannot be copied
+     * Channel cannot be copied or moved
      */
     Channel(const Channel &) = delete;
+
+    Channel &operator=(const Channel &) = delete;
+
+    Channel(Channel &&) = delete;
+
+    Channel &operator=(Channel &&) = delete;
 
     /**
      * >> Push item of type Q to channel
@@ -62,6 +68,8 @@ public:
     const_iterator<T> begin() noexcept;
 
     const_iterator<T> end() noexcept;
+
+    ~Channel() = default;
 
 private:
     const size_t cap;
