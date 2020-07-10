@@ -1,6 +1,5 @@
-#include "channel.h"
-
-#include <benchmark/benchmark.h>
+#include "benchmark/benchmark.h"
+#include "channel.hpp"
 
 /*
  ---------------------------------------------------------------
@@ -16,7 +15,8 @@ struct Entry {
     std::string label = "label";
 };
 
-static void BM_ChannelWithInt(benchmark::State &state) {
+static void BM_ChannelWithInt(benchmark::State& state)
+{
     Channel<int> channel{1};
     int in = 1;
     int out = 0;
@@ -28,7 +28,8 @@ static void BM_ChannelWithInt(benchmark::State &state) {
 
 BENCHMARK(BM_ChannelWithInt);
 
-static void BM_ChannelWithString(benchmark::State &state) {
+static void BM_ChannelWithString(benchmark::State& state)
+{
     Channel<std::string> channel{1};
     std::string in = "input";
     std::string out;
@@ -40,8 +41,8 @@ static void BM_ChannelWithString(benchmark::State &state) {
 
 BENCHMARK(BM_ChannelWithString);
 
-
-static void BM_ChannelWithStruct(benchmark::State &state) {
+static void BM_ChannelWithStruct(benchmark::State& state)
+{
     Channel<Entry> channel{1};
     Entry in{};
     Entry out{};

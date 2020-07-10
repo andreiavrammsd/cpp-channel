@@ -1,14 +1,15 @@
-#include <thread>
-#include <atomic>
+#include "channel.hpp"
 
-#include "channel.h"
+#include <atomic>
+#include <thread>
 
 #include "gtest/gtest.h"
 
 class ChannelTest : public ::testing::Test {
 };
 
-TEST_F(ChannelTest, test) {
+TEST_F(ChannelTest, test)
+{
     Channel<int> channel;
 
     EXPECT_EQ(channel.size(), 0);
@@ -25,7 +26,8 @@ TEST_F(ChannelTest, test) {
     EXPECT_EQ(channel.size(), 0);
 }
 
-TEST_F(ChannelTest, multithread) {
+TEST_F(ChannelTest, multithread)
+{
     const int numbers = 100000;
     const long long expected = 5000050000;
     const int threads_to_read_from = 100;
@@ -44,23 +46,23 @@ TEST_F(ChannelTest, multithread) {
     wait_counter = threads_to_read_from;
 
     for (int i = 0; i < threads_to_read_from; ++i) {
-        (std::thread{
-                [&channel, &mtx_read, &cond_read, &ready_to_read, &count_numbers, &sum_numbers, &wait_counter, &cond_wait] {
-                    // Wait until there is data on the channel
-                    std::unique_lock<std::mutex> lock{mtx_read};
-                    cond_read.wait(lock, [&ready_to_read] { return ready_to_read; });
+        (std::thread{[&channel, &mtx_read, &cond_read, &ready_to_read,
+                      &count_numbers, &sum_numbers, &wait_counter, &cond_wait] {
+            // Wait until there is data on the channel
+            std::unique_lock<std::mutex> lock{mtx_read};
+            cond_read.wait(lock, [&ready_to_read] { return ready_to_read; });
 
-                    // Read until all items have been read from the channel
-                    while (count_numbers < numbers) {
-                        int out{};
-                        out << channel;
+            // Read until all items have been read from the channel
+            while (count_numbers < numbers) {
+                int out{};
+                out << channel;
 
-                        sum_numbers += out;
-                        ++count_numbers;
-                    }
-                    --wait_counter;
-                    cond_wait.notify_one();
-                }}).detach();
+                sum_numbers += out;
+                ++count_numbers;
+            }
+            --wait_counter;
+            cond_wait.notify_one();
+        }}).detach();
     }
 
     // Send numbers to channel
@@ -81,7 +83,8 @@ TEST_F(ChannelTest, multithread) {
     EXPECT_EQ(sum_numbers, expected);
 }
 
-TEST_F(ChannelTest, iterator_test) {
+TEST_F(ChannelTest, iterator_test)
+{
     Channel<int> channel;
     const_iterator<int> it(&channel);
 

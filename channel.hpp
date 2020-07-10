@@ -1,9 +1,9 @@
 #ifndef CHANNEL_H_
 #define CHANNEL_H_
 
-#include <queue>
-#include <mutex>
 #include <condition_variable>
+#include <mutex>
+#include <queue>
 
 /**
  * Blocking infinite iterator
@@ -12,7 +12,7 @@
  *
  * @tparam T
  */
-template<typename T>
+template <typename T>
 class const_iterator;
 
 /**
@@ -20,9 +20,9 @@ class const_iterator;
  *
  * @tparam T
  */
-template<typename T>
+template <typename T>
 class Channel {
-public:
+   public:
     /**
      * Channel constructor
      *
@@ -33,21 +33,21 @@ public:
     /**
      * Channel cannot be copied or moved
      */
-    Channel(const Channel &) = delete;
+    Channel(const Channel&) = delete;
 
-    Channel &operator=(const Channel &) = delete;
+    Channel& operator=(const Channel&) = delete;
 
-    Channel(Channel &&) = delete;
+    Channel(Channel&&) = delete;
 
-    Channel &operator=(Channel &&) = delete;
+    Channel& operator=(Channel&&) = delete;
 
     /**
      * >> Push item of type Q to channel
      *
      * @tparam Q
      */
-    template<typename Q>
-    friend void operator>>(Q, Channel<Q> &);
+    template <typename Q>
+    friend void operator>>(Q, Channel<Q>&);
 
     /**
      * << Fetch item from channel
@@ -55,8 +55,8 @@ public:
      * @tparam Q
      * @return Item of type Q
      */
-    template<typename Q>
-    friend Q operator<<(Q &, Channel<Q> &);
+    template <typename Q>
+    friend Q operator<<(Q&, Channel<Q>&);
 
     /**
      * size
@@ -71,7 +71,7 @@ public:
 
     ~Channel() = default;
 
-private:
+   private:
     const size_t cap;
     std::queue<T> queue;
     std::mutex mtx;
@@ -82,27 +82,21 @@ private:
     friend class const_iterator<T>;
 };
 
-template<typename T>
+template <typename T>
 class const_iterator {
-public:
-    explicit const_iterator(Channel<T> *ch) : ch{ch} {}
+   public:
+    explicit const_iterator(Channel<T>* ch) : ch{ch} {}
 
-    const_iterator<T> operator++() {
-        return *this;
-    }
+    const_iterator<T> operator++() { return *this; }
 
-    T operator*() {
-        return ch->get();
-    }
+    T operator*() { return ch->get(); }
 
-    bool operator!=(const_iterator<T>) {
-        return true;
-    }
+    bool operator!=(const_iterator<T>) { return true; }
 
-private:
-    Channel<T> *ch;
+   private:
+    Channel<T>* ch;
 };
 
 #include "channel.cpp"
 
-#endif // CHANNEL_H_
+#endif  // CHANNEL_H_
