@@ -18,7 +18,7 @@ class const_iterator;
 /**
  * Channel for safe passing any data between threads
  *
- * @tparam T
+ * @tparam T Type of object to store
  */
 template <typename T>
 class Channel {
@@ -29,17 +29,6 @@ class Channel {
      * @param capacity Number of elements the channel can store before blocking
      */
     explicit constexpr Channel(size_t capacity = 0);
-
-    /**
-     * Channel cannot be copied or moved
-     */
-    Channel(const Channel&) = delete;
-
-    Channel& operator=(const Channel&) = delete;
-
-    Channel(Channel&&) = delete;
-
-    Channel& operator=(Channel&&) = delete;
 
     /**
      * >> Push item of type Q to channel
@@ -53,7 +42,6 @@ class Channel {
      * << Fetch item from channel
      *
      * @tparam Q
-     * @return Item of type Q
      */
     template <typename Q>
     friend void operator<<(Q&, Channel<Q>&);
@@ -68,6 +56,17 @@ class Channel {
     const_iterator<T> begin() noexcept;
 
     const_iterator<T> end() noexcept;
+
+    /**
+     * Channel cannot be copied or moved
+     */
+    Channel(const Channel&) = delete;
+
+    Channel& operator=(const Channel&) = delete;
+
+    Channel(Channel&&) = delete;
+
+    Channel& operator=(Channel&&) = delete;
 
     ~Channel() = default;
 
