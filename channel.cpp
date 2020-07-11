@@ -1,7 +1,7 @@
 #include <utility>
 
 template <typename T>
-constexpr Channel<T>::Channel(const size_t capacity) : cap{capacity}
+constexpr Channel<T>::Channel(const size_type capacity) : cap{capacity}
 {
 }
 
@@ -26,7 +26,7 @@ void operator<<(Q& out, Channel<Q>& ch)
 }
 
 template <typename T>
-constexpr size_t Channel<T>::size() const
+constexpr typename Channel<T>::size_type Channel<T>::size() const
 {
     return queue.size();
 }
@@ -44,7 +44,7 @@ const_iterator<T> Channel<T>::end() noexcept
 }
 
 template <typename T>
-inline void Channel<T>::get(T& value)
+inline void Channel<T>::get(reference value)
 {
     std::unique_lock<std::mutex> lock{mtx};
     cnd.wait(lock, [this] { return queue.size() > 0; });

@@ -23,12 +23,17 @@ class const_iterator;
 template <typename T>
 class Channel {
    public:
+    using value_type = T;
+    using reference = T&;
+    using iterator = const_iterator<T>;
+    using size_type = size_t;
+
     /**
      * Channel constructor
      *
      * @param capacity Number of elements the channel can store before blocking
      */
-    explicit constexpr Channel(size_t capacity = 0);
+    explicit constexpr Channel(size_type capacity = 0);
 
     /**
      * >> Push item of type Q to channel
@@ -51,11 +56,11 @@ class Channel {
      *
      * @return number of elements in channel
      */
-    size_t constexpr size() const;
+    size_type constexpr size() const;
 
-    const_iterator<T> begin() noexcept;
+    iterator begin() noexcept;
 
-    const_iterator<T> end() noexcept;
+    iterator end() noexcept;
 
     /**
      * Channel cannot be copied or moved
@@ -71,12 +76,12 @@ class Channel {
     ~Channel() = default;
 
    private:
-    const size_t cap;
+    const size_type cap;
     std::queue<T> queue;
     std::mutex mtx;
     std::condition_variable cnd;
 
-    inline void get(T&);
+    inline void get(reference);
 
     friend class const_iterator<T>;
 };
