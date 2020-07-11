@@ -5,6 +5,12 @@
 #include <mutex>
 #include <queue>
 
+#if (__cplusplus >= 201703L || (defined(_MSVC_LANG) && _MSVC_LANG >= 201703L))
+#define NODISCARD [[nodiscard]]
+#else
+#define NODISCARD
+#endif
+
 /**
  * Blocking infinite iterator
  *
@@ -56,7 +62,7 @@ class Channel {
      *
      * @return number of elements in channel
      */
-    size_type constexpr size() const;
+    NODISCARD size_type constexpr size() const;
 
     iterator begin() noexcept;
 
