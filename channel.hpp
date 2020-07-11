@@ -1,5 +1,5 @@
-#ifndef CHANNEL_H_
-#define CHANNEL_H_
+#ifndef CHANNEL_HPP_
+#define CHANNEL_HPP_
 
 #include <condition_variable>
 #include <mutex>
@@ -104,4 +104,4 @@ class const_iterator {
 
 #include "channel.cpp"
 
-#endif  // CHANNEL_H_
+#endif  // CHANNEL_HPP_
