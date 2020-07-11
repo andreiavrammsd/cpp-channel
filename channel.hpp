@@ -56,7 +56,7 @@ class Channel {
      * @return Item of type Q
      */
     template <typename Q>
-    friend Q operator<<(Q&, Channel<Q>&);
+    friend void operator<<(Q&, Channel<Q>&);
 
     /**
      * size
@@ -77,7 +77,7 @@ class Channel {
     std::mutex mtx;
     std::condition_variable cnd;
 
-    inline T get();
+    inline void get(T&);
 
     friend class const_iterator<T>;
 };
@@ -89,7 +89,13 @@ class const_iterator {
 
     const_iterator<T> operator++() { return *this; }
 
-    T operator*() { return ch->get(); }
+    T operator*()
+    {
+        T value{};
+        ch->get(value);
+
+        return value;
+    }
 
     bool operator!=(const_iterator<T>) { return true; }
 

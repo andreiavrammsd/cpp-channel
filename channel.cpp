@@ -20,10 +20,9 @@ void operator>>(const Q in, Channel<Q>& ch)
 }
 
 template <typename Q>
-Q operator<<(Q& out, Channel<Q>& ch)
+void operator<<(Q& out, Channel<Q>& ch)
 {
-    out = ch.get();
-    return out;
+    ch.get(out);
 }
 
 template <typename T>
@@ -45,15 +44,13 @@ const_iterator<T> Channel<T>::end() noexcept
 }
 
 template <typename T>
-inline T Channel<T>::get()
+inline void Channel<T>::get(T& value)
 {
     std::unique_lock<std::mutex> lock{mtx};
     cnd.wait(lock, [this] { return queue.size() > 0; });
 
-    auto value = queue.front();
+    value = queue.front();
     queue.pop();
 
     cnd.notify_one();
-
-    return value;
 }
