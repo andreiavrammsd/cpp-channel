@@ -97,4 +97,6 @@ TEST_F(ChannelTest, iterator_test)
     in = 1;
     in >> channel;
     EXPECT_EQ(*it, 1);
+
+    EXPECT_TRUE(it != it);
 }
