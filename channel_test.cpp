@@ -86,7 +86,7 @@ TEST_F(ChannelTest, multithread)
 TEST_F(ChannelTest, iterator_test)
 {
     Channel<int> channel;
-    const_iterator<int> it(&channel);
+    const_iterator<int> it(channel);
 
     int in{};
 

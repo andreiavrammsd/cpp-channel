@@ -91,14 +91,14 @@ class Channel {
 template <typename T>
 class const_iterator {
    public:
-    explicit const_iterator(Channel<T>* ch) : ch{ch} {}
+    explicit const_iterator(Channel<T>& ch) : ch{ch} {}
 
     const_iterator<T> operator++() { return *this; }
 
     T operator*()
     {
         T value{};
-        value << *ch;
+        value << ch;
 
         return value;
     }
@@ -106,7 +106,7 @@ class const_iterator {
     bool operator!=(const_iterator<T>) { return true; }
 
    private:
-    Channel<T>* ch;
+    Channel<T>& ch;
 };
 
 #include "channel.cpp"

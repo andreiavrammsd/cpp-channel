@@ -40,11 +40,11 @@ constexpr typename Channel<T>::size_type Channel<T>::size() const
 template <typename T>
 const_iterator<T> Channel<T>::begin() noexcept
 {
-    return const_iterator<T>{this};
+    return const_iterator<T>{*this};
 }
 
 template <typename T>
 const_iterator<T> Channel<T>::end() noexcept
 {
-    return const_iterator<T>{this};
+    return const_iterator<T>{*this};
 }
