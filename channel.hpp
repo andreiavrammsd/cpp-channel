@@ -30,7 +30,6 @@ template <typename T>
 class Channel {
    public:
     using value_type = T;
-    using reference = T&;
     using iterator = const_iterator<T>;
     using size_type = size_t;
 
