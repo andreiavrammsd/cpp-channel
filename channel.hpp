@@ -86,10 +86,6 @@ class Channel {
     std::queue<T> queue;
     std::mutex mtx;
     std::condition_variable cnd;
-
-    inline void get(reference);
-
-    friend class const_iterator<T>;
 };
 
 template <typename T>
@@ -102,7 +98,7 @@ class const_iterator {
     T operator*()
     {
         T value{};
-        ch->get(value);
+        value << *ch;
 
         return value;
     }
