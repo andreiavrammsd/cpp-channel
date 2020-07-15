@@ -51,7 +51,7 @@ TEST_F(ChannelTest, empty)
     EXPECT_TRUE(channel.empty());
 }
 
-TEST_F(ChannelTest, multithread)
+TEST_F(ChannelTest, Multithreading)
 {
     const int numbers = 100000;
     const long long expected = 5000050000;
@@ -106,20 +106,4 @@ TEST_F(ChannelTest, multithread)
     cond_wait.wait(lock, [&wait_counter]() { return wait_counter == 0; });
 
     EXPECT_EQ(sum_numbers, expected);
-}
-
-TEST_F(ChannelTest, iterator)
-{
-    Channel<int> channel;
-    channel_iterator<int> it(channel);
-
-    int in = 2;
-    in >> channel;
-    EXPECT_EQ(*it, 2);
-
-    in = 1;
-    in >> channel;
-    EXPECT_EQ(*it, 1);
-
-    EXPECT_TRUE(it != it);
 }

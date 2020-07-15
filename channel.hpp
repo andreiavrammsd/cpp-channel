@@ -6,21 +6,13 @@
 #include <mutex>
 #include <queue>
 
+#include "channel_iterator.hpp"
+
 #if (__cplusplus >= 201703L || (defined(_MSVC_LANG) && _MSVC_LANG >= 201703L))
 #define NODISCARD [[nodiscard]]
 #else
 #define NODISCARD
 #endif
-
-/**
- * Blocking infinite iterator
- *
- * Used to implement channel range-based for loop
- *
- * @tparam T
- */
-template <typename T>
-class channel_iterator;
 
 /**
  * Channel for safe passing any data between threads
@@ -93,27 +85,6 @@ class Channel {
     std::queue<T> queue;
     std::mutex mtx;
     std::condition_variable cnd;
-};
-
-template <typename T>
-class channel_iterator {
-   public:
-    explicit channel_iterator(Channel<T>& ch) : ch{ch} {}
-
-    channel_iterator<T> operator++() { return *this; }
-
-    T operator*()
-    {
-        T value{};
-        value << ch;
-
-        return value;
-    }
-
-    bool operator!=(channel_iterator<T>) { return true; }
-
-   private:
-    Channel<T>& ch;
 };
 
 #include "channel.cpp"
