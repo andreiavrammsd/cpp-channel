@@ -28,8 +28,7 @@ int main()
     (std::thread{[](Channel<long long int>& ch) {
                      for (const auto& i : ch) {
                          std::cout << "range: " + std::to_string(i) << '\n';
-                         std::this_thread::sleep_for(
-                             std::chrono::milliseconds(1000));
+                         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
                      }
                  },
                  std::ref(ch)})

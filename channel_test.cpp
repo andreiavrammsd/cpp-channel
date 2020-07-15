@@ -50,8 +50,8 @@ TEST_F(ChannelTest, multithread)
     wait_counter = threads_to_read_from;
 
     for (int i = 0; i < threads_to_read_from; ++i) {
-        (std::thread{[&channel, &mtx_read, &cond_read, &ready_to_read,
-                      &count_numbers, &sum_numbers, &wait_counter, &cond_wait] {
+        (std::thread{[&channel, &mtx_read, &cond_read, &ready_to_read, &count_numbers, &sum_numbers, &wait_counter,
+                      &cond_wait] {
             // Wait until there is data on the channel
             std::unique_lock<std::mutex> lock{mtx_read};
             cond_read.wait(lock, [&ready_to_read] { return ready_to_read; });
