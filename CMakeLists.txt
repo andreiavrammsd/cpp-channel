@@ -52,6 +52,4 @@ endif ()
 add_executable(channel_benchmark channel_benchmark.cpp)
 target_link_libraries(channel_benchmark benchmark)
 
-# Example app
-add_executable(channel_example example.cpp)
-target_link_libraries(channel_example pthread)
+add_subdirectory(examples)

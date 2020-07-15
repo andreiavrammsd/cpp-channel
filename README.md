@@ -91,4 +91,4 @@ int main() {
 }
 ```
 
-See [example app](example.cpp).
+See [examples](examples).
