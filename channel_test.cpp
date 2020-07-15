@@ -30,6 +30,19 @@ TEST_F(ChannelTest, test)
     EXPECT_EQ(channel.size(), 0);
 }
 
+TEST_F(ChannelTest, size)
+{
+    Channel<int> channel;
+    EXPECT_EQ(0, channel.size());
+
+    int in = 1;
+    in >> channel;
+    EXPECT_EQ(1, channel.size());
+
+    in << channel;
+    EXPECT_EQ(0, channel.size());
+}
+
 TEST_F(ChannelTest, empty)
 {
     Channel<int> channel;
