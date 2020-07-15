@@ -34,12 +34,20 @@ class Channel {
     explicit constexpr Channel(size_type capacity = 0);
 
     /**
-     * >> Push item of type Q to channel
+     * >> Push item of type Q to channel by copy
      *
      * @tparam Q
      */
     template <typename Q>
-    friend void operator>>(Q, Channel<Q>&);
+    friend void operator>>(const Q&, Channel<Q>&);
+
+    /**
+     * >> Push item of type Q to channel by move
+     *
+     * @tparam Q
+     */
+    template <typename Q>
+    friend void operator>>(Q&&, Channel<Q>&);
 
     /**
      * << Fetch item from channel
