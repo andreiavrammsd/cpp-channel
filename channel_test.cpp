@@ -108,14 +108,12 @@ TEST_F(ChannelTest, multithread)
     EXPECT_EQ(sum_numbers, expected);
 }
 
-TEST_F(ChannelTest, iterator_test)
+TEST_F(ChannelTest, iterator)
 {
     Channel<int> channel;
-    const_iterator<int> it(channel);
+    channel_iterator<int> it(channel);
 
-    int in{};
-
-    in = 2;
+    int in = 2;
     in >> channel;
     EXPECT_EQ(*it, 2);
 

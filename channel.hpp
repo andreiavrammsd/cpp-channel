@@ -19,7 +19,7 @@
  * @tparam T
  */
 template <typename T>
-class const_iterator;
+class channel_iterator;
 
 /**
  * Channel for safe passing any data between threads
@@ -30,7 +30,7 @@ template <typename T>
 class Channel {
    public:
     using value_type = T;
-    using iterator = const_iterator<T>;
+    using iterator = channel_iterator<T>;
     using size_type = size_t;
 
     /**
@@ -95,11 +95,11 @@ class Channel {
 };
 
 template <typename T>
-class const_iterator {
+class channel_iterator {
    public:
-    explicit const_iterator(Channel<T>& ch) : ch{ch} {}
+    explicit channel_iterator(Channel<T>& ch) : ch{ch} {}
 
-    const_iterator<T> operator++() { return *this; }
+    channel_iterator<T> operator++() { return *this; }
 
     T operator*()
     {
@@ -109,7 +109,7 @@ class const_iterator {
         return value;
     }
 
-    bool operator!=(const_iterator<T>) { return true; }
+    bool operator!=(channel_iterator<T>) { return true; }
 
    private:
     Channel<T>& ch;
