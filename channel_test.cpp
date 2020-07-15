@@ -2,6 +2,7 @@
 
 #include <atomic>
 #include <thread>
+#include <vector>
 
 #include "gtest/gtest.h"
 
@@ -70,24 +71,27 @@ TEST_F(ChannelTest, Multithreading)
     std::atomic<int> wait_counter{};
     wait_counter = threads_to_read_from;
 
+    auto worker = [&] {
+        // Wait until there is data on the channel
+        std::unique_lock<std::mutex> lock{mtx_read};
+        cond_read.wait(lock, [&ready_to_read] { return ready_to_read; });
+
+        // Read until all items have been read from the channel
+        while (count_numbers < numbers) {
+            int out{};
+            out << channel;
+
+            sum_numbers += out;
+            ++count_numbers;
+        }
+        --wait_counter;
+        cond_wait.notify_one();
+    };
+
+    std::vector<std::thread> threads;
     for (int i = 0; i < threads_to_read_from; ++i) {
-        (std::thread{[&channel, &mtx_read, &cond_read, &ready_to_read, &count_numbers, &sum_numbers, &wait_counter,
-                      &cond_wait] {
-            // Wait until there is data on the channel
-            std::unique_lock<std::mutex> lock{mtx_read};
-            cond_read.wait(lock, [&ready_to_read] { return ready_to_read; });
-
-            // Read until all items have been read from the channel
-            while (count_numbers < numbers) {
-                int out{};
-                out << channel;
-
-                sum_numbers += out;
-                ++count_numbers;
-            }
-            --wait_counter;
-            cond_wait.notify_one();
-        }}).detach();
+        auto th = std::thread{worker};
+        threads.emplace_back(std::move(th));
     }
 
     // Send numbers to channel
@@ -103,7 +107,12 @@ TEST_F(ChannelTest, Multithreading)
 
     // Wait until all items have been read
     std::unique_lock<std::mutex> lock{mtx_wait};
-    cond_wait.wait(lock, [&wait_counter]() { return wait_counter == 0; });
+    cond_wait.wait(lock, [&wait_counter]() {
+        auto items = wait_counter.load();
+        return items == 0;
+    });
 
-    EXPECT_EQ(sum_numbers, expected);
+    std::for_each(threads.begin(), threads.end(), [](std::thread& thread) { thread.join(); });
+
+    EXPECT_EQ(expected, sum_numbers);
 }
