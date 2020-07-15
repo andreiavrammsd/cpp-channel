@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED YES)
 set(CXX_EXTENSIONS NO)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -Werror --coverage")
 
-set(PROJECT_VERSION 0.1.1)
+set(PROJECT_VERSION 0.2.0)
 
 add_library(shared SHARED channel.hpp)
 target_link_libraries(shared pthread)

@@ -63,6 +63,13 @@ class Channel {
      */
     NODISCARD size_type constexpr size() const;
 
+    /**
+     * empty
+     *
+     * @return true if there are no elements in channel
+     */
+    NODISCARD bool constexpr empty() const;
+
     iterator begin() noexcept;
 
     iterator end() noexcept;

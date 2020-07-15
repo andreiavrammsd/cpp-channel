@@ -30,6 +30,19 @@ TEST_F(ChannelTest, test)
     EXPECT_EQ(channel.size(), 0);
 }
 
+TEST_F(ChannelTest, empty)
+{
+    Channel<int> channel;
+    EXPECT_TRUE(channel.empty());
+
+    int in = 1;
+    in >> channel;
+    EXPECT_FALSE(channel.empty());
+
+    in << channel;
+    EXPECT_TRUE(channel.empty());
+}
+
 TEST_F(ChannelTest, multithread)
 {
     const int numbers = 100000;
