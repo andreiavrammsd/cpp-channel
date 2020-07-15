@@ -8,26 +8,21 @@
 class ChannelTest : public ::testing::Test {
 };
 
-TEST_F(ChannelTest, test)
+TEST_F(ChannelTest, PushAndFetch)
 {
     Channel<int> channel;
 
-    EXPECT_EQ(channel.size(), 0);
-
-    int in = 2;
+    int in = 1;
     in >> channel;
-    in = 3;
+    in = 2;
     in >> channel;
-    EXPECT_EQ(channel.size(), 2);
 
     int out;
     out << channel;
-    EXPECT_EQ(2, out);
+    EXPECT_EQ(1, out);
 
     out << channel;
-    EXPECT_EQ(out, 3);
-
-    EXPECT_EQ(channel.size(), 0);
+    EXPECT_EQ(out, 2);
 }
 
 TEST_F(ChannelTest, size)
