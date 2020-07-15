@@ -22,7 +22,7 @@ TEST_F(ChannelTest, PushAndFetch)
     EXPECT_EQ(1, out);
 
     out << channel;
-    EXPECT_EQ(out, 2);
+    EXPECT_EQ(2, out);
 }
 
 TEST_F(ChannelTest, size)

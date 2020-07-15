@@ -16,8 +16,8 @@ TEST_F(ChannelIteratorTest, Dereference)
     in = 2;
     in >> channel;
 
-    EXPECT_EQ(*it, 1);
-    EXPECT_EQ(*it, 2);
+    EXPECT_EQ(1, *it);
+    EXPECT_EQ(2, *it);
 }
 
 TEST_F(ChannelIteratorTest, NotEqual)
