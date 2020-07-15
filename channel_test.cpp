@@ -16,13 +16,17 @@ TEST_F(ChannelTest, test)
 
     int in = 2;
     in >> channel;
+    in = 3;
     in >> channel;
     EXPECT_EQ(channel.size(), 2);
 
     int out;
     out << channel;
+    EXPECT_EQ(2, out);
+
     out << channel;
-    EXPECT_EQ(out, in);
+    EXPECT_EQ(out, 3);
+
     EXPECT_EQ(channel.size(), 0);
 }
 
