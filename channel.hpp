@@ -2,6 +2,7 @@
 #define CHANNEL_HPP_
 
 #include <condition_variable>
+#include <cstdlib>
 #include <mutex>
 #include <queue>
 
@@ -31,7 +32,7 @@ class Channel {
    public:
     using value_type = T;
     using iterator = channel_iterator<T>;
-    using size_type = size_t;
+    using size_type = std::size_t;
 
     /**
      * Channel constructor
