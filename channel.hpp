@@ -1,3 +1,5 @@
+// Copyright (C) 2020 Andrei Avram
+
 #ifndef CHANNEL_HPP_
 #define CHANNEL_HPP_
 
@@ -15,9 +17,11 @@
 #endif
 
 /**
- * Channel for safe passing any data between threads
+ *  @brief A container for sharing elements between threads in a thread-safe way.
  *
- * @tparam T Type of object to store
+ *  Implements a blocking input iterator.
+ *
+ *  @tparam T Type of element.
  */
 template <typename T>
 class Channel {
@@ -27,65 +31,53 @@ class Channel {
     using size_type = std::size_t;
 
     /**
-     * Channel constructor
+     * Creates a new channel.
      *
-     * @param capacity Number of elements the channel can store before blocking
+     * @param capacity Number of elements the channel can store before blocking.
      */
     explicit constexpr Channel(size_type capacity = 0);
 
     /**
-     * >> Push item of type Q to channel by copy
-     *
-     * @tparam Q
+     * Pushes an element into the channel by copy.
      */
     template <typename Q>
     friend void operator>>(const Q&, Channel<Q>&);
 
     /**
-     * >> Push item of type Q to channel by move
-     *
-     * @tparam Q
+     * Allows pushing an element into the channel by move.
      */
     template <typename Q>
     friend void operator>>(Q&&, Channel<Q>&);
 
     /**
-     * << Fetch item from channel
-     *
-     * @tparam Q
+     * Returns an element from the channel.
      */
     template <typename Q>
     friend void operator<<(Q&, Channel<Q>&);
 
     /**
-     * size
-     *
-     * @return number of elements in channel
+     * Returns the number of elements in the channel.
      */
     NODISCARD size_type constexpr size() const;
 
     /**
-     * empty
-     *
-     * @return true if there are no elements in channel
+     *  Returns true if there are no elements in channel.
      */
     NODISCARD bool constexpr empty() const;
 
+    /**
+     * Iterator
+     */
     iterator begin() noexcept;
-
     iterator end() noexcept;
 
     /**
-     * Channel cannot be copied or moved
+     * Channel cannot be copied or moved.
      */
     Channel(const Channel&) = delete;
-
     Channel& operator=(const Channel&) = delete;
-
     Channel(Channel&&) = delete;
-
     Channel& operator=(Channel&&) = delete;
-
     ~Channel() = default;
 
    private:
