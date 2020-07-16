@@ -78,7 +78,7 @@ class Channel {
     Channel& operator=(const Channel&) = delete;
     Channel(Channel&&) = delete;
     Channel& operator=(Channel&&) = delete;
-    ~Channel() = default;
+    virtual ~Channel() = default;
 
    private:
     const size_type cap;
