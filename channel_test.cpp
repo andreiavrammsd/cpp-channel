@@ -52,6 +52,19 @@ TEST_F(ChannelTest, empty)
     EXPECT_TRUE(channel.empty());
 }
 
+TEST_F(ChannelTest, Iterator)
+{
+    Channel<int> channel;
+
+    int in = 1;
+    in >> channel;
+
+    for (auto it = channel.begin(); it != channel.end();) {
+        EXPECT_EQ(1, *it);
+        break;
+    }
+}
+
 TEST_F(ChannelTest, Multithreading)
 {
     const int numbers = 100000;

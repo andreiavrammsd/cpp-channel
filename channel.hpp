@@ -27,7 +27,7 @@ template <typename T>
 class Channel {
    public:
     using value_type = T;
-    using iterator = BlockingIterator<T>;
+    using iterator = BlockingIterator<Channel<T>>;
     using size_type = std::size_t;
 
     /**
