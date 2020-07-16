@@ -8,7 +8,7 @@
 #include <mutex>
 #include <queue>
 
-#include "channel_iterator.hpp"
+#include "blocking_iterator.hpp"
 
 #if (__cplusplus >= 201703L || (defined(_MSVC_LANG) && _MSVC_LANG >= 201703L))
 #define NODISCARD [[nodiscard]]
@@ -27,7 +27,7 @@ template <typename T>
 class Channel {
    public:
     using value_type = T;
-    using iterator = channel_iterator<T>;
+    using iterator = blocking_iterator<T>;
     using size_type = std::size_t;
 
     /**

@@ -58,13 +58,13 @@ constexpr bool Channel<T>::empty() const
 }
 
 template <typename T>
-channel_iterator<T> Channel<T>::begin() noexcept
+blocking_iterator<T> Channel<T>::begin() noexcept
 {
-    return channel_iterator<T>{*this};
+    return blocking_iterator<T>{*this};
 }
 
 template <typename T>
-channel_iterator<T> Channel<T>::end() noexcept
+blocking_iterator<T> Channel<T>::end() noexcept
 {
-    return channel_iterator<T>{*this};
+    return blocking_iterator<T>{*this};
 }
