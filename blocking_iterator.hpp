@@ -1,33 +1,32 @@
 #ifndef BLOCKING_ITERATOR_HPP_
 #define BLOCKING_ITERATOR_HPP_
 
-template <typename T>
-class Channel;
-
 /**
  *  @brief An iterator that block the current thread,
  *  waiting to fetch elements from the channel.
  *
  *  Used to implement channel range-based for loop.
  *
- *  @tparam T Type of element in channel.
+ *  @tparam Channel Instance of channel.
  */
-template <typename T>
+template <typename Channel>
 class blocking_iterator {
    public:
-    explicit blocking_iterator(Channel<T>& ch) : ch{ch} {}
+    using value_type = typename Channel::value_type;
+
+    explicit blocking_iterator(Channel& ch) : ch{ch} {}
 
     /**
      * Advances to next element in the channel.
      */
-    blocking_iterator<T> operator++() { return *this; }
+    blocking_iterator<Channel> operator++() { return *this; }
 
     /**
      * Returns an element from the channel.
      */
-    T operator*()
+    value_type operator*()
     {
-        T value{};
+        value_type value{};
         value << ch;
 
         return value;
@@ -36,10 +35,10 @@ class blocking_iterator {
     /**
      * Makes iteration infinite.
      */
-    bool operator!=(blocking_iterator<T>) { return true; }
+    bool operator!=(blocking_iterator<Channel>) { return true; }
 
    private:
-    Channel<T>& ch;
+    Channel& ch;
 };
 
 #endif  // BLOCKING_ITERATOR_HPP_
