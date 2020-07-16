@@ -9,7 +9,7 @@ class ChannelIteratorTest : public ::testing::Test {
 TEST_F(ChannelIteratorTest, Dereference)
 {
     Channel<int> channel;
-    blocking_iterator<Channel<int>> it(channel);
+    BlockingIterator<Channel<int>> it(channel);
 
     int in = 1;
     in >> channel;
@@ -23,7 +23,7 @@ TEST_F(ChannelIteratorTest, Dereference)
 TEST_F(ChannelIteratorTest, NotEqual)
 {
     Channel<int> channel;
-    blocking_iterator<Channel<int>> it(channel);
+    BlockingIterator<Channel<int>> it(channel);
 
     EXPECT_TRUE(it != it);
 }

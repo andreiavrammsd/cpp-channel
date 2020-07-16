@@ -10,16 +10,16 @@
  *  @tparam Channel Instance of channel.
  */
 template <typename Channel>
-class blocking_iterator {
+class BlockingIterator {
    public:
     using value_type = typename Channel::value_type;
 
-    explicit blocking_iterator(Channel& ch) : ch{ch} {}
+    explicit BlockingIterator(Channel& ch) : ch{ch} {}
 
     /**
      * Advances to next element in the channel.
      */
-    blocking_iterator<Channel> operator++() { return *this; }
+    BlockingIterator<Channel> operator++() { return *this; }
 
     /**
      * Returns an element from the channel.
@@ -35,7 +35,7 @@ class blocking_iterator {
     /**
      * Makes iteration infinite.
      */
-    bool operator!=(blocking_iterator<Channel>) { return true; }
+    bool operator!=(BlockingIterator<Channel>) { return true; }
 
    private:
     Channel& ch;
