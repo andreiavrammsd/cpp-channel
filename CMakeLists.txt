@@ -8,7 +8,6 @@ set(CXX_EXTENSIONS NO)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -Werror --coverage")
 
 add_library(shared SHARED include/channel.hpp)
-target_link_libraries(shared pthread)
 set_target_properties(shared PROPERTIES LINKER_LANGUAGE CXX)
 set_target_properties(shared PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(shared PROPERTIES LIBRARY_OUTPUT_NAME channel)
