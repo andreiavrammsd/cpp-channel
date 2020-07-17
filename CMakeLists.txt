@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED YES)
 set(CXX_EXTENSIONS NO)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -Werror --coverage")
 
-add_library(shared SHARED channel.hpp)
+add_library(shared SHARED include/channel.hpp)
 target_link_libraries(shared pthread)
 set_target_properties(shared PROPERTIES LINKER_LANGUAGE CXX)
 set_target_properties(shared PROPERTIES VERSION ${PROJECT_VERSION})
@@ -16,5 +16,6 @@ install(TARGETS shared
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
+include_directories(include)
 add_subdirectory(tests)
 add_subdirectory(examples)

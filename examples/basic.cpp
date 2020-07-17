@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "../channel.hpp"
+#include "channel.hpp"
 
 int main()
 {
