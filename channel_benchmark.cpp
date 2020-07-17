@@ -1,13 +1,24 @@
 #include "benchmark/benchmark.h"
 #include "channel.hpp"
 
-/*
- ---------------------------------------------------------------
- Benchmark                     Time             CPU   Iterations
- ---------------------------------------------------------------
- BM_ChannelWithInt           121 ns          121 ns      5628541
- BM_ChannelWithString        235 ns          235 ns      2962239
- BM_ChannelWithStruct        246 ns          246 ns      2864420
+/**
+    Results on release build with CPU scaling disabled
+
+    2020-07-17 17:11:32
+    Running channel_benchmark
+    Run on (8 X 4000 MHz CPU s)
+    CPU Caches:
+      L1 Data 32K (x4)
+      L1 Instruction 32K (x4)
+      L2 Unified 256K (x4)
+      L3 Unified 8192K (x1)
+    Load Average: 2.91, 1.63, 1.07
+    ---------------------------------------------------------------
+    Benchmark                     Time             CPU   Iterations
+    ---------------------------------------------------------------
+    BM_ChannelWithInt          59.1 ns         59.1 ns     10000000
+    BM_ChannelWithString       55.8 ns         55.8 ns     11405133
+    BM_ChannelWithStruct       54.9 ns         54.9 ns     12931447
  */
 
 struct Entry {
