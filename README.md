@@ -2,7 +2,7 @@
 
 **Not tested in production**
 
-Thread safe communication object.
+A container for sharing elements between threads in a thread safe way.
 
 Use stream operators to push (>>) and fetch (<<) items. Range-based for loop supported.
 
@@ -91,4 +91,4 @@ int main() {
 }
 ```
 
-See [example app](example.cpp).
+See [examples](examples).
