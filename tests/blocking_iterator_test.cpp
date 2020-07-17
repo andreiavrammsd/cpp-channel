@@ -1,6 +1,6 @@
-#include "blocking_iterator.hpp"
+#include "../blocking_iterator.hpp"
 
-#include "channel.hpp"
+#include "../channel.hpp"
 #include "gtest/gtest.h"
 
 class ChannelIteratorTest : public ::testing::Test {

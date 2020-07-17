@@ -1,4 +1,4 @@
-#include "channel.hpp"
+#include "../channel.hpp"
 
 #include <atomic>
 #include <thread>

@@ -1,5 +1,5 @@
+#include "../channel.hpp"
 #include "benchmark/benchmark.h"
-#include "channel.hpp"
 
 /**
     Results on release build with CPU scaling disabled
