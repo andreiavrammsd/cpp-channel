@@ -1,10 +1,10 @@
 #include <iostream>
 
-#include "../channel.hpp"
+#include "channel.hpp"
 
 int main()
 {
-    Channel<int> ch{10};
+    channel<int> ch{10};
 
     int in;
 

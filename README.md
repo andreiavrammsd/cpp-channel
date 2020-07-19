@@ -11,7 +11,6 @@ Tested with GCC and Clang.
 ## Requirements
 * C++11/14/17
 * CMake 3.12+
-* pthread
 
 ## Usage
 
