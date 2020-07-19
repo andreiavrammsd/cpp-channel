@@ -4,7 +4,7 @@
 
 int main()
 {
-    Channel<int> ch{10};
+    channel<int> ch{10};
 
     int in;
 

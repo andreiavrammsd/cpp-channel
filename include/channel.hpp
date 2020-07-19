@@ -89,4 +89,10 @@ class Channel {
 
 #include "channel.cpp"
 
+/**
+ * @brief Alias for STD-like container usage
+ */
+template <typename T>
+using channel = Channel<T>;
+
 #endif  // CHANNEL_HPP_
