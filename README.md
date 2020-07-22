@@ -2,7 +2,7 @@
 
 **Not tested in production**
 
-A container for sharing elements between threads in a thread-safe way.
+Thread-safe container for sharing data between threads.
 
 Use stream operators to push (>>) and fetch (<<) items. Range-based for loop supported.
 

@@ -17,11 +17,11 @@
 #endif
 
 /**
- *  @brief A container for sharing elements between threads in a thread-safe way.
+ *  @brief Thread-safe container for sharing data between threads.
  *
  *  Implements a blocking input iterator.
  *
- *  @tparam T Type of element.
+ *  @tparam T The type of the elements.
  */
 template <typename T>
 class Channel {
@@ -39,21 +39,27 @@ class Channel {
 
     /**
      * Pushes an element into the channel by copy.
+     *
+     * @tparam Type The type of the elements.
      */
-    template <typename Q>
-    friend void operator>>(const Q&, Channel<Q>&);
+    template <typename Type>
+    friend void operator>>(const Type&, Channel<Type>&);
 
     /**
      * Allows pushing an element into the channel by move.
+     *
+     * @tparam Type The type of the elements.
      */
-    template <typename Q>
-    friend void operator>>(Q&&, Channel<Q>&);
+    template <typename Type>
+    friend void operator>>(Type&&, Channel<Type>&);
 
     /**
-     * Returns an element from the channel.
+     * Pops an element from the channel.
+     *
+     * @tparam Type The type of the elements.
      */
-    template <typename Q>
-    friend void operator<<(Q&, Channel<Q>&);
+    template <typename Type>
+    friend void operator<<(Type&, Channel<Type>&);
 
     /**
      * Returns the number of elements in the channel.
