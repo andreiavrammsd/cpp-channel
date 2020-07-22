@@ -5,8 +5,8 @@ constexpr Channel<T>::Channel(const size_type capacity) : cap{capacity}
 {
 }
 
-template <typename Q>
-void operator>>(const Q& in, Channel<Q>& ch)
+template <typename T>
+void operator>>(const T& in, Channel<T>& ch)
 {
     std::unique_lock<std::mutex> lock{ch.mtx};
 
@@ -19,8 +19,8 @@ void operator>>(const Q& in, Channel<Q>& ch)
     ch.cnd.notify_one();
 }
 
-template <typename Q>
-void operator>>(Q&& in, Channel<Q>& ch)
+template <typename T>
+void operator>>(T&& in, Channel<T>& ch)
 {
     std::unique_lock<std::mutex> lock{ch.mtx};
 
@@ -28,13 +28,13 @@ void operator>>(Q&& in, Channel<Q>& ch)
         ch.cnd.wait(lock, [&ch]() { return ch.queue.size() < ch.cap; });
     }
 
-    ch.queue.push(std::forward<Q>(in));
+    ch.queue.push(std::forward<T>(in));
 
     ch.cnd.notify_one();
 }
 
-template <typename Q>
-void operator<<(Q& out, Channel<Q>& ch)
+template <typename T>
+void operator<<(T& out, Channel<T>& ch)
 {
     std::unique_lock<std::mutex> lock{ch.mtx};
     ch.cnd.wait(lock, [&ch] { return ch.queue.size() > 0; });
