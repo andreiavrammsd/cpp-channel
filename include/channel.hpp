@@ -17,7 +17,7 @@
 #endif
 
 /**
- *  @brief A container for sharing elements between threads in a thread-safe way.
+ *  @brief Thread-safe container for sharing data between threads.
  *
  *  Implements a blocking input iterator.
  *
