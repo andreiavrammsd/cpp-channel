@@ -19,12 +19,12 @@ class BlockingIterator {
     /**
      * Advances to next element in the channel.
      */
-    BlockingIterator<Channel> operator++() { return *this; }
+    BlockingIterator<Channel> operator++() const noexcept { return *this; }
 
     /**
      * Returns an element from the channel.
      */
-    value_type operator*()
+    value_type operator*() const
     {
         value_type value{};
         value << ch;
@@ -35,7 +35,7 @@ class BlockingIterator {
     /**
      * Makes iteration infinite.
      */
-    bool operator!=(BlockingIterator<Channel>) { return true; }
+    bool operator!=(BlockingIterator<Channel>) const noexcept { return true; }
 
    private:
     Channel& ch;
