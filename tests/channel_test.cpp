@@ -6,10 +6,7 @@
 
 #include "gtest/gtest.h"
 
-class ChannelTest : public ::testing::Test {
-};
-
-TEST_F(ChannelTest, PushAndFetch)
+TEST(ChannelTest, PushAndFetch)
 {
     Channel<int> channel;
 
@@ -26,7 +23,7 @@ TEST_F(ChannelTest, PushAndFetch)
     EXPECT_EQ(2, out);
 }
 
-TEST_F(ChannelTest, size)
+TEST(ChannelTest, size)
 {
     Channel<int> channel;
     EXPECT_EQ(0, channel.size());
@@ -39,7 +36,7 @@ TEST_F(ChannelTest, size)
     EXPECT_EQ(0, channel.size());
 }
 
-TEST_F(ChannelTest, empty)
+TEST(ChannelTest, empty)
 {
     Channel<int> channel;
     EXPECT_TRUE(channel.empty());
@@ -52,7 +49,7 @@ TEST_F(ChannelTest, empty)
     EXPECT_TRUE(channel.empty());
 }
 
-TEST_F(ChannelTest, close)
+TEST(ChannelTest, close)
 {
     Channel<int> channel;
     EXPECT_FALSE(channel.closed());
@@ -72,7 +69,7 @@ TEST_F(ChannelTest, close)
     EXPECT_THROW(std::move(in) >> channel, ClosedChannel);
 }
 
-TEST_F(ChannelTest, Iterator)
+TEST(ChannelTest, Iterator)
 {
     Channel<int> channel;
 
@@ -85,7 +82,7 @@ TEST_F(ChannelTest, Iterator)
     }
 }
 
-TEST_F(ChannelTest, Multithreading)
+TEST(ChannelTest, Multithreading)
 {
     const int numbers = 100000;
     const long long expected = 5000050000;

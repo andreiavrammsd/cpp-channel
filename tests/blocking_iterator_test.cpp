@@ -3,10 +3,7 @@
 #include "channel.hpp"
 #include "gtest/gtest.h"
 
-class ChannelIteratorTest : public ::testing::Test {
-};
-
-TEST_F(ChannelIteratorTest, Dereference)
+TEST(ChannelIteratorTest, Dereference)
 {
     Channel<int> channel;
     BlockingIterator<Channel<int>> it(channel);
@@ -20,7 +17,7 @@ TEST_F(ChannelIteratorTest, Dereference)
     EXPECT_EQ(2, *it);
 }
 
-TEST_F(ChannelIteratorTest, NotEqual)
+TEST(ChannelIteratorTest, NotEqual)
 {
     Channel<int> channel;
     BlockingIterator<Channel<int>> it(channel);
