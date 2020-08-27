@@ -11,4 +11,3 @@ script:
   - make channel_test11 && ./tests/channel_test11
   - make channel_test14 && ./tests/channel_test14
   - make channel_test17 && ./tests/channel_test17
-  - make blocking_iterator_test && ./tests/blocking_iterator_test
