@@ -59,13 +59,13 @@ void operator<<(T& out, Channel<T>& ch)
 }
 
 template <typename T>
-constexpr typename Channel<T>::size_type Channel<T>::size() const
+constexpr typename Channel<T>::size_type Channel<T>::size() const noexcept
 {
     return queue.size();
 }
 
 template <typename T>
-constexpr bool Channel<T>::empty() const
+constexpr bool Channel<T>::empty() const noexcept
 {
     return queue.empty();
 }

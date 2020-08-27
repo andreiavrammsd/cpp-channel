@@ -77,12 +77,12 @@ class Channel {
     /**
      * Returns the number of elements in the channel.
      */
-    NODISCARD inline size_type constexpr size() const;
+    NODISCARD inline size_type constexpr size() const noexcept;
 
     /**
      * Returns true if there are no elements in channel.
      */
-    NODISCARD inline bool constexpr empty() const;
+    NODISCARD inline bool constexpr empty() const noexcept;
 
     /**
      * Closes the channel.
