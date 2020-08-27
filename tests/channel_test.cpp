@@ -52,6 +52,26 @@ TEST_F(ChannelTest, empty)
     EXPECT_TRUE(channel.empty());
 }
 
+TEST_F(ChannelTest, close)
+{
+    Channel<int> channel;
+    EXPECT_FALSE(channel.closed());
+
+    int in = 1;
+    in >> channel;
+
+    channel.close();
+    EXPECT_TRUE(channel.closed());
+
+    int out = 0;
+    out << channel;
+    EXPECT_EQ(1, out);
+    EXPECT_NO_THROW(out << channel);
+
+    EXPECT_THROW(in >> channel, ClosedChannel);
+    EXPECT_THROW(std::move(in) >> channel, ClosedChannel);
+}
+
 TEST_F(ChannelTest, Iterator)
 {
     Channel<int> channel;

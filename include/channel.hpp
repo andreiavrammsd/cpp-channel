@@ -3,6 +3,7 @@
 #ifndef CHANNEL_HPP_
 #define CHANNEL_HPP_
 
+#include <atomic>
 #include <condition_variable>
 #include <cstdlib>
 #include <mutex>
@@ -15,6 +16,14 @@
 #else
 #define NODISCARD
 #endif
+
+/**
+ *  @brief Exception throw if trying to write on closed channel.
+ */
+class ClosedChannel : public std::runtime_error {
+   public:
+    explicit ClosedChannel(const char* msg) : std::runtime_error(msg) {}
+};
 
 /**
  *  @brief Thread-safe container for sharing data between threads.
@@ -41,6 +50,8 @@ class Channel {
      * Pushes an element into the channel by copy.
      *
      * @tparam Type The type of the elements.
+     *
+     * @throws ClosedChannel if channel is closed.
      */
     template <typename Type>
     friend void operator>>(const Type&, Channel<Type>&);
@@ -49,6 +60,8 @@ class Channel {
      * Allows pushing an element into the channel by move.
      *
      * @tparam Type The type of the elements.
+     *
+     * @throws ClosedChannel if channel is closed.
      */
     template <typename Type>
     friend void operator>>(Type&&, Channel<Type>&);
@@ -72,6 +85,16 @@ class Channel {
     NODISCARD bool constexpr empty() const;
 
     /**
+     * Closes the channel.
+     */
+    inline void close() noexcept;
+
+    /**
+     * Returns true if the channel is closed.
+     */
+    NODISCARD inline bool closed() const noexcept;
+
+    /**
      * Iterator
      */
     iterator begin() noexcept;
@@ -91,6 +114,7 @@ class Channel {
     std::queue<T> queue;
     std::mutex mtx;
     std::condition_variable cnd;
+    std::atomic<bool> is_closed;
 };
 
 #include "channel.cpp"
