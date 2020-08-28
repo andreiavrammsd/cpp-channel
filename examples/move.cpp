@@ -38,8 +38,7 @@ int main()
     auto in1 = Data{1};
     in1 >> ch;
 
-    auto in2 = Data{2};
-    std::move(in2) >> ch;
+    Data{2} >> ch;
 
     auto in3 = Data{3};
     std::move(in3) >> ch;
