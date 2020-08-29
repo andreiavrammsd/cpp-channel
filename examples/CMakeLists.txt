@@ -7,3 +7,6 @@ add_executable(example_move move.cpp)
 
 add_executable(example_multithreading multithreading.cpp)
 target_link_libraries(example_multithreading pthread)
+
+add_executable(example_streaming streaming.cpp)
+target_link_libraries(example_streaming pthread)
