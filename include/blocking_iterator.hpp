@@ -35,9 +35,9 @@ class BlockingIterator {
     }
 
     /**
-     * Makes iteration infinite.
+     * Makes iteration continue until the channel is closed and empty.
      */
-    bool operator!=(BlockingIterator<Channel>) const noexcept { return true; }
+    bool operator!=(BlockingIterator<Channel>) const noexcept { return !(ch.closed() && ch.empty()); }
 
    private:
     Channel& ch;
