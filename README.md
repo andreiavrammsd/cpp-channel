@@ -12,6 +12,9 @@ Tested with GCC and Clang.
 * C++11/14/17
 * CMake 3.12+
 
+## Installation
+See [CMakeLists.txt](./examples/cmake-project/CMakeLists.txt) from the [CMake project example](./examples/cmake-project).
+
 ## Usage
 
 ```c++
