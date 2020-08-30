@@ -1,6 +1,8 @@
 #ifndef BLOCKING_ITERATOR_HPP_
 #define BLOCKING_ITERATOR_HPP_
 
+#include <iterator>
+
 /**
  *  @brief An iterator that block the current thread,
  *  waiting to fetch elements from the channel.
@@ -33,12 +35,21 @@ class BlockingIterator {
     }
 
     /**
-     * Makes iteration infinite.
+     * Makes iteration continue until the channel is closed and empty.
      */
-    bool operator!=(BlockingIterator<Channel>) const noexcept { return true; }
+    bool operator!=(BlockingIterator<Channel>) const noexcept { return !(ch.closed() && ch.empty()); }
 
    private:
     Channel& ch;
+};
+
+/**
+ * @brief Output iterator specialization
+ */
+template <typename T>
+struct std::iterator_traits<BlockingIterator<T>> {
+    using value_type = typename BlockingIterator<T>::value_type;
+    using iterator_category = std::output_iterator_tag;
 };
 
 #endif  // BLOCKING_ITERATOR_HPP_

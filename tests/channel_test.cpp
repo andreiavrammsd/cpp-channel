@@ -1,6 +1,7 @@
 #include "channel.hpp"
 
 #include <atomic>
+#include <string>
 #include <thread>
 #include <vector>
 
@@ -21,6 +22,23 @@ TEST(ChannelTest, PushAndFetch)
 
     out << channel;
     EXPECT_EQ(2, out);
+}
+
+TEST(ChannelTest, PushByMoveAndFetch)
+{
+    Channel<std::string> channel;
+
+    std::string in = "abc";
+    std::move(in) >> channel;
+
+    std::string{"def"} >> channel;
+
+    std::string out;
+    out << channel;
+    EXPECT_EQ("abc", out);
+
+    out << channel;
+    EXPECT_EQ("def", out);
 }
 
 TEST(ChannelTest, size)
