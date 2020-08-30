@@ -17,7 +17,7 @@ Tested with GCC and Clang.
 ```c++
 #include <cassert>
 
-#include "channel.h"
+#include "channel.hpp"
 
 int main() {
     Channel<int> channel; // unbuffered
@@ -36,7 +36,7 @@ int main() {
 ```
 
 ```c++
-#include "channel.h"
+#include "channel.hpp"
 
 int main() {
     Channel<int> channel{2}; // buffered
@@ -51,7 +51,7 @@ int main() {
 ```
 
 ```c++
-#include "channel.h"
+#include "channel.hpp"
 
 int main() {
     Channel<int> channel{2}; // buffered
@@ -73,7 +73,7 @@ int main() {
 ```c++
 #include <iostream>
 
-#include "channel.h"
+#include "channel.hpp"
 
 int main() {
     Channel<int> channel;
