@@ -94,3 +94,9 @@ int main() {
 ```
 
 See [examples](examples).
+
+<br>
+
+Developed with [CLion](https://www.jetbrains.com/?from=serializer)
+
+<a href="https://www.jetbrains.com/?from=serializer">![JetBrains](jetbrains.svg)</a>
