@@ -38,10 +38,6 @@ int main()
     // When the channel is closed and empty, the iteration will end
     auto write = [](msd::channel<int>& ch, int ms) {
         for (auto out : ch) {
-            if (ch.closed() && ch.empty()) {
-                break;
-            }
-
             std::cout << "out: " << out << "\n";
             std::this_thread::sleep_for(std::chrono::milliseconds{ms});
         }

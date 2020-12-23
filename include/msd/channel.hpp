@@ -118,6 +118,9 @@ class channel {
     std::mutex mtx;
     std::condition_variable cnd;
     std::atomic<bool> is_closed;
+
+    inline void waitBeforeRead();
+    friend class BlockingIterator<Channel>;
 };
 
 #include "channel_impl.hpp"
