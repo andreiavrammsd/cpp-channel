@@ -1,10 +1,14 @@
 # Channel
 
-Thread-safe container for sharing data between threads.
+### Thread-safe container for sharing data between threads.
 
-Use stream operators to push (>>) and fetch (<<) items. Range-based for loop supported.
-
-Tested with GCC and Clang. 
+* Thread-safe push and fetch.
+* Use stream operators to push (>>) and fetch (<<) items.
+* Blocking (forever waiting to fetch).
+* Range-based for loop supported.
+* Close to prevent pushing and stop waiting to fetch.
+* Integrates well with STL algorithms. Eg: std::move(ch.begin(), ch.end(), ...).
+* Tested with GCC and Clang.
 
 ## Requirements
 * C++11/14/17
