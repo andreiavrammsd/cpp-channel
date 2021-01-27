@@ -1,7 +1,11 @@
-#ifndef BLOCKING_ITERATOR_HPP_
-#define BLOCKING_ITERATOR_HPP_
+// Copyright (C) 2021 Andrei Avram
+
+#ifndef MSD_CHANNEL_BLOCKING_ITERATOR_HPP_
+#define MSD_CHANNEL_BLOCKING_ITERATOR_HPP_
 
 #include <iterator>
+
+namespace msd {
 
 /**
  *  @brief An iterator that block the current thread,
@@ -43,13 +47,15 @@ class BlockingIterator {
     Channel& ch;
 };
 
+}  // namespace msd
+
 /**
  * @brief Output iterator specialization
  */
 template <typename T>
-struct std::iterator_traits<BlockingIterator<T>> {
-    using value_type = typename BlockingIterator<T>::value_type;
+struct std::iterator_traits<msd::BlockingIterator<T>> {
+    using value_type = typename msd::BlockingIterator<T>::value_type;
     using iterator_category = std::output_iterator_tag;
 };
 
-#endif  // BLOCKING_ITERATOR_HPP_
+#endif  // MSD_CHANNEL_BLOCKING_ITERATOR_HPP_

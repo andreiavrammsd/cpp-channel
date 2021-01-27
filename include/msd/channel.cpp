@@ -1,3 +1,5 @@
+// Copyright (C) 2021 Andrei Avram
+
 #include <utility>
 
 template <typename T>

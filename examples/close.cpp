@@ -1,14 +1,14 @@
 #include <future>
 #include <iostream>
 
-#include "channel.hpp"
+#include "msd/channel.hpp"
 
 int main()
 {
-    channel<int> ch{};
+    msd::channel<int> ch{};
 
     // Write data on the channel until it's closed
-    auto input = [](channel<int>& ch, int ms) {
+    auto input = [](msd::channel<int>& ch, int ms) {
         static int i = 0;
 
         while (true) {
@@ -27,7 +27,7 @@ int main()
     auto input_future = std::async(input, std::ref(ch), 10);
 
     // Close the channel after some time
-    auto timeout = [](channel<int>& ch, int ms) {
+    auto timeout = [](msd::channel<int>& ch, int ms) {
         std::this_thread::sleep_for(std::chrono::milliseconds{ms});
         ch.close();
         std::cout << "exit timeout\n";
@@ -36,7 +36,7 @@ int main()
 
     // Display all the data from the channel
     // When the channel is closed and empty, the iteration will end
-    auto write = [](channel<int>& ch, int ms) {
+    auto write = [](msd::channel<int>& ch, int ms) {
         for (auto out : ch) {
             if (ch.closed() && ch.empty()) {
                 break;

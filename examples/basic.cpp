@@ -1,10 +1,10 @@
 #include <iostream>
 
-#include "channel.hpp"
+#include "msd/channel.hpp"
 
 int main()
 {
-    channel<int> ch{10};
+    msd::channel<int> ch{10};
 
     int in;
 

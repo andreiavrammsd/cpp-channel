@@ -4,11 +4,11 @@
 #include <thread>
 #include <utility>
 
-#include "channel.hpp"
+#include "msd/channel.hpp"
 
 int main()
 {
-    using messages = channel<std::string>;
+    using messages = msd::channel<std::string>;
 
     auto threads = std::thread::hardware_concurrency();
     messages ch{threads};

@@ -3,16 +3,16 @@
 #include <thread>
 #include <utility>
 
-#include "channel.hpp"
+#include "msd/channel.hpp"
 
 int main()
 {
     auto threads = std::thread::hardware_concurrency();
 
-    Channel<long long int> ch{threads};
+    msd::channel<long long int> ch{threads};
 
     // Read
-    auto out = [](Channel<long long int>& ch, std::size_t i) {
+    auto out = [](msd::channel<long long int>& ch, std::size_t i) {
         for (auto out : ch) {
             std::cout << out << " from thread: " << i << '\n';
             std::this_thread::sleep_for(std::chrono::milliseconds(500));
@@ -25,7 +25,7 @@ int main()
     }
 
     // Write
-    auto in = [](Channel<long long int>& ch) {
+    auto in = [](msd::channel<long long int>& ch) {
         while (true) {
             static long long int i = 0;
             ++i >> ch;

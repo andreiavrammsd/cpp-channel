@@ -1,4 +1,4 @@
-#include "channel.hpp"
+#include "msd/channel.hpp"
 
 #include <atomic>
 #include <thread>
@@ -8,7 +8,7 @@
 
 TEST(ChannelTest, PushAndFetch)
 {
-    Channel<int> channel;
+    msd::Channel<int> channel;
 
     int in = 1;
     in >> channel;
@@ -25,7 +25,7 @@ TEST(ChannelTest, PushAndFetch)
 
 TEST(ChannelTest, PushByMoveAndFetch)
 {
-    Channel<std::string> channel;
+    msd::Channel<std::string> channel;
 
     std::string in = "abc";
     std::move(in) >> channel;
@@ -42,7 +42,7 @@ TEST(ChannelTest, PushByMoveAndFetch)
 
 TEST(ChannelTest, size)
 {
-    Channel<int> channel;
+    msd::Channel<int> channel;
     EXPECT_EQ(0, channel.size());
 
     int in = 1;
@@ -55,7 +55,7 @@ TEST(ChannelTest, size)
 
 TEST(ChannelTest, empty)
 {
-    Channel<int> channel;
+    msd::Channel<int> channel;
     EXPECT_TRUE(channel.empty());
 
     int in = 1;
@@ -68,7 +68,7 @@ TEST(ChannelTest, empty)
 
 TEST(ChannelTest, close)
 {
-    Channel<int> channel;
+    msd::Channel<int> channel;
     EXPECT_FALSE(channel.closed());
 
     int in = 1;
@@ -82,13 +82,13 @@ TEST(ChannelTest, close)
     EXPECT_EQ(1, out);
     EXPECT_NO_THROW(out << channel);
 
-    EXPECT_THROW(in >> channel, ClosedChannel);
-    EXPECT_THROW(std::move(in) >> channel, ClosedChannel);
+    EXPECT_THROW(in >> channel, msd::ClosedChannel);
+    EXPECT_THROW(std::move(in) >> channel, msd::ClosedChannel);
 }
 
 TEST(ChannelTest, Iterator)
 {
-    Channel<int> channel;
+    msd::Channel<int> channel;
 
     int in = 1;
     in >> channel;
@@ -105,7 +105,7 @@ TEST(ChannelTest, Multithreading)
     const long long expected = 5000050000;
     constexpr std::size_t threads_to_read_from = 100;
 
-    Channel<int> channel{10};
+    msd::Channel<int> channel{10};
 
     std::mutex mtx_read;
     std::condition_variable cond_read;

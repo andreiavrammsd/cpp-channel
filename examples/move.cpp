@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "channel.hpp"
+#include "msd/channel.hpp"
 
 struct Data {
     int i{};

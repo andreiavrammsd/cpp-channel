@@ -1,15 +1,18 @@
 // Copyright (C) 2021 Andrei Avram
 
-#ifndef CHANNEL_HPP_
-#define CHANNEL_HPP_
+#ifndef MSD_CHANNEL_HPP_
+#define MSD_CHANNEL_HPP_
 
 #include <atomic>
 #include <condition_variable>
 #include <cstdlib>
 #include <mutex>
 #include <queue>
+#include <stdexcept>
 
 #include "blocking_iterator.hpp"
+
+namespace msd {
 
 #if (__cplusplus >= 201703L || (defined(_MSVC_LANG) && _MSVC_LANG >= 201703L))
 #define NODISCARD [[nodiscard]]
@@ -125,4 +128,6 @@ class Channel {
 template <typename T>
 using channel = Channel<T>;
 
-#endif  // CHANNEL_HPP_
+}  // namespace msd
+
+#endif  // MSD_CHANNEL_HPP_
