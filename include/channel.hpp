@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Andrei Avram
+// Copyright (C) 2021 Andrei Avram
 
 #ifndef CHANNEL_HPP_
 #define CHANNEL_HPP_
