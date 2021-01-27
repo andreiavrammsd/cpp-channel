@@ -15,17 +15,17 @@ namespace msd {
  *
  *  @tparam Channel Instance of channel.
  */
-template <typename Channel>
-class BlockingIterator {
+template <typename channel>
+class blocking_iterator {
    public:
-    using value_type = typename Channel::value_type;
+    using value_type = typename channel::value_type;
 
-    explicit BlockingIterator(Channel& ch) : ch{ch} {}
+    explicit blocking_iterator(channel& ch) : ch{ch} {}
 
     /**
      * Advances to next element in the channel.
      */
-    BlockingIterator<Channel> operator++() const noexcept { return *this; }
+    blocking_iterator<channel> operator++() const noexcept { return *this; }
 
     /**
      * Returns an element from the channel.
@@ -41,10 +41,10 @@ class BlockingIterator {
     /**
      * Makes iteration continue until the channel is closed and empty.
      */
-    bool operator!=(BlockingIterator<Channel>) const noexcept { return !(ch.closed() && ch.empty()); }
+    bool operator!=(blocking_iterator<channel>) const noexcept { return !(ch.closed() && ch.empty()); }
 
    private:
-    Channel& ch;
+    channel& ch;
 };
 
 }  // namespace msd
@@ -53,8 +53,8 @@ class BlockingIterator {
  * @brief Output iterator specialization
  */
 template <typename T>
-struct std::iterator_traits<msd::BlockingIterator<T>> {
-    using value_type = typename msd::BlockingIterator<T>::value_type;
+struct std::iterator_traits<msd::blocking_iterator<T>> {
+    using value_type = typename msd::blocking_iterator<T>::value_type;
     using iterator_category = std::output_iterator_tag;
 };
 

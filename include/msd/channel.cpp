@@ -86,13 +86,13 @@ bool channel<T>::closed() const noexcept
 }
 
 template <typename T>
-BlockingIterator<channel<T>> channel<T>::begin() noexcept
+blocking_iterator<channel<T>> channel<T>::begin() noexcept
 {
-    return BlockingIterator<channel<T>>{*this};
+    return blocking_iterator<channel<T>>{*this};
 }
 
 template <typename T>
-BlockingIterator<channel<T>> channel<T>::end() noexcept
+blocking_iterator<channel<T>> channel<T>::end() noexcept
 {
-    return BlockingIterator<channel<T>>{*this};
+    return blocking_iterator<channel<T>>{*this};
 }

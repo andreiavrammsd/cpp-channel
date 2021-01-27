@@ -39,7 +39,7 @@ template <typename T>
 class channel {
    public:
     using value_type = T;
-    using iterator = BlockingIterator<channel<T>>;
+    using iterator = blocking_iterator<channel<T>>;
     using size_type = std::size_t;
 
     /**
