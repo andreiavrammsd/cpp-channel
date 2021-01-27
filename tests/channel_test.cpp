@@ -1,7 +1,6 @@
 #include "channel.hpp"
 
 #include <atomic>
-#include <string>
 #include <thread>
 #include <vector>
 
@@ -104,7 +103,7 @@ TEST(ChannelTest, Multithreading)
 {
     const int numbers = 100000;
     const long long expected = 5000050000;
-    const int threads_to_read_from = 100;
+    constexpr std::size_t threads_to_read_from = 100;
 
     Channel<int> channel{10};
 
@@ -116,7 +115,7 @@ TEST(ChannelTest, Multithreading)
 
     std::mutex mtx_wait;
     std::condition_variable cond_wait;
-    std::atomic<int> wait_counter{};
+    std::atomic<std::size_t> wait_counter{};
     wait_counter = threads_to_read_from;
 
     auto worker = [&] {
@@ -137,9 +136,8 @@ TEST(ChannelTest, Multithreading)
     };
 
     std::vector<std::thread> threads;
-    for (int i = 0; i < threads_to_read_from; ++i) {
-        auto th = std::thread{worker};
-        threads.emplace_back(std::move(th));
+    for (std::size_t i = 0; i < threads_to_read_from; ++i) {
+        threads.emplace_back(std::thread{worker});
     }
 
     // Send numbers to channel
