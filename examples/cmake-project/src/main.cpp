@@ -1,7 +1,6 @@
 #include <chrono>
 #include <iostream>
 #include <thread>
-#include <utility>
 
 #include "channel.hpp"
 
@@ -58,8 +57,7 @@ int main()
     // Multiple threads to process incoming data and send to outgoing
     std::vector<std::thread> process_threads;
     for (size_t i = 0; i < threads; i++) {
-        auto th = std::thread{Transform, std::ref(incoming), std::ref(outgoing)};
-        process_threads.push_back(std::move(th));
+        process_threads.emplace_back(Transform, std::ref(incoming), std::ref(outgoing));
     }
 
     // Join all threads
