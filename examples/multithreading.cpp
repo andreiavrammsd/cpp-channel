@@ -21,8 +21,7 @@ int main()
 
     std::vector<std::thread> reads;
     for (size_t i = 0; i < threads; i++) {
-        auto th = std::thread{out, std::ref(ch), i};
-        reads.emplace_back(std::move(th));
+        reads.emplace_back(out, std::ref(ch), i);
     }
 
     // Write
