@@ -120,7 +120,7 @@ class channel {
     std::atomic<bool> is_closed;
 
     inline void waitBeforeRead();
-    friend class BlockingIterator<Channel>;
+    friend class blocking_iterator<channel>;
 };
 
 #include "channel_impl.hpp"

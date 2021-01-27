@@ -41,7 +41,7 @@ class blocking_iterator {
     /**
      * Makes iteration continue until the channel is closed and empty.
      */
-    bool operator!=(blocking_iterator<Channel>) const
+    bool operator!=(blocking_iterator<channel>) const
     {
         ch.waitBeforeRead();
 

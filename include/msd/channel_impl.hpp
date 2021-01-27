@@ -97,7 +97,7 @@ blocking_iterator<channel<T>> channel<T>::end() noexcept
 }
 
 template <typename T>
-void Channel<T>::waitBeforeRead()
+void channel<T>::waitBeforeRead()
 {
     std::unique_lock<std::mutex> lock{mtx};
     cnd.wait(lock, [this] { return queue.size() > 0 || closed(); });

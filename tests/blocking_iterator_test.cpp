@@ -29,8 +29,8 @@ TEST(ChannelIteratorTest, NotEqualStop)
 
 TEST(ChannelIteratorTest, NotEqualContinue)
 {
-    Channel<int> channel;
-    BlockingIterator<Channel<int>> it(channel);
+    msd::channel<int> channel;
+    msd::blocking_iterator<msd::channel<int>> it(channel);
 
     1 >> channel;
 
