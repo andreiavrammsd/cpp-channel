@@ -5,8 +5,8 @@
 
 TEST(ChannelIteratorTest, Dereference)
 {
-    msd::Channel<int> channel;
-    msd::BlockingIterator<msd::Channel<int>> it(channel);
+    msd::channel<int> channel;
+    msd::BlockingIterator<msd::channel<int>> it(channel);
 
     int in = 1;
     in >> channel;
@@ -19,8 +19,8 @@ TEST(ChannelIteratorTest, Dereference)
 
 TEST(ChannelIteratorTest, NotEqual)
 {
-    msd::Channel<int> channel;
-    msd::BlockingIterator<msd::Channel<int>> it(channel);
+    msd::channel<int> channel;
+    msd::BlockingIterator<msd::channel<int>> it(channel);
 
     EXPECT_TRUE(it != it);
 }

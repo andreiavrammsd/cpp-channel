@@ -8,7 +8,7 @@
 
 TEST(ChannelTest, PushAndFetch)
 {
-    msd::Channel<int> channel;
+    msd::channel<int> channel;
 
     int in = 1;
     in >> channel;
@@ -25,7 +25,7 @@ TEST(ChannelTest, PushAndFetch)
 
 TEST(ChannelTest, PushByMoveAndFetch)
 {
-    msd::Channel<std::string> channel;
+    msd::channel<std::string> channel;
 
     std::string in = "abc";
     std::move(in) >> channel;
@@ -42,7 +42,7 @@ TEST(ChannelTest, PushByMoveAndFetch)
 
 TEST(ChannelTest, size)
 {
-    msd::Channel<int> channel;
+    msd::channel<int> channel;
     EXPECT_EQ(0, channel.size());
 
     int in = 1;
@@ -55,7 +55,7 @@ TEST(ChannelTest, size)
 
 TEST(ChannelTest, empty)
 {
-    msd::Channel<int> channel;
+    msd::channel<int> channel;
     EXPECT_TRUE(channel.empty());
 
     int in = 1;
@@ -68,7 +68,7 @@ TEST(ChannelTest, empty)
 
 TEST(ChannelTest, close)
 {
-    msd::Channel<int> channel;
+    msd::channel<int> channel;
     EXPECT_FALSE(channel.closed());
 
     int in = 1;
@@ -88,7 +88,7 @@ TEST(ChannelTest, close)
 
 TEST(ChannelTest, Iterator)
 {
-    msd::Channel<int> channel;
+    msd::channel<int> channel;
 
     int in = 1;
     in >> channel;
@@ -105,7 +105,7 @@ TEST(ChannelTest, Multithreading)
     const long long expected = 5000050000;
     constexpr std::size_t threads_to_read_from = 100;
 
-    msd::Channel<int> channel{10};
+    msd::channel<int> channel{10};
 
     std::mutex mtx_read;
     std::condition_variable cond_read;

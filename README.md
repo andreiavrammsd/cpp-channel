@@ -1,7 +1,5 @@
 # Channel
 
-**Not tested in production**
-
 Thread-safe container for sharing data between threads.
 
 Use stream operators to push (>>) and fetch (<<) items. Range-based for loop supported.
@@ -20,74 +18,74 @@ See [CMakeLists.txt](./examples/cmake-project/CMakeLists.txt) from the [CMake pr
 ```c++
 #include <cassert>
 
-#include "channel.hpp"
+#include "msd/channel.hpp"
 
 int main() {
-    Channel<int> channel; // unbuffered
+    msd::channel<int> chan; // unbuffered
 
     int in = 1;
     int out = 0;
 
     // Send to channel
-    in >> channel;
+    in >> chan;
 
     // Read from channel
-    out << channel;
+    out << chan;
 
     assert(out == 1);
 }
 ```
 
 ```c++
-#include "channel.hpp"
+#include "msd/channel.hpp"
 
 int main() {
-    Channel<int> channel{2}; // buffered
+    msd::channel<int> chan{2}; // buffered
 
     int in = 1;
 
     // Send to channel
-    in >> channel;
-    in >> channel;
-    in >> channel; // blocking because capacity is 2 (and no one reads from channel)
+    in >> chan;
+    in >> chan;
+    in >> chan; // blocking because capacity is 2 (and no one reads from channel)
 }
 ```
 
 ```c++
-#include "channel.hpp"
+#include "msd/channel.hpp"
 
 int main() {
-    Channel<int> channel{2}; // buffered
+    msd::channel<int> chan{2}; // buffered
 
     int in = 1;
     int out = 0;
 
     // Send to channel
-    in >> channel;
-    in >> channel;
+    in >> chan;
+    in >> chan;
 
     // Read from channel
-    out << channel;
-    out << channel;
-    out << channel; // blocking because channel is empty (and no one writes on it)
+    out << chan;
+    out << chan;
+    out << chan; // blocking because channel is empty (and no one writes on it)
 }
 ```
 
 ```c++
 #include <iostream>
 
-#include "channel.hpp"
+#include "msd/channel.hpp"
 
 int main() {
-    Channel<int> channel;
+    msd::channel<int> chan;
 
     int in1 = 1;
-    in1 >> channel;
+    in1 >> chan;
 
     int in2 = 2;
-    in2 >> channel;
+    in2 >> chan;
 
-    for (const auto out : channel) {  // blocking: forever waiting for channel items
+    for (const auto out : chan) {  // blocking: forever waiting for channel items
         std::cout << out << '\n';
     }
 }

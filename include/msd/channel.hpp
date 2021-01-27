@@ -36,10 +36,10 @@ class ClosedChannel : public std::runtime_error {
  *  @tparam T The type of the elements.
  */
 template <typename T>
-class Channel {
+class channel {
    public:
     using value_type = T;
-    using iterator = BlockingIterator<Channel<T>>;
+    using iterator = BlockingIterator<channel<T>>;
     using size_type = std::size_t;
 
     /**
@@ -47,7 +47,7 @@ class Channel {
      *
      * @param capacity Number of elements the channel can store before blocking.
      */
-    explicit constexpr Channel(size_type capacity = 0);
+    explicit constexpr channel(size_type capacity = 0);
 
     /**
      * Pushes an element into the channel by copy.
@@ -57,7 +57,7 @@ class Channel {
      * @throws ClosedChannel if channel is closed.
      */
     template <typename Type>
-    friend void operator>>(const Type&, Channel<Type>&);
+    friend void operator>>(const Type&, channel<Type>&);
 
     /**
      * Allows pushing an element into the channel by move.
@@ -67,7 +67,7 @@ class Channel {
      * @throws ClosedChannel if channel is closed.
      */
     template <typename Type>
-    friend void operator>>(Type&&, Channel<Type>&);
+    friend void operator>>(Type&&, channel<Type>&);
 
     /**
      * Pops an element from the channel.
@@ -75,7 +75,7 @@ class Channel {
      * @tparam Type The type of the elements.
      */
     template <typename Type>
-    friend void operator<<(Type&, Channel<Type>&);
+    friend void operator<<(Type&, channel<Type>&);
 
     /**
      * Returns the number of elements in the channel.
@@ -106,11 +106,11 @@ class Channel {
     /**
      * Channel cannot be copied or moved.
      */
-    Channel(const Channel&) = delete;
-    Channel& operator=(const Channel&) = delete;
-    Channel(Channel&&) = delete;
-    Channel& operator=(Channel&&) = delete;
-    virtual ~Channel() = default;
+    channel(const channel&) = delete;
+    channel& operator=(const channel&) = delete;
+    channel(channel&&) = delete;
+    channel& operator=(channel&&) = delete;
+    virtual ~channel() = default;
 
    private:
     const size_type cap;
@@ -121,12 +121,6 @@ class Channel {
 };
 
 #include "channel.cpp"
-
-/**
- * @brief Alias for STD-like container usage
- */
-template <typename T>
-using channel = Channel<T>;
 
 }  // namespace msd
 

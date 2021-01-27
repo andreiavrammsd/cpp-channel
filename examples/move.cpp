@@ -33,7 +33,7 @@ struct Data {
 
 int main()
 {
-    Channel<Data> ch{10};
+    msd::channel<Data> ch{10};
 
     auto in1 = Data{1};
     in1 >> ch;
