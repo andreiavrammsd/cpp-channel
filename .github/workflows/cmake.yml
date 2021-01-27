@@ -41,7 +41,7 @@ jobs:
         working-directory: ${{github.workspace}}/build
         shell: bash
         # Execute the build.  You can specify a specific target with "--target <NAME>"
-        run: cmake --build . --config $BUILD_TYPE
+        run: cmake --build . --config $BUILD_TYPE --target channel_test11 channel_test14 channel_test17
 
       - name: Test
         working-directory: ${{github.workspace}}/build
