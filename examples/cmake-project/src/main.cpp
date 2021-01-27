@@ -2,10 +2,12 @@
 #include <iostream>
 #include <thread>
 
-#include "channel.hpp"
+#include "msd/channel.hpp"
+
+using chan = msd::channel<int>;
 
 // Continuously write input data on the incoming channel
-[[noreturn]] void GetIncoming(channel<int>& incoming)
+[[noreturn]] void GetIncoming(chan& incoming)
 {
     while (true) {
         static int i = 0;
@@ -21,7 +23,7 @@ int Add(int in, int value)
 }
 
 // Read data from the incoming channel, process it, then send it on the outgoing channel
-void Transform(channel<int>& incoming, channel<int>& outgoing)
+void Transform(chan& incoming, chan& outgoing)
 {
     for (auto in : incoming) {
         auto result = Add(in, 2);
@@ -30,7 +32,7 @@ void Transform(channel<int>& incoming, channel<int>& outgoing)
 }
 
 // Read result of processing from the outgoing channel and save it
-void WriteOutgoing(channel<int>& outgoing)
+void WriteOutgoing(chan& outgoing)
 {
     for (auto out : outgoing) {
         std::cout << out << '\n';
@@ -43,10 +45,10 @@ int main()
     auto threads = std::thread::hardware_concurrency();
 
     // Data from outside the app is received on the incoming channel
-    channel<int> incoming{threads};
+    chan incoming{threads};
 
     // The final result will be sent on the outgoing channel to be saved somewhere
-    channel<int> outgoing;
+    chan outgoing;
 
     // One thread for incoming data
     auto incoming_thread = std::thread{GetIncoming, std::ref(incoming)};
