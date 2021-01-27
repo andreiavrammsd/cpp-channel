@@ -1,12 +1,12 @@
-#include "blocking_iterator.hpp"
+#include "msd/blocking_iterator.hpp"
 
-#include "channel.hpp"
 #include "gtest/gtest.h"
+#include "msd/channel.hpp"
 
 TEST(ChannelIteratorTest, Dereference)
 {
-    Channel<int> channel;
-    BlockingIterator<Channel<int>> it(channel);
+    msd::channel<int> channel;
+    msd::blocking_iterator<msd::channel<int>> it(channel);
 
     int in = 1;
     in >> channel;
@@ -19,8 +19,8 @@ TEST(ChannelIteratorTest, Dereference)
 
 TEST(ChannelIteratorTest, NotEqual)
 {
-    Channel<int> channel;
-    BlockingIterator<Channel<int>> it(channel);
+    msd::channel<int> channel;
+    msd::blocking_iterator<msd::channel<int>> it(channel);
 
     EXPECT_TRUE(it != it);
 }

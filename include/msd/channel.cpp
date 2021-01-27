@@ -1,12 +1,14 @@
+// Copyright (C) 2021 Andrei Avram
+
 #include <utility>
 
 template <typename T>
-constexpr Channel<T>::Channel(const size_type capacity) : cap{capacity}, is_closed{false}
+constexpr channel<T>::channel(const size_type capacity) : cap{capacity}, is_closed{false}
 {
 }
 
 template <typename T>
-void operator>>(const T& in, Channel<T>& ch)
+void operator>>(const T& in, channel<T>& ch)
 {
     if (ch.closed()) {
         throw ClosedChannel{"cannot write on closed channel"};
@@ -24,7 +26,7 @@ void operator>>(const T& in, Channel<T>& ch)
 }
 
 template <typename T>
-void operator>>(T&& in, Channel<T>& ch)
+void operator>>(T&& in, channel<T>& ch)
 {
     if (ch.closed()) {
         throw ClosedChannel{"cannot write on closed channel"};
@@ -42,7 +44,7 @@ void operator>>(T&& in, Channel<T>& ch)
 }
 
 template <typename T>
-void operator<<(T& out, Channel<T>& ch)
+void operator<<(T& out, channel<T>& ch)
 {
     if (ch.closed() && ch.empty()) {
         return;
@@ -59,38 +61,38 @@ void operator<<(T& out, Channel<T>& ch)
 }
 
 template <typename T>
-constexpr typename Channel<T>::size_type Channel<T>::size() const noexcept
+constexpr typename channel<T>::size_type channel<T>::size() const noexcept
 {
     return queue.size();
 }
 
 template <typename T>
-constexpr bool Channel<T>::empty() const noexcept
+constexpr bool channel<T>::empty() const noexcept
 {
     return queue.empty();
 }
 
 template <typename T>
-void Channel<T>::close() noexcept
+void channel<T>::close() noexcept
 {
     cnd.notify_one();
     is_closed.store(true);
 }
 
 template <typename T>
-bool Channel<T>::closed() const noexcept
+bool channel<T>::closed() const noexcept
 {
     return is_closed.load();
 }
 
 template <typename T>
-BlockingIterator<Channel<T>> Channel<T>::begin() noexcept
+blocking_iterator<channel<T>> channel<T>::begin() noexcept
 {
-    return BlockingIterator<Channel<T>>{*this};
+    return blocking_iterator<channel<T>>{*this};
 }
 
 template <typename T>
-BlockingIterator<Channel<T>> Channel<T>::end() noexcept
+blocking_iterator<channel<T>> channel<T>::end() noexcept
 {
-    return BlockingIterator<Channel<T>>{*this};
+    return blocking_iterator<channel<T>>{*this};
 }

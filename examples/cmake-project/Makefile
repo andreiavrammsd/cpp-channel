@@ -10,8 +10,7 @@ run:
 	$(BUILD_PATH)/cmake-project
 
 release:
-	CMAKE BUILD_TYPE=release
+	make BUILD_TYPE=release
 
 clean:
 	@rm -rf $(BUILD_PATH)
-
