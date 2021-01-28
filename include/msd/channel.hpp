@@ -120,7 +120,7 @@ class channel {
     std::atomic<bool> is_closed;
 };
 
-#include "channel.cpp"
+#include "channel_impl.hpp"
 
 }  // namespace msd
 
