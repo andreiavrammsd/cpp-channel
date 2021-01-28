@@ -1,5 +1,7 @@
 # Channel
 
+[![build](https://github.com/andreiavrammsd/cpp-channel/workflows/build/badge.svg)](https://github.com/andreiavrammsd/cpp-channel/actions)
+
 ### Thread-safe container for sharing data between threads.
 
 * Thread-safe push and fetch.
