@@ -21,11 +21,11 @@ namespace msd {
 #endif
 
 /**
- *  @brief Exception throw if trying to write on closed channel.
+ *  @brief Exception thrown if trying to write on closed channel.
  */
-class ClosedChannel : public std::runtime_error {
+class closed_channel : public std::runtime_error {
    public:
-    explicit ClosedChannel(const char* msg) : std::runtime_error(msg) {}
+    explicit closed_channel(const char* msg) : std::runtime_error(msg) {}
 };
 
 /**
@@ -54,7 +54,7 @@ class channel {
      *
      * @tparam Type The type of the elements.
      *
-     * @throws ClosedChannel if channel is closed.
+     * @throws closed_channel if channel is closed.
      */
     template <typename Type>
     friend void operator>>(const Type&, channel<Type>&);
@@ -64,7 +64,7 @@ class channel {
      *
      * @tparam Type The type of the elements.
      *
-     * @throws ClosedChannel if channel is closed.
+     * @throws closed_channel if channel is closed.
      */
     template <typename Type>
     friend void operator>>(Type&&, channel<Type>&);
@@ -120,7 +120,7 @@ class channel {
     std::atomic<bool> is_closed;
 };
 
-#include "channel.cpp"
+#include "channel_impl.hpp"
 
 }  // namespace msd
 
