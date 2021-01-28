@@ -11,7 +11,7 @@ template <typename T>
 void operator>>(const T& in, channel<T>& ch)
 {
     if (ch.closed()) {
-        throw ClosedChannel{"cannot write on closed channel"};
+        throw closed_channel{"cannot write on closed channel"};
     }
 
     std::unique_lock<std::mutex> lock{ch.mtx};
@@ -29,7 +29,7 @@ template <typename T>
 void operator>>(T&& in, channel<T>& ch)
 {
     if (ch.closed()) {
-        throw ClosedChannel{"cannot write on closed channel"};
+        throw closed_channel{"cannot write on closed channel"};
     }
 
     std::unique_lock<std::mutex> lock{ch.mtx};

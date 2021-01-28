@@ -82,8 +82,8 @@ TEST(ChannelTest, close)
     EXPECT_EQ(1, out);
     EXPECT_NO_THROW(out << channel);
 
-    EXPECT_THROW(in >> channel, msd::ClosedChannel);
-    EXPECT_THROW(std::move(in) >> channel, msd::ClosedChannel);
+    EXPECT_THROW(in >> channel, msd::closed_channel);
+    EXPECT_THROW(std::move(in) >> channel, msd::closed_channel);
 }
 
 TEST(ChannelTest, Iterator)
