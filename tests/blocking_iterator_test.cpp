@@ -17,10 +17,22 @@ TEST(ChannelIteratorTest, Dereference)
     EXPECT_EQ(2, *it);
 }
 
-TEST(ChannelIteratorTest, NotEqual)
+TEST(ChannelIteratorTest, NotEqualStop)
 {
     msd::channel<int> channel;
     msd::blocking_iterator<msd::channel<int>> it(channel);
+
+    channel.close();
+
+    EXPECT_FALSE(it != it);
+}
+
+TEST(ChannelIteratorTest, NotEqualContinue)
+{
+    msd::channel<int> channel;
+    msd::blocking_iterator<msd::channel<int>> it(channel);
+
+    1 >> channel;
 
     EXPECT_TRUE(it != it);
 }

@@ -41,7 +41,12 @@ class blocking_iterator {
     /**
      * Makes iteration continue until the channel is closed and empty.
      */
-    bool operator!=(blocking_iterator<channel>) const noexcept { return !(ch.closed() && ch.empty()); }
+    bool operator!=(blocking_iterator<channel>) const
+    {
+        ch.waitBeforeRead();
+
+        return !(ch.closed() && ch.empty());
+    }
 
    private:
     channel& ch;

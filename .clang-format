@@ -1,6 +1,6 @@
 BasedOnStyle: Google
 IndentWidth: 4
 Language: Cpp
-PointerAlignment: Right
+PointerAlignment: Left
 BreakBeforeBraces: Stroustrup
 ColumnLimit: 120
