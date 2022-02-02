@@ -2,7 +2,7 @@
 
 [![build](https://github.com/andreiavrammsd/cpp-channel/workflows/build/badge.svg)](https://github.com/andreiavrammsd/cpp-channel/actions)
 
-### Thread-safe container for sharing data between threads.
+### Thread-safe container for sharing data between threads. Header-only.
 
 * Thread-safe push and fetch.
 * Use stream operators to push (>>) and fetch (<<) items.
@@ -13,11 +13,14 @@
 * Tested with GCC and Clang.
 
 ## Requirements
-* C++11/14/17
-* CMake 3.12+
+
+* C++11 or newer
 
 ## Installation
-See [CMakeLists.txt](./examples/cmake-project/CMakeLists.txt) from the [CMake project example](./examples/cmake-project).
+
+Copy the [include](./include) directory to your project and add it to your include path. Or
+see [CMakeLists.txt](./examples/cmake-project/CMakeLists.txt) from the [CMake project example](./examples/cmake-project)
+.
 
 ## Usage
 
