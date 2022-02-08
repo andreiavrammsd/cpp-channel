@@ -1,4 +1,4 @@
-// Copyright (C) 2021 Andrei Avram
+// Copyright (C) 2022 Andrei Avram
 
 #ifndef MSD_CHANNEL_BLOCKING_ITERATOR_HPP_
 #define MSD_CHANNEL_BLOCKING_ITERATOR_HPP_
