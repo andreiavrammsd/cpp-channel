@@ -1,6 +1,7 @@
 #include "msd/channel.hpp"
 
 #include <atomic>
+#include <string>
 #include <thread>
 #include <vector>
 
