@@ -8,12 +8,12 @@
 namespace msd {
 
 /**
- *  @brief An iterator that block the current thread,
- *  waiting to fetch elements from the channel.
+ * @brief An iterator that block the current thread,
+ * waiting to fetch elements from the channel.
  *
- *  Used to implement channel range-based for loop.
+ * Used to implement channel range-based for loop.
  *
- *  @tparam Channel Instance of channel.
+ * @tparam Channel Instance of channel.
  */
 template <typename channel>
 class blocking_iterator {
