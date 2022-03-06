@@ -16,8 +16,8 @@ jobs:
       matrix:
         config:
           - {
-            name: "Ubuntu_Latest_GCC",
-            os: ubuntu-latest,
+            name: "Ubuntu 18.04 GCC",
+            os: ubuntu-18.04,
             build_type: "Release",
           }
           - {
