@@ -44,11 +44,11 @@ jobs:
         working-directory: ${{github.workspace}}/build
         shell: bash
         # Execute the build.  You can specify a specific target with "--target <NAME>"
-        run: cmake --build . --config $BUILD_TYPE --target channel_test11 channel_test14 channel_test17
+        run: cmake --build . --config $BUILD_TYPE --target channel_test
 
       - name: Test
         working-directory: ${{github.workspace}}/build
         shell: bash
         # Execute tests defined by the CMake configuration.
         # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-        run: ctest -C $BUILD_TYPE --verbose -R channel_test*
+        run: ctest -C $BUILD_TYPE --verbose -R channel_test
