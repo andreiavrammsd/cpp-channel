@@ -101,8 +101,8 @@ TEST(ChannelTest, Iterator)
 
 TEST(ChannelTest, Multithreading)
 {
-    const int numbers = 100000;
-    const long long expected = 5000050000;
+    const int numbers = 10000;
+    const long long expected = 50005000;
     constexpr std::size_t threads_to_read_from = 100;
 
     msd::channel<int> channel{10};
