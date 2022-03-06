@@ -1,4 +1,4 @@
-// Copyright (C) 2021 Andrei Avram
+// Copyright (C) 2022 Andrei Avram
 
 #ifndef MSD_CHANNEL_HPP_
 #define MSD_CHANNEL_HPP_
@@ -21,7 +21,7 @@ namespace msd {
 #endif
 
 /**
- *  @brief Exception thrown if trying to write on closed channel.
+ * @brief Exception thrown if trying to write on closed channel.
  */
 class closed_channel : public std::runtime_error {
    public:
@@ -29,11 +29,11 @@ class closed_channel : public std::runtime_error {
 };
 
 /**
- *  @brief Thread-safe container for sharing data between threads.
+ * @brief Thread-safe container for sharing data between threads.
  *
- *  Implements a blocking input iterator.
+ * Implements a blocking input iterator.
  *
- *  @tparam T The type of the elements.
+ * @tparam T The type of the elements.
  */
 template <typename T>
 class channel {
@@ -72,7 +72,7 @@ class channel {
     /**
      * Pops an element from the channel.
      *
-     * @tparam Type The type of the elements.
+     * @tparam Type The type of the elements
      */
     template <typename Type>
     friend void operator<<(Type&, channel<Type>&);

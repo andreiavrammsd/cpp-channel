@@ -1,4 +1,4 @@
-// Copyright (C) 2021 Andrei Avram
+// Copyright (C) 2022 Andrei Avram
 
 #ifndef MSD_CHANNEL_BLOCKING_ITERATOR_HPP_
 #define MSD_CHANNEL_BLOCKING_ITERATOR_HPP_
@@ -8,12 +8,12 @@
 namespace msd {
 
 /**
- *  @brief An iterator that block the current thread,
- *  waiting to fetch elements from the channel.
+ * @brief An iterator that block the current thread,
+ * waiting to fetch elements from the channel.
  *
- *  Used to implement channel range-based for loop.
+ * Used to implement channel range-based for loop.
  *
- *  @tparam Channel Instance of channel.
+ * @tparam Channel Instance of channel.
  */
 template <typename channel>
 class blocking_iterator {

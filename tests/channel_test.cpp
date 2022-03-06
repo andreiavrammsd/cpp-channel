@@ -1,6 +1,7 @@
 #include "msd/channel.hpp"
 
 #include <atomic>
+#include <string>
 #include <thread>
 #include <vector>
 
@@ -12,8 +13,8 @@ TEST(ChannelTest, PushAndFetch)
 
     int in = 1;
     in >> channel;
-    in = 2;
-    in >> channel;
+
+    2 >> channel;
 
     int out;
     out << channel;
@@ -90,8 +91,7 @@ TEST(ChannelTest, Iterator)
 {
     msd::channel<int> channel;
 
-    int in = 1;
-    in >> channel;
+    1 >> channel;
 
     for (auto it = channel.begin(); it != channel.end();) {
         EXPECT_EQ(1, *it);
