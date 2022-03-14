@@ -20,7 +20,7 @@ class blocking_iterator {
    public:
     using value_type = typename channel::value_type;
 
-    explicit blocking_iterator(channel& ch) : ch{ch} {}
+    explicit blocking_iterator(channel& ch) : ch_{ch} {}
 
     /**
      * Advances to next element in the channel.
@@ -33,7 +33,7 @@ class blocking_iterator {
     value_type operator*() const
     {
         value_type value{};
-        value << ch;
+        value << ch_;
 
         return value;
     }
@@ -43,13 +43,13 @@ class blocking_iterator {
      */
     bool operator!=(blocking_iterator<channel>) const
     {
-        ch.waitBeforeRead();
+        ch_.waitBeforeRead();
 
-        return !(ch.closed() && ch.empty());
+        return !(ch_.closed() && ch_.empty());
     }
 
    private:
-    channel& ch;
+    channel& ch_;
 };
 
 }  // namespace msd
