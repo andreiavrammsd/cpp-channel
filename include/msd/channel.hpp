@@ -116,6 +116,7 @@ class channel {
     const size_type cap;
     std::queue<T> queue;
     std::mutex mtx;
+    std::mutex rmtx;
     std::condition_variable cnd;
     std::atomic<bool> is_closed;
 
