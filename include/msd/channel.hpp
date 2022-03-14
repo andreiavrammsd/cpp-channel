@@ -117,7 +117,7 @@ class channel {
     std::queue<T> queue;
     std::mutex mtx;
     std::condition_variable cnd;
-    std::atomic<bool> is_closed;
+    std::atomic<bool> is_closed{false};
 
     inline void waitBeforeRead();
     friend class blocking_iterator<channel>;

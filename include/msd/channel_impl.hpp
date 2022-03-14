@@ -3,7 +3,7 @@
 #include <utility>
 
 template <typename T>
-constexpr channel<T>::channel(const size_type capacity) : cap{capacity}, is_closed{false}
+constexpr channel<T>::channel(const size_type capacity) : cap{capacity}
 {
 }
 
