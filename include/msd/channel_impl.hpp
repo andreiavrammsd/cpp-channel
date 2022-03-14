@@ -52,7 +52,7 @@ void operator<<(T& out, channel<T>& ch)
 
     ch.waitBeforeRead();
     {
-        std::unique_lock<std::mutex> lock{ch.rmtx};
+        std::unique_lock<std::mutex> lock{ch.mtx};
         if (ch.queue.size() > 0) {
             out = std::move(ch.queue.front());
             ch.queue.pop();
