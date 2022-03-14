@@ -113,11 +113,11 @@ class channel {
     virtual ~channel() = default;
 
    private:
-    const size_type cap;
-    std::queue<T> queue;
-    std::mutex mtx;
-    std::condition_variable cnd;
-    std::atomic<bool> is_closed{false};
+    const size_type cap_;
+    std::queue<T> queue_;
+    std::mutex mtx_;
+    std::condition_variable cnd_;
+    std::atomic<bool> is_closed_{false};
 
     inline void waitBeforeRead();
     friend class blocking_iterator<channel>;
