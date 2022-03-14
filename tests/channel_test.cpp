@@ -4,9 +4,22 @@
 #include <atomic>
 #include <string>
 #include <thread>
+#include <type_traits>
 #include <vector>
 
 #include "gtest/gtest.h"
+
+TEST(ChannelTest, Traits)
+{
+    using type = int;
+    using channel = msd::channel<type>;
+    EXPECT_TRUE((std::is_same<channel::value_type, type>::value));
+
+    using iterator = msd::blocking_iterator<msd::channel<type>>;
+    EXPECT_TRUE((std::is_same<channel::iterator, iterator>::value));
+
+    EXPECT_TRUE((std::is_same<channel::size_type, std::size_t>::value));
+}
 
 TEST(ChannelTest, PushAndFetch)
 {
