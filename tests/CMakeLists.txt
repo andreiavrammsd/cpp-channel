@@ -12,8 +12,12 @@ function(package_add_test TESTNAME)
     add_executable(${TESTNAME} ${ARGN})
 
     set_target_warnings(${TESTNAME} PRIVATE)
-    target_link_libraries(${TESTNAME} gtest gtest_main pthread -lgcov -lubsan)
-    target_compile_options(${TESTNAME} PRIVATE --coverage -fsanitize=undefined)
+    target_link_libraries(${TESTNAME} gtest gtest_main pthread)
+
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        target_link_libraries(${TESTNAME} -lgcov -lubsan)
+        target_compile_options(${TESTNAME} PRIVATE --coverage -fsanitize=undefined)
+    endif ()
 
     add_test(NAME ${TESTNAME} COMMAND ${TESTNAME})
 endfunction()
