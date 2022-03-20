@@ -2,23 +2,23 @@
 #include "msd/channel.hpp"
 
 /**
-    Results on release build with CPU scaling disabled
+    Results on release build (GCC 10) with CPU scaling disabled
 
-    2020-07-17 17:11:32
+    2022-03-20T23:00:06+02:00
     Running channel_benchmark
-    Run on (8 X 4000 MHz CPU s)
+    Run on (8 X 3595.91 MHz CPU s)
     CPU Caches:
-      L1 Data 32K (x4)
-      L1 Instruction 32K (x4)
-      L2 Unified 256K (x4)
-      L3 Unified 8192K (x1)
-    Load Average: 2.91, 1.63, 1.07
+      L1 Data 32 KiB (x4)
+      L1 Instruction 32 KiB (x4)
+      L2 Unified 256 KiB (x4)
+      L3 Unified 8192 KiB (x1)
+    Load Average: 3.29, 2.79, 2.33
     ---------------------------------------------------------------
     Benchmark                     Time             CPU   Iterations
     ---------------------------------------------------------------
-    BM_ChannelWithInt          59.1 ns         59.1 ns     10000000
-    BM_ChannelWithString       55.8 ns         55.8 ns     11405133
-    BM_ChannelWithStruct       54.9 ns         54.9 ns     12931447
+    BM_ChannelWithInt          42.0 ns         42.0 ns     15997933
+    BM_ChannelWithString       46.3 ns         46.3 ns     15363996
+    BM_ChannelWithStruct       47.6 ns         47.6 ns     14817823
  */
 
 struct Entry {
