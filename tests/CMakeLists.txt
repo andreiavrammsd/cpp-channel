@@ -8,11 +8,15 @@ if (NOT googletest_POPULATED)
 endif ()
 
 # Test macro
-macro(package_add_test TESTNAME)
+function(package_add_test TESTNAME)
     add_executable(${TESTNAME} ${ARGN})
-    target_link_libraries(${TESTNAME} gtest gtest_main pthread)
+
+    set_target_warnings(${TESTNAME} PRIVATE)
+    target_link_libraries(${TESTNAME} gtest gtest_main pthread -lgcov -lubsan)
+    target_compile_options(${TESTNAME} PRIVATE --coverage -fsanitize=undefined)
+
     add_test(NAME ${TESTNAME} COMMAND ${TESTNAME})
-endmacro()
+endfunction()
 
 # Tests
 package_add_test(channel_test11 channel_test.cpp blocking_iterator_test.cpp)
@@ -31,3 +35,4 @@ endif ()
 
 add_executable(channel_benchmark channel_benchmark.cpp)
 target_link_libraries(channel_benchmark benchmark)
+set_target_warnings(channel_benchmark PRIVATE INTERFACE)
