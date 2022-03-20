@@ -18,9 +18,14 @@ jobs:
       matrix:
         config:
           - {
-            name: "Ubuntu 18.04 GCC",
+            name: "Ubuntu 18.04 GCC (Release)",
             os: ubuntu-18.04,
             build_type: "Release",
+          }
+          - {
+            name: "Ubuntu 18.04 GCC (Debug)",
+            os: ubuntu-18.04,
+            build_type: "Debug",
           }
           - {
             name: "macOS Latest Clang",
