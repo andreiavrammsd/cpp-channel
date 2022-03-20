@@ -74,8 +74,8 @@ constexpr bool channel<T>::empty() const noexcept
 template <typename T>
 void channel<T>::close() noexcept
 {
-    cnd_.notify_one();
     is_closed_.store(true);
+    cnd_.notify_all();
 }
 
 template <typename T>

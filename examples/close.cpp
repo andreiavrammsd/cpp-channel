@@ -44,9 +44,11 @@ int main()
 
         std::cout << "exit write\n";
     };
-    auto write_future = std::async(write, std::ref(channel), 1);
+    auto write_future1 = std::async(write, std::ref(channel), 1);
+    auto write_future2 = std::async(write, std::ref(channel), 100);
 
     input_future.wait();
     timeout_future.wait();
-    write_future.wait();
+    write_future1.wait();
+    write_future2.wait();
 }
