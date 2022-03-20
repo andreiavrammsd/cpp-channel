@@ -150,7 +150,7 @@ TEST(ChannelTest, Multithreading)
     };
 
     std::vector<std::thread> threads;
-    for (std::size_t i = 0; i < threads_to_read_from; ++i) {
+    for (std::size_t i = 0U; i < threads_to_read_from; ++i) {
         threads.emplace_back(std::thread{worker});
     }
 

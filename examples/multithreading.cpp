@@ -7,35 +7,35 @@
 
 int main()
 {
-    auto threads = std::thread::hardware_concurrency();
+    const auto threads = std::thread::hardware_concurrency();
 
-    msd::channel<long long int> ch{threads};
+    msd::channel<long long int> channel{threads};
 
     // Read
-    auto out = [](msd::channel<long long int>& ch, std::size_t i) {
-        for (auto out : ch) {
-            std::cout << out << " from thread: " << i << '\n';
+    const auto out = [](msd::channel<long long int>& ch, std::size_t i) {
+        for (auto number : ch) {
+            std::cout << number << " from thread: " << i << '\n';
             std::this_thread::sleep_for(std::chrono::milliseconds(500));
         }
     };
 
     std::vector<std::thread> reads;
-    for (size_t i = 0; i < threads; i++) {
-        reads.emplace_back(out, std::ref(ch), i);
+    for (size_t i = 0U; i < threads; ++i) {
+        reads.emplace_back(out, std::ref(channel), i);
     }
 
     // Write
-    auto in = [](msd::channel<long long int>& ch) {
+    const auto in = [](msd::channel<long long int>& ch) {
         while (true) {
             static long long int i = 0;
             ++i >> ch;
         }
     };
 
-    auto write = std::thread{in, std::ref(ch)};
+    auto write = std::thread{in, std::ref(channel)};
 
     // Wait for all threads to finish
-    for (size_t i = 0; i < threads; i++) {
+    for (size_t i = 0U; i < threads; ++i) {
         reads.at(i).join();
     }
 
