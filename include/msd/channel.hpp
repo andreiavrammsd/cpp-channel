@@ -119,7 +119,7 @@ class channel {
     std::condition_variable cnd_;
     std::atomic<bool> is_closed_{false};
 
-    inline void waitBeforeRead();
+    inline void waitBeforeRead(std::unique_lock<std::mutex>&);
     friend class blocking_iterator<channel>;
 };
 

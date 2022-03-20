@@ -50,7 +50,8 @@ void operator<<(T& out, channel<T>& ch)
         return;
     }
 
-    ch.waitBeforeRead();
+    std::unique_lock<std::mutex> lock{ch.mtx_};
+    ch.waitBeforeRead(lock);
 
     if (ch.queue_.size() > 0) {
         out = std::move(ch.queue_.front());
@@ -97,8 +98,7 @@ blocking_iterator<channel<T>> channel<T>::end() noexcept
 }
 
 template <typename T>
-void channel<T>::waitBeforeRead()
+void channel<T>::waitBeforeRead(std::unique_lock<std::mutex>& lock)
 {
-    std::unique_lock<std::mutex> lock{mtx_};
     cnd_.wait(lock, [this] { return queue_.size() > 0 || closed(); });
 }
