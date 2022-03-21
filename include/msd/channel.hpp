@@ -25,7 +25,7 @@ namespace msd {
  */
 class closed_channel : public std::runtime_error {
    public:
-    explicit closed_channel(const char* msg) : std::runtime_error(msg) {}
+    explicit closed_channel(const char* msg) : std::runtime_error{msg} {}
 };
 
 /**
