@@ -50,13 +50,16 @@ void operator<<(T& out, channel<T>& ch)
         return;
     }
 
-    std::unique_lock<std::mutex> lock{ch.mtx_};
-    ch.waitBeforeRead(lock);
+    {
+        std::unique_lock<std::mutex> lock{ch.mtx_};
+        ch.waitBeforeRead(lock);
 
-    if (ch.queue_.size() > 0) {
-        out = std::move(ch.queue_.front());
-        ch.queue_.pop();
+        if (ch.queue_.size() > 0) {
+            out = std::move(ch.queue_.front());
+            ch.queue_.pop();
+        }
     }
+
     ch.cnd_.notify_one();
 }
 
