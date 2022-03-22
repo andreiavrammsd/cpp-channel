@@ -9,6 +9,7 @@
 #include <mutex>
 #include <queue>
 #include <stdexcept>
+#include <type_traits>
 
 #include "blocking_iterator.hpp"
 
@@ -19,6 +20,14 @@ namespace msd {
 #else
 #define NODISCARD
 #endif
+
+template <typename T>
+struct remove_cvref {
+    using type = typename std::remove_cv<typename std::remove_reference<T>::type>::type;
+};
+
+template <typename T>
+using remove_cvref_t = typename remove_cvref<T>::type;
 
 /**
  * @brief Exception thrown if trying to write on closed channel.
@@ -50,24 +59,12 @@ class channel {
     explicit constexpr channel(size_type capacity = 0);
 
     /**
-     * Pushes an element into the channel by copy.
-     *
-     * @tparam Type The type of the elements.
+     * Pushes an element into the channel.
      *
      * @throws closed_channel if channel is closed.
      */
     template <typename Type>
-    friend void operator>>(const Type&, channel<Type>&);
-
-    /**
-     * Allows pushing an element into the channel by move.
-     *
-     * @tparam Type The type of the elements.
-     *
-     * @throws closed_channel if channel is closed.
-     */
-    template <typename Type>
-    friend void operator>>(Type&&, channel<Type>&);
+    friend void operator>>(Type&&, channel<remove_cvref_t<Type>>&);
 
     /**
      * Pops an element from the channel.

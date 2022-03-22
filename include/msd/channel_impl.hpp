@@ -8,25 +8,7 @@ constexpr channel<T>::channel(const size_type capacity) : cap_{capacity}
 }
 
 template <typename T>
-void operator>>(const T& in, channel<T>& ch)
-{
-    if (ch.closed()) {
-        throw closed_channel{"cannot write on closed channel"};
-    }
-
-    std::unique_lock<std::mutex> lock{ch.mtx_};
-
-    if (ch.cap_ > 0 && ch.queue_.size() == ch.cap_) {
-        ch.cnd_.wait(lock, [&ch]() { return ch.queue_.size() < ch.cap_; });
-    }
-
-    ch.queue_.push(in);
-
-    ch.cnd_.notify_one();
-}
-
-template <typename T>
-void operator>>(T&& in, channel<T>& ch)
+void operator>>(T&& in, channel<remove_cvref_t<T>>& ch)
 {
     if (ch.closed()) {
         throw closed_channel{"cannot write on closed channel"};
