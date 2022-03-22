@@ -1,6 +1,7 @@
 #include "msd/blocking_iterator.hpp"
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
+
 #include "msd/channel.hpp"
 
 TEST(ChannelIteratorTest, Traits)
