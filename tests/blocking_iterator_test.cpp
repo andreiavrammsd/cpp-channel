@@ -18,7 +18,7 @@ TEST(ChannelIteratorTest, Traits)
 TEST(ChannelIteratorTest, Dereference)
 {
     msd::channel<int> channel;
-    msd::blocking_iterator<msd::channel<int>> it(channel);
+    msd::blocking_iterator<msd::channel<int>> it{channel};
 
     int in = 1;
     in >> channel;
@@ -32,7 +32,7 @@ TEST(ChannelIteratorTest, Dereference)
 TEST(ChannelIteratorTest, NotEqualStop)
 {
     msd::channel<int> channel;
-    msd::blocking_iterator<msd::channel<int>> it(channel);
+    msd::blocking_iterator<msd::channel<int>> it{channel};
 
     channel.close();
 
@@ -42,7 +42,7 @@ TEST(ChannelIteratorTest, NotEqualStop)
 TEST(ChannelIteratorTest, NotEqualContinue)
 {
     msd::channel<int> channel;
-    msd::blocking_iterator<msd::channel<int>> it(channel);
+    msd::blocking_iterator<msd::channel<int>> it{channel};
 
     1 >> channel;
 
