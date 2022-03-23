@@ -20,7 +20,7 @@ int main()
     };
 
     std::vector<std::thread> reads;
-    for (size_t i = 0U; i < threads; ++i) {
+    for (std::size_t i = 0U; i < threads; ++i) {
         reads.emplace_back(out, std::ref(channel), i);
     }
 
@@ -35,7 +35,7 @@ int main()
     auto write = std::thread{in, std::ref(channel)};
 
     // Wait for all threads to finish
-    for (size_t i = 0U; i < threads; ++i) {
+    for (std::size_t i = 0U; i < threads; ++i) {
         reads.at(i).join();
     }
 
