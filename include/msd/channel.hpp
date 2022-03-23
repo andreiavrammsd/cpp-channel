@@ -21,6 +21,7 @@ namespace msd {
 #define NODISCARD
 #endif
 
+namespace detail {
 template <typename T>
 struct remove_cvref {
     using type = typename std::remove_cv<typename std::remove_reference<T>::type>::type;
@@ -28,6 +29,7 @@ struct remove_cvref {
 
 template <typename T>
 using remove_cvref_t = typename remove_cvref<T>::type;
+}  // namespace detail
 
 /**
  * @brief Exception thrown if trying to write on closed channel.
@@ -64,7 +66,7 @@ class channel {
      * @throws closed_channel if channel is closed.
      */
     template <typename Type>
-    friend void operator>>(Type&&, channel<remove_cvref_t<Type>>&);
+    friend void operator>>(Type&&, channel<detail::remove_cvref_t<Type>>&);
 
     /**
      * Pops an element from the channel.
