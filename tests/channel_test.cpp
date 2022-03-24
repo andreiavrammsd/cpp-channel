@@ -28,10 +28,10 @@ TEST(ChannelTest, PushAndFetch)
     int in = 1;
     in >> channel;
 
-    2 >> channel;
-
     const int cin = 3;
     cin >> channel;
+
+    2 >> channel;
 
     int out = 0;
 
@@ -39,10 +39,10 @@ TEST(ChannelTest, PushAndFetch)
     EXPECT_EQ(1, out);
 
     out << channel;
-    EXPECT_EQ(2, out);
+    EXPECT_EQ(3, out);
 
     out << channel;
-    EXPECT_EQ(3, out);
+    EXPECT_EQ(2, out);
 }
 
 TEST(ChannelTest, PushByMoveAndFetch)
