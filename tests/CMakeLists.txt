@@ -39,4 +39,4 @@ endif ()
 
 add_executable(channel_benchmark channel_benchmark.cpp)
 target_link_libraries(channel_benchmark benchmark)
-set_target_warnings(channel_benchmark PRIVATE INTERFACE)
+set_target_warnings(channel_benchmark PRIVATE)
