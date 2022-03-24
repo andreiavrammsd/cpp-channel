@@ -4,6 +4,7 @@ name: build
 on:
   push:
   pull_request:
+    types: [ opened ]
   workflow_dispatch:
   schedule:
     - cron: '0 18 1 * *'
