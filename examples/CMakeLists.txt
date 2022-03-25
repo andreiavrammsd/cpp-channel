@@ -1,12 +1,13 @@
-add_executable(example_basic basic.cpp)
+function(add_example NAME)
+    add_executable(${NAME} ${ARGN})
 
-add_executable(example_close close.cpp)
-target_link_libraries(example_close pthread)
+    set_target_warnings(${NAME} PRIVATE)
+    target_link_libraries(${NAME} -ltsan)
+    target_compile_options(${NAME} PRIVATE -fsanitize=thread)
+endfunction()
 
-add_executable(example_move move.cpp)
-
-add_executable(example_multithreading multithreading.cpp)
-target_link_libraries(example_multithreading pthread)
-
-add_executable(example_streaming streaming.cpp)
-target_link_libraries(example_streaming pthread)
+add_example(example_basic basic.cpp)
+add_example(example_close close.cpp)
+add_example(example_move move.cpp)
+add_example(example_multithreading multithreading.cpp)
+add_example(example_streaming streaming.cpp)

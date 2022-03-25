@@ -58,7 +58,7 @@ int main()
 
     // Multiple threads to process incoming data and send to outgoing
     std::vector<std::thread> process_threads;
-    for (size_t i = 0; i < threads; i++) {
+    for (std::size_t i = 0U; i < threads; ++i) {
         process_threads.emplace_back(Transform, std::ref(incoming), std::ref(outgoing));
     }
 

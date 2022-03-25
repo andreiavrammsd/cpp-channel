@@ -5,7 +5,7 @@
 
 int main()
 {
-    msd::channel<int> ch{};
+    msd::channel<int> channel{};
 
     // Write data on the channel until it's closed
     auto input = [](msd::channel<int>& ch, int ms) {
@@ -24,7 +24,7 @@ int main()
 
         std::cout << "exit input\n";
     };
-    auto input_future = std::async(input, std::ref(ch), 10);
+    auto input_future = std::async(input, std::ref(channel), 10);
 
     // Close the channel after some time
     auto timeout = [](msd::channel<int>& ch, int ms) {
@@ -32,7 +32,7 @@ int main()
         ch.close();
         std::cout << "exit timeout\n";
     };
-    auto timeout_future = std::async(timeout, std::ref(ch), 100);
+    auto timeout_future = std::async(timeout, std::ref(channel), 100);
 
     // Display all the data from the channel
     // When the channel is closed and empty, the iteration will end
@@ -44,9 +44,11 @@ int main()
 
         std::cout << "exit write\n";
     };
-    auto write_future = std::async(write, std::ref(ch), 1);
+    auto write_future1 = std::async(write, std::ref(channel), 1);
+    auto write_future2 = std::async(write, std::ref(channel), 100);
 
     input_future.wait();
     timeout_future.wait();
-    write_future.wait();
+    write_future1.wait();
+    write_future2.wait();
 }

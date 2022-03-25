@@ -1,11 +1,25 @@
 #include "msd/channel.hpp"
 
+#include <gtest/gtest.h>
+
+#include <algorithm>
 #include <atomic>
 #include <string>
 #include <thread>
+#include <type_traits>
 #include <vector>
 
-#include "gtest/gtest.h"
+TEST(ChannelTest, Traits)
+{
+    using type = int;
+    using channel = msd::channel<type>;
+    EXPECT_TRUE((std::is_same<channel::value_type, type>::value));
+
+    using iterator = msd::blocking_iterator<msd::channel<type>>;
+    EXPECT_TRUE((std::is_same<channel::iterator, iterator>::value));
+
+    EXPECT_TRUE((std::is_same<channel::size_type, std::size_t>::value));
+}
 
 TEST(ChannelTest, PushAndFetch)
 {
@@ -14,11 +28,18 @@ TEST(ChannelTest, PushAndFetch)
     int in = 1;
     in >> channel;
 
+    const int cin = 3;
+    cin >> channel;
+
     2 >> channel;
 
-    int out;
+    int out = 0;
+
     out << channel;
     EXPECT_EQ(1, out);
+
+    out << channel;
+    EXPECT_EQ(3, out);
 
     out << channel;
     EXPECT_EQ(2, out);
@@ -101,8 +122,8 @@ TEST(ChannelTest, Iterator)
 
 TEST(ChannelTest, Multithreading)
 {
-    const int numbers = 100000;
-    const long long expected = 5000050000;
+    const int numbers = 10000;
+    const long long expected = 50005000;
     constexpr std::size_t threads_to_read_from = 100;
 
     msd::channel<int> channel{10};
@@ -136,7 +157,7 @@ TEST(ChannelTest, Multithreading)
     };
 
     std::vector<std::thread> threads;
-    for (std::size_t i = 0; i < threads_to_read_from; ++i) {
+    for (std::size_t i = 0U; i < threads_to_read_from; ++i) {
         threads.emplace_back(std::thread{worker});
     }
 

@@ -2,29 +2,32 @@
 
 #include "msd/channel.hpp"
 
-struct Data {
-    int i{};
+class Data {
+    int i_{};
 
+   public:
     Data() = default;
-    explicit Data(int i) : i{i} {}
+    explicit Data(int i) : i_{i} {}
 
-    Data(const Data& other) noexcept : i{other.i} { std::cout << "copy " << i << '\n'; }
+    int getI() const { return i_; }
+
+    Data(const Data& other) noexcept : i_{other.i_} { std::cout << "copy " << i_ << '\n'; }
     Data& operator=(const Data& other)
     {
         if (this != &other) {
-            i = other.i;
+            i_ = other.i_;
         }
-        std::cout << "copy " << i << '\n';
+        std::cout << "copy " << i_ << '\n';
 
         return *this;
     }
 
-    Data(Data&& other) noexcept : i{other.i} { std::cout << "move " << i << '\n'; }
+    Data(Data&& other) noexcept : i_{other.i_} { std::cout << "move " << i_ << '\n'; }
     Data& operator=(Data&& other) noexcept
     {
         if (this != &other) {
-            i = other.i;
-            std::cout << "move " << i << '\n';
+            i_ = other.i_;
+            std::cout << "move " << i_ << '\n';
         }
 
         return *this;
@@ -44,7 +47,7 @@ int main()
     std::move(in3) >> ch;
 
     for (auto out : ch) {
-        std::cout << out.i << '\n';
+        std::cout << out.getI() << '\n';
 
         if (ch.empty()) {
             break;

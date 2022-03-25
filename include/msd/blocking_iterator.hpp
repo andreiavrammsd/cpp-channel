@@ -4,6 +4,7 @@
 #define MSD_CHANNEL_BLOCKING_ITERATOR_HPP_
 
 #include <iterator>
+#include <mutex>
 
 namespace msd {
 
@@ -20,7 +21,7 @@ class blocking_iterator {
    public:
     using value_type = typename channel::value_type;
 
-    explicit blocking_iterator(channel& ch) : ch{ch} {}
+    explicit blocking_iterator(channel& ch) : ch_{ch} {}
 
     /**
      * Advances to next element in the channel.
@@ -32,8 +33,8 @@ class blocking_iterator {
      */
     value_type operator*() const
     {
-        value_type value{};
-        value << ch;
+        value_type value;
+        value << ch_;
 
         return value;
     }
@@ -43,13 +44,14 @@ class blocking_iterator {
      */
     bool operator!=(blocking_iterator<channel>) const
     {
-        ch.waitBeforeRead();
+        std::unique_lock<std::mutex> lock{ch_.mtx_};
+        ch_.waitBeforeRead(lock);
 
-        return !(ch.closed() && ch.empty());
+        return !(ch_.closed() && ch_.empty());
     }
 
    private:
-    channel& ch;
+    channel& ch_;
 };
 
 }  // namespace msd
