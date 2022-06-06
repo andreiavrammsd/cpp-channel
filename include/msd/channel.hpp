@@ -10,6 +10,7 @@
 #include <queue>
 #include <stdexcept>
 #include <type_traits>
+#include <utility>
 
 #include "blocking_iterator.hpp"
 
