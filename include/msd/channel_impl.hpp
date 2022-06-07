@@ -1,7 +1,5 @@
 // Copyright (C) 2022 Andrei Avram
 
-#include <utility>
-
 template <typename T>
 constexpr channel<T>::channel(const size_type capacity) : cap_{capacity}
 {
