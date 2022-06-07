@@ -14,7 +14,7 @@ target_link_libraries(cmake_project pthread)
 
 include(FetchContent)
 if (NOT channel_POPULATED)
-    FetchContent_Declare(channel URL https://github.com/andreiavrammsd/cpp-channel/archive/v0.7.1.zip)
+    FetchContent_Declare(channel URL https://github.com/andreiavrammsd/cpp-channel/archive/v0.7.2.zip)
     FetchContent_Populate(channel)
     include_directories(${channel_SOURCE_DIR}/include)
     # OR
