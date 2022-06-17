@@ -4,7 +4,9 @@
 #define MSD_CHANNEL_BLOCKING_ITERATOR_HPP_
 
 #include <iterator>
+#include <memory>
 #include <mutex>
+#include <type_traits>
 
 namespace msd {
 
@@ -21,37 +23,44 @@ class blocking_iterator {
    public:
     using value_type = typename channel::value_type;
 
-    explicit blocking_iterator(channel& ch) : ch_{ch} {}
+    blocking_iterator() : ch_(nullptr) {}
+    explicit blocking_iterator(channel& ch) : ch_{&ch} {}
 
     /**
      * Advances to next element in the channel.
      */
-    blocking_iterator<channel> operator++() const noexcept { return *this; }
+    blocking_iterator<channel>& operator++() noexcept
+    {
+        assert(ch_);
+        if (!value_)
+            value_.reset(new value_type);
+        (*value_) << (*ch_);
+        return *this;
+    }
 
     /**
      * Returns an element from the channel.
      */
-    value_type operator*() const
+    value_type& operator*()
     {
-        value_type value;
-        value << ch_;
-
-        return value;
+        if (!value_)
+            ++(*this);
+        return *value_;
     }
 
     /**
      * Makes iteration continue until the channel is closed and empty.
      */
-    bool operator!=(blocking_iterator<channel>) const
+    bool operator!=(const blocking_iterator<channel>& ch) const
     {
-        std::unique_lock<std::mutex> lock{ch_.mtx_};
-        ch_.waitBeforeRead(lock);
-
-        return !(ch_.closed() && ch_.empty());
+        if (ch_ == ch.ch_ || ch.ch_)
+            return false;
+        return !(ch_->closed() && ch_->empty());
     }
 
    private:
-    channel& ch_;
+    channel* ch_;
+    std::shared_ptr<value_type> value_;
 };
 
 }  // namespace msd

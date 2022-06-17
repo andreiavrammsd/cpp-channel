@@ -18,7 +18,7 @@ TEST(ChannelIteratorTest, Traits)
 TEST(ChannelIteratorTest, Dereference)
 {
     msd::channel<int> channel;
-    msd::blocking_iterator<msd::channel<int>> it{channel};
+    auto it = channel.begin();
 
     int in = 1;
     in >> channel;
@@ -26,25 +26,30 @@ TEST(ChannelIteratorTest, Dereference)
     in >> channel;
 
     EXPECT_EQ(1, *it);
+    EXPECT_EQ(1, *it); // no move to next
+    ++it; // actually move to next
     EXPECT_EQ(2, *it);
+    EXPECT_TRUE(it != channel.end());
+    channel.close();
+    EXPECT_FALSE(it != channel.end());
 }
 
 TEST(ChannelIteratorTest, NotEqualStop)
 {
     msd::channel<int> channel;
-    msd::blocking_iterator<msd::channel<int>> it{channel};
+    auto it = channel.begin();
 
     channel.close();
 
-    EXPECT_FALSE(it != it);
+    EXPECT_FALSE(it != channel.end());
 }
 
 TEST(ChannelIteratorTest, NotEqualContinue)
 {
     msd::channel<int> channel;
-    msd::blocking_iterator<msd::channel<int>> it{channel};
+    auto it = channel.begin();
 
     1 >> channel;
 
-    EXPECT_TRUE(it != it);
+    EXPECT_TRUE(it != channel.end());
 }

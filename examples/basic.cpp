@@ -20,8 +20,8 @@ int main()
     for (auto out : ch) {
         std::cout << out << '\n';
 
-        if (ch.empty()) {
-            break;
+        if (out == 3) {
+            ch.close();
         }
     }
 }

@@ -6,19 +6,18 @@ constexpr channel<T>::channel(const size_type capacity) : cap_{capacity}
 }
 
 template <typename T>
-void operator>>(T&& in, channel<detail::remove_cvref_t<T>>& ch)
+void operator>>(T&& in, channel<typename std::decay<T>::type>& ch)
 {
     if (ch.closed()) {
         throw closed_channel{"cannot write on closed channel"};
     }
 
-    std::unique_lock<std::mutex> lock{ch.mtx_};
-
-    if (ch.cap_ > 0 && ch.queue_.size() == ch.cap_) {
-        ch.cnd_.wait(lock, [&ch]() { return ch.queue_.size() < ch.cap_; });
+    {
+        std::unique_lock<std::mutex> lock{ch.mtx_};
+        ch.waitBeforeWrite(lock);
+        ch.queue_.push(std::forward<T>(in));
+        ++ch.size_;
     }
-
-    ch.queue_.push(std::forward<T>(in));
 
     ch.cnd_.notify_one();
 }
@@ -37,6 +36,7 @@ void operator<<(T& out, channel<T>& ch)
         if (ch.queue_.size() > 0) {
             out = std::move(ch.queue_.front());
             ch.queue_.pop();
+            --ch.size_;
         }
     }
 
@@ -46,13 +46,13 @@ void operator<<(T& out, channel<T>& ch)
 template <typename T>
 constexpr typename channel<T>::size_type channel<T>::size() const noexcept
 {
-    return queue_.size();
+    return size_;
 }
 
 template <typename T>
 constexpr bool channel<T>::empty() const noexcept
 {
-    return queue_.empty();
+    return size_ == 0;
 }
 
 template <typename T>
@@ -77,11 +77,19 @@ blocking_iterator<channel<T>> channel<T>::begin() noexcept
 template <typename T>
 blocking_iterator<channel<T>> channel<T>::end() noexcept
 {
-    return blocking_iterator<channel<T>>{*this};
+    return blocking_iterator<channel<T>>{};
 }
 
 template <typename T>
 void channel<T>::waitBeforeRead(std::unique_lock<std::mutex>& lock)
 {
-    cnd_.wait(lock, [this] { return queue_.size() > 0 || closed(); });
+    cnd_.wait(lock, [this] { return !empty() || closed(); });
+}
+
+template <typename T>
+void channel<T>::waitBeforeWrite(std::unique_lock<std::mutex>& lock)
+{
+    if (cap_ > 0 && size_ == cap_) {
+        cnd_.wait(lock, [this]() { return size_ < cap_; });
+    }
 }
