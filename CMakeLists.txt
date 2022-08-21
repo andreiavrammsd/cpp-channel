@@ -14,7 +14,14 @@ include_directories(include)
 add_library(msd_channel INTERFACE)
 target_include_directories(msd_channel INTERFACE include)
 
-enable_testing()
-add_subdirectory(tests)
+option(cpp_channel_build_tests "Build all of cpp_channel's own tests." OFF)
+option(cpp_channel_build_examples "Build cpp_channel's example programs." OFF)
 
-add_subdirectory(examples)
+if (cpp_channel_build_tests)
+    enable_testing()
+    add_subdirectory(tests)
+endif()
+
+if (cpp_channel_build_examples)
+    add_subdirectory(examples)
+endif()
