@@ -12,14 +12,16 @@ void operator>>(T&& in, channel<typename std::decay<T>::type>& ch)
         throw closed_channel{"cannot write on closed channel"};
     }
 
-    std::unique_lock<std::mutex> lock{ch.mtx_};
+    {
+        std::unique_lock<std::mutex> lock{ch.mtx_};
 
-    if (ch.cap_ > 0 && ch.size_ == ch.cap_) {
-        ch.cnd_.wait(lock, [&ch]() { return ch.size_ < ch.cap_; });
+        if (ch.cap_ > 0 && ch.size_ == ch.cap_) {
+            ch.cnd_.wait(lock, [&ch]() { return ch.size_ < ch.cap_; });
+        }
+
+        ch.queue_.push(std::forward<T>(in));
+        ++ch.size_;
     }
-
-    ch.queue_.push(std::forward<T>(in));
-    ++ch.size_;
 
     ch.cnd_.notify_one();
 }
