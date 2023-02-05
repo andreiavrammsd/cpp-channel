@@ -6,7 +6,7 @@ constexpr channel<T>::channel(const size_type capacity) : cap_{capacity}
 }
 
 template <typename T>
-void operator>>(T&& in, channel<detail::remove_cvref_t<T>>& ch)
+void operator>>(T&& in, channel<typename std::decay<T>::type>& ch)
 {
     if (ch.closed()) {
         throw closed_channel{"cannot write on closed channel"};
