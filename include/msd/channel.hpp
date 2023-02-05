@@ -111,6 +111,7 @@ class channel {
     std::atomic<bool> is_closed_{false};
 
     inline void waitBeforeRead(std::unique_lock<std::mutex>&);
+    inline void waitBeforeWrite(std::unique_lock<std::mutex>&);
     friend class blocking_iterator<channel>;
 };
 

@@ -14,10 +14,7 @@ void operator>>(T&& in, channel<typename std::decay<T>::type>& ch)
 
     {
         std::unique_lock<std::mutex> lock{ch.mtx_};
-
-        if (ch.cap_ > 0 && ch.size_ == ch.cap_) {
-            ch.cnd_.wait(lock, [&ch]() { return ch.size_ < ch.cap_; });
-        }
+        ch.waitBeforeWrite(lock);
 
         ch.queue_.push(std::forward<T>(in));
         ++ch.size_;
@@ -87,5 +84,13 @@ blocking_iterator<channel<T>> channel<T>::end() noexcept
 template <typename T>
 void channel<T>::waitBeforeRead(std::unique_lock<std::mutex>& lock)
 {
-    cnd_.wait(lock, [this] { return !empty() || closed(); });
+    cnd_.wait(lock, [this]() { return !empty() || closed(); });
+}
+
+template <typename T>
+void channel<T>::waitBeforeWrite(std::unique_lock<std::mutex>& lock)
+{
+    if (cap_ > 0 && size_ == cap_) {
+        cnd_.wait(lock, [this]() { return size_ < cap_; });
+    }
 }
