@@ -14,11 +14,12 @@ void operator>>(T&& in, channel<detail::remove_cvref_t<T>>& ch)
 
     std::unique_lock<std::mutex> lock{ch.mtx_};
 
-    if (ch.cap_ > 0 && ch.queue_.size() == ch.cap_) {
-        ch.cnd_.wait(lock, [&ch]() { return ch.queue_.size() < ch.cap_; });
+    if (ch.cap_ > 0 && ch.size_ == ch.cap_) {
+        ch.cnd_.wait(lock, [&ch]() { return ch.size_ < ch.cap_; });
     }
 
     ch.queue_.push(std::forward<T>(in));
+    ++ch.size_;
 
     ch.cnd_.notify_one();
 }
@@ -34,9 +35,10 @@ void operator<<(T& out, channel<T>& ch)
         std::unique_lock<std::mutex> lock{ch.mtx_};
         ch.waitBeforeRead(lock);
 
-        if (ch.queue_.size() > 0) {
+        if (!ch.empty()) {
             out = std::move(ch.queue_.front());
             ch.queue_.pop();
+            --ch.size_;
         }
     }
 
@@ -46,13 +48,13 @@ void operator<<(T& out, channel<T>& ch)
 template <typename T>
 constexpr typename channel<T>::size_type channel<T>::size() const noexcept
 {
-    return queue_.size();
+    return size_;
 }
 
 template <typename T>
 constexpr bool channel<T>::empty() const noexcept
 {
-    return queue_.empty();
+    return size_ == 0;
 }
 
 template <typename T>
@@ -83,5 +85,5 @@ blocking_iterator<channel<T>> channel<T>::end() noexcept
 template <typename T>
 void channel<T>::waitBeforeRead(std::unique_lock<std::mutex>& lock)
 {
-    cnd_.wait(lock, [this] { return queue_.size() > 0 || closed(); });
+    cnd_.wait(lock, [this] { return !empty() || closed(); });
 }
