@@ -22,16 +22,6 @@ namespace msd {
 #define NODISCARD
 #endif
 
-namespace detail {
-template <typename T>
-struct remove_cvref {
-    using type = typename std::remove_cv<typename std::remove_reference<T>::type>::type;
-};
-
-template <typename T>
-using remove_cvref_t = typename remove_cvref<T>::type;
-}  // namespace detail
-
 /**
  * @brief Exception thrown if trying to write on closed channel.
  */
@@ -67,7 +57,7 @@ class channel {
      * @throws closed_channel if channel is closed.
      */
     template <typename Type>
-    friend void operator>>(Type&&, channel<detail::remove_cvref_t<Type>>&);
+    friend void operator>>(Type&&, channel<typename std::decay<Type>::type>&);
 
     /**
      * Pops an element from the channel.
@@ -115,11 +105,13 @@ class channel {
    private:
     const size_type cap_;
     std::queue<T> queue_;
+    std::atomic<std::size_t> size_{0};
     std::mutex mtx_;
     std::condition_variable cnd_;
     std::atomic<bool> is_closed_{false};
 
     inline void waitBeforeRead(std::unique_lock<std::mutex>&);
+    inline void waitBeforeWrite(std::unique_lock<std::mutex>&);
     friend class blocking_iterator<channel>;
 };
 

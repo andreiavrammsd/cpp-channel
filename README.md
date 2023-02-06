@@ -27,7 +27,7 @@ see [CMakeLists.txt](./examples/cmake-project/CMakeLists.txt) from the [CMake pr
 ```c++
 #include <cassert>
 
-#include "msd/channel.hpp"
+#include <msd/channel.hpp>
 
 int main() {
     msd::channel<int> chan; // unbuffered
@@ -46,7 +46,7 @@ int main() {
 ```
 
 ```c++
-#include "msd/channel.hpp"
+#include <msd/channel.hpp>
 
 int main() {
     msd::channel<int> chan{2}; // buffered
@@ -61,7 +61,7 @@ int main() {
 ```
 
 ```c++
-#include "msd/channel.hpp"
+#include <msd/channel.hpp>
 
 int main() {
     msd::channel<int> chan{2}; // buffered
@@ -83,7 +83,7 @@ int main() {
 ```c++
 #include <iostream>
 
-#include "msd/channel.hpp"
+#include <msd/channel.hpp>
 
 int main() {
     msd::channel<int> chan;
