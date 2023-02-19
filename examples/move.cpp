@@ -2,7 +2,7 @@
 
 #include "msd/channel.hpp"
 
-class Data {
+class Data final {
     int i_{};
 
    public:
@@ -32,6 +32,8 @@ class Data {
 
         return *this;
     }
+
+    ~Data() = default;
 };
 
 int main()
