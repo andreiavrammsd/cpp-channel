@@ -6,5 +6,6 @@
         "twxs.cmake",
         "fredericbonnet.cmake-test-adapter",
         "ms-vscode.cmake-tools",
+        "notskm.clang-tidy",
     ]
 }

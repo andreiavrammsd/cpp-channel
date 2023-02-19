@@ -1,4 +1,4 @@
-// Copyright (C) 2022 Andrei Avram
+// Copyright (C) 2023 Andrei Avram
 
 #ifndef MSD_CHANNEL_BLOCKING_ITERATOR_HPP_
 #define MSD_CHANNEL_BLOCKING_ITERATOR_HPP_
@@ -16,17 +16,17 @@ namespace msd {
  *
  * @tparam Channel Instance of channel.
  */
-template <typename channel>
+template <typename Channel>
 class blocking_iterator {
    public:
-    using value_type = typename channel::value_type;
+    using value_type = typename Channel::value_type;
 
-    explicit blocking_iterator(channel& ch) : ch_{ch} {}
+    explicit blocking_iterator(Channel& ch) : ch_{ch} {}
 
     /**
      * Advances to next element in the channel.
      */
-    blocking_iterator<channel> operator++() const noexcept { return *this; }
+    blocking_iterator<Channel> operator++() const noexcept { return *this; }
 
     /**
      * Returns an element from the channel.
@@ -42,7 +42,7 @@ class blocking_iterator {
     /**
      * Makes iteration continue until the channel is closed and empty.
      */
-    bool operator!=(blocking_iterator<channel>) const
+    bool operator!=(blocking_iterator<Channel>) const
     {
         std::unique_lock<std::mutex> lock{ch_.mtx_};
         ch_.waitBeforeRead(lock);
@@ -51,7 +51,7 @@ class blocking_iterator {
     }
 
    private:
-    channel& ch_;
+    Channel& ch_;
 };
 
 }  // namespace msd

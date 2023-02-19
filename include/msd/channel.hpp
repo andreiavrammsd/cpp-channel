@@ -1,4 +1,4 @@
-// Copyright (C) 2022 Andrei Avram
+// Copyright (C) 2023 Andrei Avram
 
 #ifndef MSD_CHANNEL_HPP_
 #define MSD_CHANNEL_HPP_
@@ -45,11 +45,16 @@ class channel {
     using size_type = std::size_t;
 
     /**
-     * Creates a new channel.
+     * Creates an unbuffered channel.
+     */
+    constexpr channel() = default;
+
+    /**
+     * Creates a buffered channel.
      *
      * @param capacity Number of elements the channel can store before blocking.
      */
-    explicit constexpr channel(size_type capacity = 0);
+    explicit constexpr channel(size_type capacity);
 
     /**
      * Pushes an element into the channel.
@@ -103,7 +108,7 @@ class channel {
     virtual ~channel() = default;
 
    private:
-    const size_type cap_;
+    const size_type cap_{0};
     std::queue<T> queue_;
     std::atomic<std::size_t> size_{0};
     std::mutex mtx_;

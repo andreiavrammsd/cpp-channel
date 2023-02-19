@@ -6,7 +6,7 @@ int main()
 {
     msd::channel<int> ch{10};
 
-    int in;
+    int in{};
 
     in = 1;
     in >> ch;

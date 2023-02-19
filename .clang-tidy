@@ -1,0 +1,40 @@
+Checks: >
+  *,
+  -llvmlibc-restrict-system-libc-headers,
+  -llvmlibc-implementation-in-namespace,
+  -llvmlibc-callee-namespace,
+  -llvm-header-guard,
+  -fuchsia-overloaded-operator,
+  -modernize-use-trailing-return-type,
+  -hicpp-named-parameter,
+  -readability-named-parameter,
+  -altera-unroll-loops,
+
+WarningsAsErrors: "*"
+
+FormatStyle: "file"
+
+CheckOptions:
+  - { key: readability-identifier-naming.NamespaceCase,          value: lower_case }
+  - { key: readability-identifier-naming.ClassCase,              value: lower_case  }
+  - { key: readability-identifier-naming.StructCase,             value: CamelCase  }
+  - { key: readability-identifier-naming.TemplateParameterCase,  value: CamelCase  }
+  - { key: readability-identifier-naming.FunctionCase,           value: aNy_CasE  }
+  - { key: readability-identifier-naming.VariableCase,           value: lower_case }
+  - { key: readability-identifier-naming.ClassMemberCase,        value: lower_case }
+  - { key: readability-identifier-naming.ClassMemberSuffix,      value: _          }
+  - { key: readability-identifier-naming.PrivateMemberSuffix,    value: _          }
+  - { key: readability-identifier-naming.ProtectedMemberSuffix,  value: _          }
+  - { key: readability-identifier-naming.EnumConstantCase,         value: CamelCase }
+  - { key: readability-identifier-naming.EnumConstantPrefix,       value: k         }
+  - { key: readability-identifier-naming.ConstexprVariableCase,    value: CamelCase }
+  - { key: readability-identifier-naming.ConstexprVariablePrefix,  value: k         }
+  - { key: readability-identifier-naming.GlobalConstantCase,       value: CamelCase }
+  - { key: readability-identifier-naming.GlobalConstantPrefix,     value: k         }
+  - { key: readability-identifier-naming.MemberConstantCase,       value: CamelCase }
+  - { key: readability-identifier-naming.MemberConstantPrefix,     value: k         }
+  - { key: readability-identifier-naming.StaticConstantCase,       value: CamelCase }
+  - { key: readability-identifier-naming.StaticConstantPrefix,     value: k         }
+  - { key: readability-implicit-bool-conversion.AllowIntegerConditions,  value: 1   }
+  - { key: readability-implicit-bool-conversion.AllowPointerConditions,  value: 1   }
+  - { key: readability-function-cognitive-complexity.IgnoreMacros,  value: 1   }
