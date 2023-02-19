@@ -1,4 +1,4 @@
-// Copyright (C) 2022 Andrei Avram
+// Copyright (C) 2023 Andrei Avram
 
 #ifndef MSD_CHANNEL_HPP_
 #define MSD_CHANNEL_HPP_
