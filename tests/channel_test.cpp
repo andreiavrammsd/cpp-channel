@@ -174,10 +174,7 @@ TEST(ChannelTest, Multithreading)
 
     // Wait until all items have been read
     std::unique_lock<std::mutex> lock{mtx_wait};
-    cond_wait.wait(lock, [&wait_counter]() {
-        auto items = wait_counter.load();
-        return items == 0;
-    });
+    cond_wait.wait(lock, [&wait_counter]() { return wait_counter.load() == 0; });
 
     std::for_each(threads.begin(), threads.end(), [](std::thread& thread) { thread.join(); });
 
