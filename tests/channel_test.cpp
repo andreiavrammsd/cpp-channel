@@ -54,7 +54,7 @@ TEST(ChannelTest, PushByMoveAndFetch)
 
     std::string{"def"} >> channel;
 
-    std::string out;
+    std::string out{};
     out << channel;
     EXPECT_EQ("abc", out);
 
@@ -128,16 +128,14 @@ TEST(ChannelTest, Multithreading)
 
     msd::channel<int> channel{10};
 
-    std::mutex mtx_read;
-    std::condition_variable cond_read;
+    std::mutex mtx_read{};
+    std::condition_variable cond_read{};
     bool ready_to_read{};
     std::atomic<long long> count_numbers{};
     std::atomic<long long> sum_numbers{};
 
-    std::mutex mtx_wait;
-    std::condition_variable cond_wait;
-    std::atomic<std::size_t> wait_counter{};
-    wait_counter = threads_to_read_from;
+    std::mutex mtx_wait{};
+    std::condition_variable cond_wait{};
 
     auto worker = [&] {
         // Wait until there is data on the channel
@@ -156,7 +154,7 @@ TEST(ChannelTest, Multithreading)
         cond_wait.notify_one();
     };
 
-    std::vector<std::thread> threads;
+    std::vector<std::thread> threads{};
     for (std::size_t i = 0U; i < threads_to_read_from; ++i) {
         threads.emplace_back(std::thread{worker});
     }

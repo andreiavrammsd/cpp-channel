@@ -18,7 +18,7 @@ using chan = msd::channel<int>;
 // Time-consuming operation for each input value
 int Add(int in, int value)
 {
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    std::this_thread::sleep_for(std::chrono::milliseconds{500});
     return in + value;
 }
 
