@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <atomic>
+#include <cstdint>
 #include <string>
 #include <thread>
 #include <type_traits>
@@ -123,7 +124,7 @@ TEST(ChannelTest, Iterator)
 TEST(ChannelTest, Multithreading)
 {
     const int numbers = 10000;
-    const long long expected = 50005000;
+    const std::int64_t expected = 50005000;
     constexpr std::size_t kThreadsToReadFrom = 100;
 
     msd::channel<int> channel{10};
@@ -131,8 +132,8 @@ TEST(ChannelTest, Multithreading)
     std::mutex mtx_read{};
     std::condition_variable cond_read{};
     bool ready_to_read{};
-    std::atomic<long long> count_numbers{};
-    std::atomic<long long> sum_numbers{};
+    std::atomic<std::int64_t> count_numbers{};
+    std::atomic<std::int64_t> sum_numbers{};
 
     std::mutex mtx_wait{};
     std::condition_variable cond_wait{};
