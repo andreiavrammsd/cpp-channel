@@ -124,7 +124,7 @@ TEST(ChannelTest, Multithreading)
 {
     const int numbers = 10000;
     const long long expected = 50005000;
-    constexpr std::size_t threads_to_read_from = 100;
+    constexpr std::size_t kThreadsToReadFrom = 100;
 
     msd::channel<int> channel{10};
 
@@ -136,6 +136,7 @@ TEST(ChannelTest, Multithreading)
 
     std::mutex mtx_wait{};
     std::condition_variable cond_wait{};
+    std::atomic<std::size_t> wait_counter{kThreadsToReadFrom};
 
     auto worker = [&] {
         // Wait until there is data on the channel
@@ -155,7 +156,7 @@ TEST(ChannelTest, Multithreading)
     };
 
     std::vector<std::thread> threads{};
-    for (std::size_t i = 0U; i < threads_to_read_from; ++i) {
+    for (std::size_t i = 0U; i < kThreadsToReadFrom; ++i) {
         threads.emplace_back(std::thread{worker});
     }
 
