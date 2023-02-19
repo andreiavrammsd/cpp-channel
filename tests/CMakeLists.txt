@@ -1,3 +1,7 @@
+if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
+    cmake_policy(SET CMP0135 NEW)
+endif()
+
 # Testing framework
 include(FetchContent)
 if (NOT googletest_POPULATED)
