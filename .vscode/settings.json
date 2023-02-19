@@ -10,4 +10,6 @@
     "clang-format.executable": "clang-format",
     "clang-format.style": "file",
     "editor.defaultFormatter": "xaver.clang-format",
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
 }
