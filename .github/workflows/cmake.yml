@@ -32,6 +32,11 @@ jobs:
             os: macos-latest,
             build_type: "Release",
           }
+          - {
+            name: "Windows Latest",
+            os: windows-latest,
+            build_type: "Release",
+          }
 
     steps:
       - uses: actions/checkout@v2
