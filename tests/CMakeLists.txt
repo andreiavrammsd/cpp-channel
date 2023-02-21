@@ -3,6 +3,13 @@ if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
 endif()
 
 # Testing framework
+if (MSVC)
+    option(
+      gtest_force_shared_crt
+      "Use shared (DLL) run-time lib even when Google Test is built as static lib."
+      ON)
+endif()
+
 include(FetchContent)
 if (NOT googletest_POPULATED)
     FetchContent_Declare(googletest URL https://github.com/google/googletest/archive/release-1.11.0.zip)
