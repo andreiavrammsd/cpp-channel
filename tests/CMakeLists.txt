@@ -16,7 +16,7 @@ function(package_add_test TESTNAME)
     add_executable(${TESTNAME} ${ARGN})
 
     set_target_warnings(${TESTNAME} PRIVATE)
-    target_link_libraries(${TESTNAME} gtest gtest_main pthread)
+    target_link_libraries(${TESTNAME} gtest gtest_main)
 
     if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         target_link_libraries(${TESTNAME} -lgcov -lubsan)
