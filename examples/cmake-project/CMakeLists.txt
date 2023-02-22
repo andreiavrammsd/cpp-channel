@@ -8,9 +8,9 @@ set(CXX_EXTENSIONS NO)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -Werror --coverage")
 
 add_executable(cmake_project src/main.cpp)
-target_link_libraries(cmake_project pthread)
+target_link_libraries(cmake_project)
 # OR
-# target_link_libraries(cmake_project pthread msd_channel)
+# target_link_libraries(cmake_project msd_channel)
 
 include(FetchContent)
 if (NOT channel_POPULATED)
