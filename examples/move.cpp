@@ -41,12 +41,12 @@ int main()
     msd::channel<Data> ch{10};
 
     auto in1 = Data{1};
-    in1 >> ch;
+    ch << in1;
 
-    Data{2} >> ch;
+    ch << Data{2};
 
     auto in3 = Data{3};
-    std::move(in3) >> ch;
+    ch << std::move(in3);
 
     for (auto out : ch) {
         std::cout << out.getI() << '\n';

@@ -23,7 +23,7 @@ int main()
             }
 
             ++i;
-            std::string{std::to_string(i) + " from: " + std::to_string(thread)} >> ch;
+            ch << std::string{std::to_string(i) + " from: " + std::to_string(thread)};
 
             std::this_thread::sleep_for(pause);
         }

@@ -11,7 +11,7 @@ using chan = msd::channel<int>;
 {
     while (true) {
         static int i = 0;
-        ++i >> incoming;
+        incoming << ++i;
     }
 }
 
@@ -27,7 +27,7 @@ void Transform(chan& incoming, chan& outgoing)
 {
     for (auto in : incoming) {
         auto result = Add(in, 2);
-        result >> outgoing;
+        outgoing << result;
     }
 }
 

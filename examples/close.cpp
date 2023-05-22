@@ -17,7 +17,7 @@ int main()
                 break;
             }
 
-            ++i >> ch;
+            ch << ++i;
             std::cout << "in: " << i << "\n";
 
             std::this_thread::sleep_for(std::chrono::milliseconds{ms});

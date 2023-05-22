@@ -62,7 +62,7 @@ class channel {
      * @throws closed_channel if channel is closed.
      */
     template <typename Type>
-    friend void operator>>(Type&&, channel<typename std::decay<Type>::type>&);
+    friend channel<typename std::decay<Type>::type>& operator<<(channel<typename std::decay<Type>::type>&, Type&&);
 
     /**
      * Pops an element from the channel.

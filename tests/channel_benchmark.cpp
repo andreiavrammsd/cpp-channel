@@ -33,7 +33,7 @@ static void BM_ChannelWithInt(benchmark::State& state)
     int in = 1;
     int out = 0;
     for (auto _ : state) {
-        in >> channel;
+        channel << in;
         out << channel;
     }
 }
@@ -46,7 +46,7 @@ static void BM_ChannelWithString(benchmark::State& state)
     std::string in = "input";
     std::string out;
     for (auto _ : state) {
-        in >> channel;
+        channel << in;
         out << channel;
     }
 }
@@ -59,7 +59,7 @@ static void BM_ChannelWithStruct(benchmark::State& state)
     Entry in{};
     Entry out{};
     for (auto _ : state) {
-        in >> channel;
+        channel << in;
         out << channel;
     }
 }

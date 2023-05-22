@@ -29,7 +29,7 @@ int main()
     const auto in = [](msd::channel<std::int64_t>& ch) {
         while (true) {
             static std::int64_t i = 0;
-            ++i >> ch;
+            ch << ++i;
         }
     };
 
