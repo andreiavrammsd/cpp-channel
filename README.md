@@ -5,12 +5,12 @@
 ### Thread-safe container for sharing data between threads. Header-only.
 
 * Thread-safe push and fetch.
-* Use stream operators to push (>>) and fetch (<<) items.
+* Use stream operators to push (<<) and fetch (>>) items.
 * Blocking (forever waiting to fetch).
 * Range-based for loop supported.
 * Close to prevent pushing and stop waiting to fetch.
 * Integrates well with STL algorithms. Eg: std::move(ch.begin(), ch.end(), ...).
-* Tested with GCC and Clang.
+* Tested with GCC, Clang, and MSVC.
 
 ## Requirements
 
@@ -36,10 +36,10 @@ int main() {
     int out = 0;
 
     // Send to channel
-    in >> chan;
+    chan << in;
 
     // Read from channel
-    out << chan;
+    chan >> out;
 
     assert(out == 1);
 }
@@ -51,12 +51,10 @@ int main() {
 int main() {
     msd::channel<int> chan{2}; // buffered
 
-    int in = 1;
-
     // Send to channel
-    in >> chan;
-    in >> chan;
-    in >> chan; // blocking because capacity is 2 (and no one reads from channel)
+    chan << 1;
+    chan << 2;
+    chan << 3; // blocking because capacity is 2 (and no one reads from channel)
 }
 ```
 
@@ -70,13 +68,13 @@ int main() {
     int out = 0;
 
     // Send to channel
-    in >> chan;
-    in >> chan;
+    chan << in;
+    chan << in;
 
     // Read from channel
-    out << chan;
-    out << chan;
-    out << chan; // blocking because channel is empty (and no one writes on it)
+    chan >> out;
+    chan >> out;
+    chan >> out; // blocking because channel is empty (and no one writes on it)
 }
 ```
 
@@ -89,12 +87,11 @@ int main() {
     msd::channel<int> chan;
 
     int in1 = 1;
-    in1 >> chan;
-
     int in2 = 2;
-    in2 >> chan;
 
-    for (const auto out : chan) {  // blocking: forever waiting for channel items
+    chan << in1 << in2;
+
+    for (const auto out : chan) { // blocking: forever waiting for channel items
         std::cout << out << '\n';
     }
 }
