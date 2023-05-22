@@ -70,7 +70,7 @@ class channel {
      * @tparam Type The type of the elements
      */
     template <typename Type>
-    friend void operator<<(Type&, channel<Type>&);
+    friend channel<Type>& operator>>(channel<Type>&, Type&);
 
     /**
      * Returns the number of elements in the channel.

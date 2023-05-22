@@ -34,7 +34,7 @@ class blocking_iterator {
     value_type operator*() const
     {
         value_type value;
-        value << ch_;
+        ch_ >> value;
 
         return value;
     }

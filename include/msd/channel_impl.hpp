@@ -26,10 +26,10 @@ channel<typename std::decay<T>::type>& operator<<(channel<typename std::decay<T>
 }
 
 template <typename T>
-void operator<<(T& out, channel<T>& ch)
+channel<T>& operator>>(channel<T>& ch, T& out)
 {
     if (ch.closed() && ch.empty()) {
-        return;
+        return ch;
     }
 
     {
@@ -44,6 +44,8 @@ void operator<<(T& out, channel<T>& ch)
     }
 
     ch.cnd_.notify_one();
+
+    return ch;
 }
 
 template <typename T>

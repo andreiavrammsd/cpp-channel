@@ -36,20 +36,20 @@ TEST(ChannelTest, PushAndFetch)
 
     int out = 0;
 
-    out << channel;
+    channel >> out;
     EXPECT_EQ(1, out);
 
-    out << channel;
+    channel >> out;
     EXPECT_EQ(3, out);
 
-    out << channel;
+    channel >> out;
     EXPECT_EQ(2, out);
 
-    out << channel;
+    channel >> out;
     EXPECT_EQ(4, out);
 }
 
-TEST(ChannelTest, PushMultipleAndFetch)
+TEST(ChannelTest, PushAndFetchMultiple)
 {
     msd::channel<int> channel;
 
@@ -58,18 +58,17 @@ TEST(ChannelTest, PushMultipleAndFetch)
     channel << a << 2 << b << std::move(a);
 
     int out = 0;
+    int out2 = 0;
 
-    out << channel;
+    channel >> out;
     EXPECT_EQ(1, out);
 
-    out << channel;
+    channel >> out;
     EXPECT_EQ(2, out);
 
-    out << channel;
+    channel >> out >> out2;
     EXPECT_EQ(3, out);
-
-    out << channel;
-    EXPECT_EQ(1, out);
+    EXPECT_EQ(1, out2);
 }
 
 TEST(ChannelTest, PushByMoveAndFetch)
@@ -82,10 +81,10 @@ TEST(ChannelTest, PushByMoveAndFetch)
     channel << std::string{"def"};
 
     std::string out{};
-    out << channel;
+    channel >> out;
     EXPECT_EQ("abc", out);
 
-    out << channel;
+    channel >> out;
     EXPECT_EQ("def", out);
 }
 
@@ -98,7 +97,7 @@ TEST(ChannelTest, size)
     channel << in;
     EXPECT_EQ(1, channel.size());
 
-    in << channel;
+    channel >> in;
     EXPECT_EQ(0, channel.size());
 }
 
@@ -111,7 +110,7 @@ TEST(ChannelTest, empty)
     channel << in;
     EXPECT_FALSE(channel.empty());
 
-    in << channel;
+    channel >> in;
     EXPECT_TRUE(channel.empty());
 }
 
@@ -127,9 +126,9 @@ TEST(ChannelTest, close)
     EXPECT_TRUE(channel.closed());
 
     int out = 0;
-    out << channel;
+    channel >> out;
     EXPECT_EQ(1, out);
-    EXPECT_NO_THROW(out << channel);
+    EXPECT_NO_THROW(channel >> out);
 
     EXPECT_THROW(channel << in, msd::closed_channel);
     EXPECT_THROW(channel << std::move(in), msd::closed_channel);
@@ -173,7 +172,7 @@ TEST(ChannelTest, Multithreading)
         // Read until all items have been read from the channel
         while (count_numbers < numbers) {
             int out{};
-            out << channel;
+            channel >> out;
 
             sum_numbers += out;
             ++count_numbers;
