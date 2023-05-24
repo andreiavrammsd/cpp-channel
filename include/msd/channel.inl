@@ -1,5 +1,7 @@
 // Copyright (C) 2023 Andrei Avram
 
+namespace msd {
+
 template <typename T>
 constexpr channel<T>::channel(const size_type capacity) : cap_{capacity}
 {
@@ -98,3 +100,5 @@ void channel<T>::waitBeforeWrite(std::unique_lock<std::mutex>& lock)
         cnd_.wait(lock, [this]() { return size_ < cap_; });
     }
 }
+
+}  // namespace msd

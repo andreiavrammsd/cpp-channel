@@ -120,8 +120,8 @@ class channel {
     friend class blocking_iterator<channel>;
 };
 
-#include "channel_impl.hpp"
-
 }  // namespace msd
+
+#include "channel.inl"
 
 #endif  // MSD_CHANNEL_HPP_
