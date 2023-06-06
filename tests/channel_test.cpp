@@ -27,23 +27,48 @@ TEST(ChannelTest, PushAndFetch)
     msd::channel<int> channel;
 
     int in = 1;
-    in >> channel;
+    channel << in;
 
     const int cin = 3;
-    cin >> channel;
+    channel << cin;
 
-    2 >> channel;
+    channel << 2 << 4;
 
     int out = 0;
 
-    out << channel;
+    channel >> out;
     EXPECT_EQ(1, out);
 
-    out << channel;
+    channel >> out;
     EXPECT_EQ(3, out);
 
-    out << channel;
+    channel >> out;
     EXPECT_EQ(2, out);
+
+    channel >> out;
+    EXPECT_EQ(4, out);
+}
+
+TEST(ChannelTest, PushAndFetchMultiple)
+{
+    msd::channel<int> channel;
+
+    int a = 1;
+    const int b = 3;
+    channel << a << 2 << b << std::move(a);
+
+    int out = 0;
+    int out2 = 0;
+
+    channel >> out;
+    EXPECT_EQ(1, out);
+
+    channel >> out;
+    EXPECT_EQ(2, out);
+
+    channel >> out >> out2;
+    EXPECT_EQ(3, out);
+    EXPECT_EQ(1, out2);
 }
 
 TEST(ChannelTest, PushByMoveAndFetch)
@@ -51,15 +76,15 @@ TEST(ChannelTest, PushByMoveAndFetch)
     msd::channel<std::string> channel;
 
     std::string in = "abc";
-    std::move(in) >> channel;
+    channel << std::move(in);
 
-    std::string{"def"} >> channel;
+    channel << std::string{"def"};
 
     std::string out{};
-    out << channel;
+    channel >> out;
     EXPECT_EQ("abc", out);
 
-    out << channel;
+    channel >> out;
     EXPECT_EQ("def", out);
 }
 
@@ -69,10 +94,10 @@ TEST(ChannelTest, size)
     EXPECT_EQ(0, channel.size());
 
     int in = 1;
-    in >> channel;
+    channel << in;
     EXPECT_EQ(1, channel.size());
 
-    in << channel;
+    channel >> in;
     EXPECT_EQ(0, channel.size());
 }
 
@@ -82,10 +107,10 @@ TEST(ChannelTest, empty)
     EXPECT_TRUE(channel.empty());
 
     int in = 1;
-    in >> channel;
+    channel << in;
     EXPECT_FALSE(channel.empty());
 
-    in << channel;
+    channel >> in;
     EXPECT_TRUE(channel.empty());
 }
 
@@ -95,25 +120,25 @@ TEST(ChannelTest, close)
     EXPECT_FALSE(channel.closed());
 
     int in = 1;
-    in >> channel;
+    channel << in;
 
     channel.close();
     EXPECT_TRUE(channel.closed());
 
     int out = 0;
-    out << channel;
+    channel >> out;
     EXPECT_EQ(1, out);
-    EXPECT_NO_THROW(out << channel);
+    EXPECT_NO_THROW(channel >> out);
 
-    EXPECT_THROW(in >> channel, msd::closed_channel);
-    EXPECT_THROW(std::move(in) >> channel, msd::closed_channel);
+    EXPECT_THROW(channel << in, msd::closed_channel);
+    EXPECT_THROW(channel << std::move(in), msd::closed_channel);
 }
 
 TEST(ChannelTest, Iterator)
 {
     msd::channel<int> channel;
 
-    1 >> channel;
+    channel << 1;
 
     for (auto it = channel.begin(); it != channel.end();) {
         EXPECT_EQ(1, *it);
@@ -147,7 +172,7 @@ TEST(ChannelTest, Multithreading)
         // Read until all items have been read from the channel
         while (count_numbers < numbers) {
             int out{};
-            out << channel;
+            channel >> out;
 
             sum_numbers += out;
             ++count_numbers;
@@ -163,7 +188,7 @@ TEST(ChannelTest, Multithreading)
 
     // Send numbers to channel
     for (int i = 1; i <= numbers; ++i) {
-        i >> channel;
+        channel << i;
 
         // Notify threads than then can start reading
         if (!ready_to_read) {

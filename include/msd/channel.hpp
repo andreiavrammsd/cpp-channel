@@ -62,7 +62,7 @@ class channel {
      * @throws closed_channel if channel is closed.
      */
     template <typename Type>
-    friend void operator>>(Type&&, channel<typename std::decay<Type>::type>&);
+    friend channel<typename std::decay<Type>::type>& operator<<(channel<typename std::decay<Type>::type>&, Type&&);
 
     /**
      * Pops an element from the channel.
@@ -70,7 +70,7 @@ class channel {
      * @tparam Type The type of the elements
      */
     template <typename Type>
-    friend void operator<<(Type&, channel<Type>&);
+    friend channel<Type>& operator>>(channel<Type>&, Type&);
 
     /**
      * Returns the number of elements in the channel.
@@ -120,8 +120,8 @@ class channel {
     friend class blocking_iterator<channel>;
 };
 
-#include "channel_impl.hpp"
-
 }  // namespace msd
+
+#include "channel.inl"
 
 #endif  // MSD_CHANNEL_HPP_

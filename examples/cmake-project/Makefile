@@ -4,10 +4,10 @@ CMAKE=cmake
 
 build:
 	$(CMAKE) -B $(BUILD_PATH) -DCMAKE_BUILD_TYPE=$(BUILD_TYPE)
-	$(CMAKE) --build $(BUILD_PATH) --target cmake-project -- -j
+	$(CMAKE) --build $(BUILD_PATH) --target cmake_project -- -j
 
 run:
-	$(BUILD_PATH)/cmake-project
+	$(BUILD_PATH)/cmake_project
 
 release:
 	make BUILD_TYPE=release

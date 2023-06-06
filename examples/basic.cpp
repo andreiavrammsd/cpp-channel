@@ -9,13 +9,13 @@ int main()
     int in{};
 
     in = 1;
-    in >> ch;
+    ch << in;
 
     in = 2;
-    in >> ch;
+    ch << in;
 
     in = 3;
-    in >> ch;
+    ch << in;
 
     for (auto out : ch) {
         std::cout << out << '\n';

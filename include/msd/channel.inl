@@ -1,12 +1,14 @@
 // Copyright (C) 2023 Andrei Avram
 
+namespace msd {
+
 template <typename T>
 constexpr channel<T>::channel(const size_type capacity) : cap_{capacity}
 {
 }
 
 template <typename T>
-void operator>>(T&& in, channel<typename std::decay<T>::type>& ch)
+channel<typename std::decay<T>::type>& operator<<(channel<typename std::decay<T>::type>& ch, T&& in)
 {
     if (ch.closed()) {
         throw closed_channel{"cannot write on closed channel"};
@@ -21,13 +23,15 @@ void operator>>(T&& in, channel<typename std::decay<T>::type>& ch)
     }
 
     ch.cnd_.notify_one();
+
+    return ch;
 }
 
 template <typename T>
-void operator<<(T& out, channel<T>& ch)
+channel<T>& operator>>(channel<T>& ch, T& out)
 {
     if (ch.closed() && ch.empty()) {
-        return;
+        return ch;
     }
 
     {
@@ -42,6 +46,8 @@ void operator<<(T& out, channel<T>& ch)
     }
 
     ch.cnd_.notify_one();
+
+    return ch;
 }
 
 template <typename T>
@@ -94,3 +100,5 @@ void channel<T>::waitBeforeWrite(std::unique_lock<std::mutex>& lock)
         cnd_.wait(lock, [this]() { return size_ < cap_; });
     }
 }
+
+}  // namespace msd

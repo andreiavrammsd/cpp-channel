@@ -33,8 +33,8 @@ class blocking_iterator {
      */
     value_type operator*() const
     {
-        value_type value;
-        value << ch_;
+        value_type value{};
+        ch_ >> value;
 
         return value;
     }
