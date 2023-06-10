@@ -35,7 +35,7 @@ int main()
 
     auto write = std::thread{in, std::ref(channel)};
 
-    // Wait for all threads to finish
+    // Join all threads
     for (std::size_t i = 0U; i < threads; ++i) {
         reads.at(i).join();
     }
