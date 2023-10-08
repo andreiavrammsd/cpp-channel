@@ -20,6 +20,7 @@ template <typename Channel>
 class blocking_iterator {
    public:
     using value_type = typename Channel::value_type;
+    using reference = typename Channel::value_type&;
 
     explicit blocking_iterator(Channel& ch) : ch_{ch} {}
 
@@ -62,6 +63,7 @@ class blocking_iterator {
 template <typename T>
 struct std::iterator_traits<msd::blocking_iterator<T>> {
     using value_type = typename msd::blocking_iterator<T>::value_type;
+    using reference = typename msd::blocking_iterator<T>::reference;
     using iterator_category = std::output_iterator_tag;
 };
 
