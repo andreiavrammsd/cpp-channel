@@ -60,7 +60,7 @@ jobs:
         working-directory: ${{github.workspace}}/build
         shell: bash
         # Execute the build.  You can specify a specific target with "--target <NAME>"
-        run: cmake --build . --config ${{ matrix.config.build_type }} --target channel_test11 channel_test14 channel_test17
+        run: cmake --build . --config ${{ matrix.config.build_type }} --target tests examples
 
       - name: Test
         working-directory: ${{github.workspace}}/build

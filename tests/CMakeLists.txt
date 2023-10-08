@@ -31,7 +31,11 @@ function(package_add_test TESTNAME)
     endif ()
 
     add_test(NAME ${TESTNAME} COMMAND ${TESTNAME})
+
+    add_dependencies(tests ${TESTNAME})
 endfunction()
+
+add_custom_target(tests)
 
 # Tests
 package_add_test(channel_test11 channel_test.cpp blocking_iterator_test.cpp)
