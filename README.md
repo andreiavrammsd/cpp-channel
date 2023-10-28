@@ -6,10 +6,11 @@
 
 * Thread-safe push and fetch.
 * Use stream operators to push (<<) and fetch (>>) items.
+* Value type must be default constructible.
 * Blocking (forever waiting to fetch).
 * Range-based for loop supported.
 * Close to prevent pushing and stop waiting to fetch.
-* Integrates well with STL algorithms. Eg: std::move(ch.begin(), ch.end(), ...).
+* Integrates well with STL algorithms in some cases. Eg: std::move(ch.begin(), ch.end(), ...).
 * Tested with GCC, Clang, and MSVC.
 
 ## Requirements
