@@ -65,7 +65,10 @@ constexpr bool channel<T>::empty() const noexcept
 template <typename T>
 void channel<T>::close() noexcept
 {
-    is_closed_.store(true);
+    {
+        std::unique_lock<std::mutex> lock{mtx_};
+        is_closed_.store(true);
+    }
     cnd_.notify_all();
 }
 
