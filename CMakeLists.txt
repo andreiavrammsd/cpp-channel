@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 project(cpp_channel)
-set(PROJECT_VERSION 0.8.2)
+set(PROJECT_VERSION 0.8.3)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
