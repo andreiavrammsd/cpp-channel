@@ -2,6 +2,13 @@ if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
     cmake_policy(SET CMP0135 NEW)
 endif()
 
+if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+    add_compile_options(-Wno-c++17-extensions)
+    message(STATUS "Using AppleClang compiler")
+else()
+    message(STATUS "Using other compiler")
+endif()
+
 # Testing framework
 if (MSVC)
     option(
