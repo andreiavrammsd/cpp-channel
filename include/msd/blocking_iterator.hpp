@@ -20,9 +20,9 @@ template <typename Channel>
 class blocking_iterator {
    public:
     using value_type = typename Channel::value_type;
-    using reference = typename Channel::value_type&;
+    using reference = const typename Channel::value_type&;
 
-    explicit blocking_iterator(Channel& ch) : ch_{ch} {}
+    explicit blocking_iterator(Channel& chan) : chan_{chan} {}
 
     /**
      * Advances to next element in the channel.
@@ -32,12 +32,11 @@ class blocking_iterator {
     /**
      * Returns an element from the channel.
      */
-    value_type operator*() const
+    reference operator*()
     {
-        value_type value{};
-        ch_ >> value;
+        chan_ >> value_;
 
-        return value;
+        return value_;
     }
 
     /**
@@ -45,26 +44,27 @@ class blocking_iterator {
      */
     bool operator!=(blocking_iterator<Channel>) const
     {
-        std::unique_lock<std::mutex> lock{ch_.mtx_};
-        ch_.waitBeforeRead(lock);
+        std::unique_lock<std::mutex> lock{chan_.mtx_};
+        chan_.waitBeforeRead(lock);
 
-        return !(ch_.closed() && ch_.empty());
+        return !(chan_.closed() && chan_.empty());
     }
 
    private:
-    Channel& ch_;
+    Channel& chan_;
+    value_type value_{};
 };
 
 }  // namespace msd
 
 /**
- * @brief Output iterator specialization
+ * @brief Input iterator specialization
  */
 template <typename T>
 struct std::iterator_traits<msd::blocking_iterator<T>> {
     using value_type = typename msd::blocking_iterator<T>::value_type;
     using reference = typename msd::blocking_iterator<T>::reference;
-    using iterator_category = std::output_iterator_tag;
+    using iterator_category = std::input_iterator_tag;
 };
 
 #endif  // MSD_CHANNEL_BLOCKING_ITERATOR_HPP_

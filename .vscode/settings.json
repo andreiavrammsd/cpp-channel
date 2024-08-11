@@ -4,7 +4,7 @@
         "-Dcpp_channel_build_tests=ON"
     ],
     "editor.codeActionsOnSave": {
-        "source.fixAll": true
+        "source.fixAll": "explicit"
     },
     "editor.formatOnSave": true,
     "clang-format.executable": "clang-format",

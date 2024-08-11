@@ -12,7 +12,7 @@ TEST(ChannelIteratorTest, Traits)
 
     using iterator_traits = std::iterator_traits<iterator>;
     EXPECT_TRUE((std::is_same<iterator_traits::value_type, type>::value));
-    EXPECT_TRUE((std::is_same<iterator_traits::iterator_category, std::output_iterator_tag>::value));
+    EXPECT_TRUE((std::is_same<iterator_traits::iterator_category, std::input_iterator_tag>::value));
 }
 
 TEST(ChannelIteratorTest, Dereference)
