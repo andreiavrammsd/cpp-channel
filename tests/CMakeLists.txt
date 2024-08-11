@@ -45,9 +45,8 @@ set_target_properties(channel_test17 PROPERTIES CXX_STANDARD 17 CMAKE_CXX_STANDA
 
 # Benchmark
 if (NOT benchmark_POPULATED)
-    FetchContent_Declare(benchmark URL https://github.com/google/benchmark/archive/v1.6.1.zip)
-    FetchContent_Populate(benchmark)
-    add_subdirectory(${benchmark_SOURCE_DIR} ${benchmark_BINARY_DIR})
+    FetchContent_Declare(benchmark URL https://github.com/google/benchmark/archive/refs/tags/v1.8.5.zip)
+    FetchContent_MakeAvailable(benchmark)
 endif ()
 
 add_executable(channel_benchmark channel_benchmark.cpp)
