@@ -12,10 +12,8 @@ endif()
 
 include(FetchContent)
 if (NOT googletest_POPULATED)
-    FetchContent_Declare(googletest URL https://github.com/google/googletest/archive/release-1.11.0.zip)
-    FetchContent_Populate(googletest)
-    include_directories(${googletest_SOURCE_DIR}/googletest/include/)
-    add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR})
+    FetchContent_Declare(googletest URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.zip)
+    FetchContent_MakeAvailable(googletest)
 endif ()
 
 # Test macro
