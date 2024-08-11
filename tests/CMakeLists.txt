@@ -40,8 +40,8 @@ package_add_test(channel_test11 channel_test.cpp blocking_iterator_test.cpp)
 package_add_test(channel_test14 channel_test.cpp blocking_iterator_test.cpp)
 package_add_test(channel_test17 channel_test.cpp blocking_iterator_test.cpp)
 
-set_target_properties(channel_test14 PROPERTIES CXX_STANDARD 14 CMAKE_CXX_STANDARD_REQUIRED YES)
-set_target_properties(channel_test17 PROPERTIES CXX_STANDARD 17 CMAKE_CXX_STANDARD_REQUIRED YES)
+set_target_properties(channel_test14 PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED YES)
+set_target_properties(channel_test17 PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED YES)
 
 # Benchmark
 if (NOT benchmark_POPULATED)
