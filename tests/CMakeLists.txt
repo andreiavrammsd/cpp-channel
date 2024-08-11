@@ -12,7 +12,7 @@ endif()
 
 include(FetchContent)
 if (NOT googletest_POPULATED)
-    FetchContent_Declare(googletest URL https://github.com/google/googletest/archive/release-1.11.0.zip)
+    FetchContent_Declare(googletest URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.zip)
     FetchContent_MakeAvailable(googletest)
 endif ()
 
@@ -40,12 +40,18 @@ package_add_test(channel_test11 channel_test.cpp blocking_iterator_test.cpp)
 package_add_test(channel_test14 channel_test.cpp blocking_iterator_test.cpp)
 package_add_test(channel_test17 channel_test.cpp blocking_iterator_test.cpp)
 
-set_target_properties(channel_test14 PROPERTIES CXX_STANDARD 14 CMAKE_CXX_STANDARD_REQUIRED YES)
-set_target_properties(channel_test17 PROPERTIES CXX_STANDARD 17 CMAKE_CXX_STANDARD_REQUIRED YES)
+set_target_properties(channel_test14 PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED YES)
+set_target_properties(channel_test17 PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED YES)
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+    # Disable warnings about C++17 extensions
+    target_compile_options(channel_test11 PRIVATE -Wno-c++17-extensions)
+    target_compile_options(channel_test14 PRIVATE -Wno-c++17-extensions)
+endif()
 
 # Benchmark
 if (NOT benchmark_POPULATED)
-    FetchContent_Declare(benchmark URL https://github.com/google/benchmark/archive/v1.6.1.zip)
+    FetchContent_Declare(benchmark URL https://github.com/google/benchmark/archive/refs/tags/v1.8.5.zip)
     FetchContent_MakeAvailable(benchmark)
 endif ()
 
