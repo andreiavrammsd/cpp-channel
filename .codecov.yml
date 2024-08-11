@@ -1,9 +1,0 @@
-coverage:
-  status:
-    project:
-      project: 100
-    changeset:
-      patch: 100
-
-ignore:
-  - 'tests/*'
