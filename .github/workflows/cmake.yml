@@ -23,21 +23,25 @@ jobs:
             name: "Ubuntu 22.04 GCC (Release)",
             os: ubuntu-22.04,
             build_type: "Release",
+            coverage: false,
           }
           - {
             name: "Ubuntu 22.04 GCC (Debug)",
             os: ubuntu-22.04,
             build_type: "Debug",
+            coverage: true,
           }
           - {
             name: "macOS Latest Clang (Release)",
             os: macos-latest,
             build_type: "Release",
+            coverage: false,
           }
           - {
             name: "Windows Latest (Release)",
             os: windows-latest,
             build_type: "Release",
+            coverage: false,
           }
 
     steps:
@@ -70,6 +74,12 @@ jobs:
         # Execute tests defined by the CMake configuration.
         # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
         run: ctest -C ${{ matrix.config.build_type }} --verbose -R channel_test*
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+        if: matrix.config.coverage == true
 
       - name: Run examples
         working-directory: ${{github.workspace}}/build
