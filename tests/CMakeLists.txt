@@ -13,9 +13,7 @@ endif()
 include(FetchContent)
 if (NOT googletest_POPULATED)
     FetchContent_Declare(googletest URL https://github.com/google/googletest/archive/release-1.11.0.zip)
-    FetchContent_Populate(googletest)
-    include_directories(${googletest_SOURCE_DIR}/googletest/include/)
-    add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR})
+    FetchContent_MakeAvailable(googletest)
 endif ()
 
 # Test macro
@@ -48,8 +46,7 @@ set_target_properties(channel_test17 PROPERTIES CXX_STANDARD 17 CMAKE_CXX_STANDA
 # Benchmark
 if (NOT benchmark_POPULATED)
     FetchContent_Declare(benchmark URL https://github.com/google/benchmark/archive/v1.6.1.zip)
-    FetchContent_Populate(benchmark)
-    add_subdirectory(${benchmark_SOURCE_DIR} ${benchmark_BINARY_DIR})
+    FetchContent_MakeAvailable(benchmark)
 endif ()
 
 add_executable(channel_benchmark channel_benchmark.cpp)
