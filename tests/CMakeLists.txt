@@ -12,7 +12,7 @@ endif()
 
 include(FetchContent)
 if (NOT googletest_POPULATED)
-    FetchContent_Declare(googletest URL https://github.com/google/googletest/archive/release-1.11.0.zip)
+    FetchContent_Declare(googletest URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.zip)
     FetchContent_MakeAvailable(googletest)
 endif ()
 
@@ -45,7 +45,7 @@ set_target_properties(channel_test17 PROPERTIES CXX_STANDARD 17 CMAKE_CXX_STANDA
 
 # Benchmark
 if (NOT benchmark_POPULATED)
-    FetchContent_Declare(benchmark URL https://github.com/google/benchmark/archive/v1.6.1.zip)
+    FetchContent_Declare(benchmark URL https://github.com/google/benchmark/archive/refs/tags/v1.8.5.zip)
     FetchContent_MakeAvailable(benchmark)
 endif ()
 
