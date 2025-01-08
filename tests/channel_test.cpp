@@ -1,14 +1,15 @@
-#include "msd/channel.hpp"
-
 #include <gtest/gtest.h>
 
 #include <algorithm>
 #include <atomic>
+#include <chrono>
 #include <cstdint>
 #include <string>
 #include <thread>
 #include <type_traits>
 #include <vector>
+
+#include "msd/channel.hpp"
 
 TEST(ChannelTest, Traits)
 {
@@ -204,4 +205,89 @@ TEST(ChannelTest, Multithreading)
     std::for_each(threads.begin(), threads.end(), [](std::thread& thread) { thread.join(); });
 
     EXPECT_EQ(expected, sum_numbers);
+}
+
+TEST(ChannelTest, TimeoutBasicOperations)
+{
+    msd::channel<int> channel(1);
+    channel.setTimeout(std::chrono::milliseconds(50));
+
+    channel << 1;
+    EXPECT_THROW(channel << 2, msd::channel_timeout);
+
+    int out = 0;
+    channel >> out;
+    EXPECT_EQ(1, out);
+    EXPECT_THROW(channel >> out, msd::channel_timeout);
+}
+
+TEST(ChannelTest, TimeoutClearAndReset)
+{
+    msd::channel<int> channel(1);
+    channel.setTimeout(std::chrono::milliseconds(50));
+    channel.clearTimeout();
+
+    channel << 1;
+
+    std::thread writer(std::bind(
+        [](msd::channel<int>& ch) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            int value = 0;
+            ch >> value;
+        },
+        std::ref(channel)));
+
+    EXPECT_NO_THROW(channel << 2);
+    writer.join();
+}
+
+TEST(ChannelTest, TimeoutIterator)
+{
+    msd::channel<int> channel(5);
+    channel.setTimeout(std::chrono::milliseconds(50));
+
+    EXPECT_THROW(
+        {
+            for (const int& value : channel) {
+                (void)value;
+            }
+        },
+        msd::channel_timeout);
+}
+
+TEST(ChannelTest, TimeoutDynamicDuration)
+{
+    msd::channel<int> channel(1);
+
+    channel.setTimeout(std::chrono::milliseconds(50));
+    int dummy = 0;
+    EXPECT_THROW(channel >> dummy, msd::channel_timeout);
+
+    channel.setTimeout(std::chrono::milliseconds(1000));
+    std::thread writer(std::bind(
+        [](msd::channel<int>& ch) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            ch << 1;
+        },
+        std::ref(channel)));
+
+    int value = 0;
+    EXPECT_NO_THROW(channel >> value);
+    EXPECT_EQ(value, 1);
+    writer.join();
+}
+
+TEST(ChannelTest, TimeoutClosedChannel)
+{
+    msd::channel<int> channel(1);
+    channel.setTimeout(std::chrono::milliseconds(50));
+
+    channel << 1;
+    channel.close();
+
+    int value = 0;
+    EXPECT_NO_THROW(channel >> value);
+    EXPECT_EQ(value, 1);
+    EXPECT_NO_THROW(channel >> value);
+    EXPECT_THROW(channel << 1, msd::closed_channel);
 }
