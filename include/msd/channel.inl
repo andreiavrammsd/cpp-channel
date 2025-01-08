@@ -23,12 +23,13 @@ template <typename T>
 template <typename Predicate>
 bool channel<T>::waitWithTimeout(std::unique_lock<std::mutex>& lock, Predicate pred)
 {
-    if (!timeout_.load().count()) {
+    auto timeout = timeout_.load(std::memory_order_relaxed);
+    if (timeout == std::chrono::nanoseconds::zero()) {
         cnd_.wait(lock, pred);
         return true;
     }
 
-    return cnd_.wait_for(lock, timeout_.load(), pred);
+    return cnd_.wait_for(lock, timeout, pred);
 }
 
 template <typename T>
@@ -102,7 +103,7 @@ void channel<T>::close() noexcept
 {
     {
         std::unique_lock<std::mutex> lock{mtx_};
-        is_closed_.store(true);
+        is_closed_.store(true, std::memory_order_relaxed);
     }
     cnd_.notify_all();
 }
@@ -110,7 +111,7 @@ void channel<T>::close() noexcept
 template <typename T>
 bool channel<T>::closed() const noexcept
 {
-    return is_closed_.load();
+    return is_closed_.load(std::memory_order_relaxed);
 }
 
 template <typename T>
