@@ -36,3 +36,6 @@ add_example(example_multithreading multithreading.cpp)
 
 add_example(example_streaming streaming.cpp)
 run_example(example_streaming)
+
+add_example(example_timeout timeout.cpp)
+run_example(example_timeout)

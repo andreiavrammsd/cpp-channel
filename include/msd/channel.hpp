@@ -1,9 +1,9 @@
 // Copyright (C) 2023 Andrei Avram
-
 #ifndef MSD_CHANNEL_HPP_
 #define MSD_CHANNEL_HPP_
 
 #include <atomic>
+#include <chrono>
 #include <condition_variable>
 #include <cstdlib>
 #include <mutex>
@@ -28,6 +28,14 @@ namespace msd {
 class closed_channel : public std::runtime_error {
    public:
     explicit closed_channel(const char* msg) : std::runtime_error{msg} {}
+};
+
+/**
+ * @brief Exception thrown when channel operation times out.
+ */
+class channel_timeout : public std::runtime_error {
+   public:
+    explicit channel_timeout(const char* msg) : std::runtime_error{msg} {}
 };
 
 /**
@@ -57,9 +65,23 @@ class channel {
     explicit constexpr channel(size_type capacity);
 
     /**
+     * Sets a timeout for channel operations.
+     *
+     * @param timeout Duration after which operations will time out.
+     */
+    template <typename Rep, typename Period>
+    void setTimeout(const std::chrono::duration<Rep, Period>& timeout);
+
+    /**
+     * Clears any previously set timeout.
+     */
+    void clearTimeout() noexcept;
+
+    /**
      * Pushes an element into the channel.
      *
      * @throws closed_channel if channel is closed.
+     * @throws channel_timeout if operation times out.
      */
     template <typename Type>
     friend channel<typename std::decay<Type>::type>& operator<<(channel<typename std::decay<Type>::type>&, Type&&);
@@ -68,6 +90,7 @@ class channel {
      * Pops an element from the channel.
      *
      * @tparam Type The type of the elements
+     * @throws channel_timeout if operation times out.
      */
     template <typename Type>
     friend channel<Type>& operator>>(channel<Type>&, Type&);
@@ -114,14 +137,17 @@ class channel {
     std::mutex mtx_;
     std::condition_variable cnd_;
     std::atomic<bool> is_closed_{false};
+    std::chrono::nanoseconds timeout_;
 
-    inline void waitBeforeRead(std::unique_lock<std::mutex>&);
-    inline void waitBeforeWrite(std::unique_lock<std::mutex>&);
+    template <typename Predicate>
+    bool waitWithTimeout(std::unique_lock<std::mutex>&, Predicate);
+    bool waitBeforeRead(std::unique_lock<std::mutex>&);
+    bool waitBeforeWrite(std::unique_lock<std::mutex>&);
+
     friend class blocking_iterator<channel>;
 };
 
 }  // namespace msd
 
 #include "channel.inl"
-
 #endif  // MSD_CHANNEL_HPP_

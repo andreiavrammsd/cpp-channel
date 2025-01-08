@@ -1,5 +1,4 @@
 // Copyright (C) 2023 Andrei Avram
-
 namespace msd {
 
 template <typename T>
@@ -8,22 +7,61 @@ constexpr channel<T>::channel(const size_type capacity) : cap_{capacity}
 }
 
 template <typename T>
+template <typename Rep, typename Period>
+void channel<T>::setTimeout(const std::chrono::duration<Rep, Period>& timeout)
+{
+    std::lock_guard<std::mutex> lock{mtx_};
+    timeout_ = std::chrono::duration_cast<std::chrono::nanoseconds>(timeout);
+}
+
+template <typename T>
+void channel<T>::clearTimeout() noexcept
+{
+    timeout_ = std::chrono::nanoseconds::zero();
+}
+
+template <typename T>
+template <typename Predicate>
+bool channel<T>::waitWithTimeout(std::unique_lock<std::mutex>& lock, Predicate pred)
+{
+    if (!timeout_.count()) {
+        cnd_.wait(lock, pred);
+        return true;
+    }
+
+    return cnd_.wait_for(lock, timeout_, pred);
+}
+
+template <typename T>
+bool channel<T>::waitBeforeRead(std::unique_lock<std::mutex>& lock)
+{
+    return waitWithTimeout(lock, [this]() { return !empty() || closed(); });
+}
+
+template <typename T>
+bool channel<T>::waitBeforeWrite(std::unique_lock<std::mutex>& lock)
+{
+    if (cap_ > 0 && size_ == cap_) {
+        return waitWithTimeout(lock, [this]() { return size_ < cap_; });
+    }
+    return true;
+}
+
+template <typename T>
 channel<typename std::decay<T>::type>& operator<<(channel<typename std::decay<T>::type>& ch, T&& in)
 {
     if (ch.closed()) {
         throw closed_channel{"cannot write on closed channel"};
     }
-
     {
         std::unique_lock<std::mutex> lock{ch.mtx_};
-        ch.waitBeforeWrite(lock);
-
+        if (!ch.waitBeforeWrite(lock)) {
+            throw channel_timeout{"write operation timed out"};
+        }
         ch.queue_.push(std::forward<T>(in));
         ++ch.size_;
     }
-
     ch.cnd_.notify_one();
-
     return ch;
 }
 
@@ -33,20 +71,18 @@ channel<T>& operator>>(channel<T>& ch, T& out)
     if (ch.closed() && ch.empty()) {
         return ch;
     }
-
     {
         std::unique_lock<std::mutex> lock{ch.mtx_};
-        ch.waitBeforeRead(lock);
-
+        if (!ch.waitBeforeRead(lock)) {
+            throw channel_timeout{"read operation timed out"};
+        }
         if (!ch.empty()) {
             out = std::move(ch.queue_.front());
             ch.queue_.pop();
             --ch.size_;
         }
     }
-
     ch.cnd_.notify_one();
-
     return ch;
 }
 
@@ -88,20 +124,6 @@ template <typename T>
 blocking_iterator<channel<T>> channel<T>::end() noexcept
 {
     return blocking_iterator<channel<T>>{*this};
-}
-
-template <typename T>
-void channel<T>::waitBeforeRead(std::unique_lock<std::mutex>& lock)
-{
-    cnd_.wait(lock, [this]() { return !empty() || closed(); });
-}
-
-template <typename T>
-void channel<T>::waitBeforeWrite(std::unique_lock<std::mutex>& lock)
-{
-    if (cap_ > 0 && size_ == cap_) {
-        cnd_.wait(lock, [this]() { return size_ < cap_; });
-    }
 }
 
 }  // namespace msd
