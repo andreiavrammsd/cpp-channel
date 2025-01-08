@@ -12,6 +12,7 @@
 * Blocking (forever waiting to fetch).
 * Range-based for loop supported.
 * Close to prevent pushing and stop waiting to fetch.
+* Optional timeout for read/write operations using `std::chrono`.
 * Integrates well with STL algorithms in some cases. Eg: std::move(ch.begin(), ch.end(), ...).
 * Tested with GCC, Clang, and MSVC.
 
@@ -29,7 +30,6 @@ see [CMakeLists.txt](./examples/cmake-project/CMakeLists.txt) from the [CMake pr
 
 ```c++
 #include <cassert>
-
 #include <msd/channel.hpp>
 
 int main() {
@@ -83,7 +83,6 @@ int main() {
 
 ```c++
 #include <iostream>
-
 #include <msd/channel.hpp>
 
 int main() {
@@ -98,6 +97,31 @@ int main() {
         std::cout << out << '\n';
     }
 }
+```
+
+````c++
+#include <iostream>
+#include <msd/channel.hpp>
+
+int main() {
+    msd::channel<int> ch{2};
+    ch.setTimeout(std::chrono::milliseconds(100));
+
+    std::clog << "Testing write timeout on full buffer:\n";
+    try {
+        ch << 1;
+        ch << 2;
+        std::clog << "Attempting to write to full channel...\n";
+        ch << 3;
+    }
+    catch (const msd::channel_timeout& e) {
+        std::clog << "Expected timeout occurred: " << e.what() << "\n";
+    }
+
+    return 0;
+}
+
+
 ```
 
 See [examples](examples).
