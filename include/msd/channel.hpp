@@ -137,7 +137,7 @@ class channel {
     std::mutex mtx_;
     std::condition_variable cnd_;
     std::atomic<bool> is_closed_{false};
-    std::chrono::nanoseconds timeout_;
+    std::atomic<std::chrono::nanoseconds> timeout_{std::chrono::nanoseconds::zero()};
 
     template <typename Predicate>
     bool waitWithTimeout(std::unique_lock<std::mutex>&, Predicate);

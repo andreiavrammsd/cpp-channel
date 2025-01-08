@@ -10,7 +10,6 @@ template <typename T>
 template <typename Rep, typename Period>
 void channel<T>::setTimeout(const std::chrono::duration<Rep, Period>& timeout)
 {
-    std::lock_guard<std::mutex> lock{mtx_};
     timeout_ = std::chrono::duration_cast<std::chrono::nanoseconds>(timeout);
 }
 
@@ -24,12 +23,12 @@ template <typename T>
 template <typename Predicate>
 bool channel<T>::waitWithTimeout(std::unique_lock<std::mutex>& lock, Predicate pred)
 {
-    if (!timeout_.count()) {
+    if (!timeout_.load().count()) [[likely]] {
         cnd_.wait(lock, pred);
         return true;
     }
 
-    return cnd_.wait_for(lock, timeout_, pred);
+    return cnd_.wait_for(lock, timeout_.load(), pred);
 }
 
 template <typename T>
@@ -50,7 +49,7 @@ bool channel<T>::waitBeforeWrite(std::unique_lock<std::mutex>& lock)
 template <typename T>
 channel<typename std::decay<T>::type>& operator<<(channel<typename std::decay<T>::type>& ch, T&& in)
 {
-    if (ch.closed()) {
+    if (ch.closed()) [[unlikely]] {
         throw closed_channel{"cannot write on closed channel"};
     }
     {
@@ -68,7 +67,7 @@ channel<typename std::decay<T>::type>& operator<<(channel<typename std::decay<T>
 template <typename T>
 channel<T>& operator>>(channel<T>& ch, T& out)
 {
-    if (ch.closed() && ch.empty()) {
+    if (ch.closed() && ch.empty()) [[unlikely]] {
         return ch;
     }
     {
