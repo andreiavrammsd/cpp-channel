@@ -23,7 +23,7 @@ template <typename T>
 template <typename Predicate>
 bool channel<T>::waitWithTimeout(std::unique_lock<std::mutex>& lock, Predicate pred)
 {
-    if (!timeout_.load().count()) [[likely]] {
+    if (!timeout_.load().count()) {
         cnd_.wait(lock, pred);
         return true;
     }
@@ -49,7 +49,7 @@ bool channel<T>::waitBeforeWrite(std::unique_lock<std::mutex>& lock)
 template <typename T>
 channel<typename std::decay<T>::type>& operator<<(channel<typename std::decay<T>::type>& ch, T&& in)
 {
-    if (ch.closed()) [[unlikely]] {
+    if (ch.closed()) {
         throw closed_channel{"cannot write on closed channel"};
     }
     {
@@ -67,7 +67,7 @@ channel<typename std::decay<T>::type>& operator<<(channel<typename std::decay<T>
 template <typename T>
 channel<T>& operator>>(channel<T>& ch, T& out)
 {
-    if (ch.closed() && ch.empty()) [[unlikely]] {
+    if (ch.closed() && ch.empty()) {
         return ch;
     }
     {
