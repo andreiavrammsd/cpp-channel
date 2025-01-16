@@ -25,11 +25,11 @@ bool channel<T>::waitWithTimeout(std::unique_lock<std::mutex>& lock, Predicate&&
 {
     auto timeout = timeout_.load(std::memory_order_relaxed);
     if (timeout == std::chrono::nanoseconds::zero()) {
-        cnd_.wait(lock, std::forward<Predicate>(pred));
+        cnd_.wait(lock, std::forward<Predicate>(predicate));
         return true;
     }
 
-    return cnd_.wait_for(lock, timeout, std::forward<Predicate>(pred));
+    return cnd_.wait_for(lock, timeout, std::forward<Predicate>(predicate));
 }
 
 template <typename T>

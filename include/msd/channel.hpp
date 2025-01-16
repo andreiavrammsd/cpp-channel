@@ -140,7 +140,7 @@ class channel {
     std::atomic<std::chrono::nanoseconds> timeout_{std::chrono::nanoseconds::zero()};
 
     template <typename Predicate>
-    bool waitWithTimeout(std::unique_lock<std::mutex>&, Predicate);
+    bool waitWithTimeout(std::unique_lock<std::mutex>&, Predicate&&);
     bool waitBeforeRead(std::unique_lock<std::mutex>&);
     bool waitBeforeWrite(std::unique_lock<std::mutex>&);
 
