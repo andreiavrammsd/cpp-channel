@@ -21,15 +21,15 @@ void channel<T>::clearTimeout() noexcept
 
 template <typename T>
 template <typename Predicate>
-bool channel<T>::waitWithTimeout(std::unique_lock<std::mutex>& lock, Predicate pred)
+bool channel<T>::waitWithTimeout(std::unique_lock<std::mutex>& lock, Predicate&& predicate)
 {
     auto timeout = timeout_.load(std::memory_order_relaxed);
     if (timeout == std::chrono::nanoseconds::zero()) {
-        cnd_.wait(lock, pred);
+        cnd_.wait(lock, std::forward<Predicate>(pred));
         return true;
     }
 
-    return cnd_.wait_for(lock, timeout, pred);
+    return cnd_.wait_for(lock, timeout, std::forward<Predicate>(pred));
 }
 
 template <typename T>
