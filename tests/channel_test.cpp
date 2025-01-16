@@ -1,3 +1,5 @@
+#include "msd/channel.hpp"
+
 #include <gtest/gtest.h>
 
 #include <algorithm>
@@ -8,8 +10,6 @@
 #include <thread>
 #include <type_traits>
 #include <vector>
-
-#include "msd/channel.hpp"
 
 TEST(ChannelTest, Traits)
 {

@@ -99,7 +99,7 @@ int main() {
 }
 ```
 
-````c++
+```c++
 #include <iostream>
 #include <msd/channel.hpp>
 
