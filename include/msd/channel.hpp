@@ -149,5 +149,4 @@ class channel {
 
 }  // namespace msd
 
-#include "channel.inl"
 #endif  // MSD_CHANNEL_HPP_
