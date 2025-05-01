@@ -1,8 +1,6 @@
 # Channel
 
-[![build](https://github.com/andreiavrammsd/cpp-channel/workflows/build/badge.svg)](https://github.com/andreiavrammsd/cpp-channel/actions)
-
-[![codecov](https://codecov.io/github/andreiavrammsd/cpp-channel/graph/badge.svg?token=CKQ0TVW62Z)](https://codecov.io/github/andreiavrammsd/cpp-channel)
+[![build](https://github.com/andreiavrammsd/cpp-channel/workflows/build/badge.svg)](https://github.com/andreiavrammsd/cpp-channel/actions) [![codecov](https://codecov.io/github/andreiavrammsd/cpp-channel/graph/badge.svg?token=CKQ0TVW62Z)](https://codecov.io/github/andreiavrammsd/cpp-channel)
 
 ### Thread-safe container for sharing data between threads. Header-only.
 
@@ -104,6 +102,4 @@ See [examples](examples).
 
 <br>
 
-Developed with [CLion](https://www.jetbrains.com/?from=serializer)
-
-<a href="https://www.jetbrains.com/?from=serializer">![JetBrains](jetbrains.svg)</a>
+Developed with [CLion](https://www.jetbrains.com/?from=serializer) and [Visual Studio Code](https://code.visualstudio.com/).
