@@ -10,13 +10,13 @@ constexpr channel<T>::channel(const size_type capacity) : cap_{capacity}
 template <typename T>
 channel<typename std::decay<T>::type>& operator<<(channel<typename std::decay<T>::type>& ch, T&& in)
 {
-    if (ch.closed()) {
-        throw closed_channel{"cannot write on closed channel"};
-    }
-
     {
         std::unique_lock<std::mutex> lock{ch.mtx_};
         ch.waitBeforeWrite(lock);
+
+        if (ch.closed()) {
+            throw closed_channel{"cannot write on closed channel"};
+        }
 
         ch.queue_.push(std::forward<T>(in));
         ++ch.size_;
@@ -30,13 +30,13 @@ channel<typename std::decay<T>::type>& operator<<(channel<typename std::decay<T>
 template <typename T>
 channel<T>& operator>>(channel<T>& ch, T& out)
 {
-    if (ch.closed() && ch.empty()) {
-        return ch;
-    }
-
     {
         std::unique_lock<std::mutex> lock{ch.mtx_};
         ch.waitBeforeRead(lock);
+
+        if (ch.closed() && ch.empty()) {
+            return ch;
+        }
 
         if (!ch.empty()) {
             out = std::move(ch.queue_.front());
