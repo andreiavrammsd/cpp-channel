@@ -1,4 +1,4 @@
-// Copyright (C) 2023 Andrei Avram
+// Copyright (C) 2020-2025 Andrei Avram
 
 namespace msd {
 
