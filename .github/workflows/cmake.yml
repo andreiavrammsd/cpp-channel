@@ -1,17 +1,26 @@
-# https://gist.github.com/NickNaso/0d478f1481686d5bcc868cac06620a60
 name: build
 
 on:
   push:
     branches:
       - master
+    paths-ignore:
+      - '.vscode/**'
+      - 'LICENSE'
+      - 'README.md'
   pull_request:
+    paths-ignore:
+      - '.vscode/**'
+      - 'LICENSE'
+      - 'README.md'
   workflow_dispatch:
-  schedule:
-    - cron: '0 18 1 * *'
+
+env:
+  CTEST_OUTPUT_ON_FAILURE: ON
+  CTEST_PARALLEL_LEVEL: 2
 
 jobs:
-  build:
+  test:
     name: ${{ matrix.config.name }}
     runs-on: ${{ matrix.config.os }}
 
@@ -23,65 +32,68 @@ jobs:
             name: "Ubuntu Latest GCC (Release)",
             os: ubuntu-latest,
             build_type: "Release",
-            coverage: false,
           }
           - {
             name: "Ubuntu 22.04 GCC (Debug)",
             os: ubuntu-22.04,
             build_type: "Debug",
-            coverage: true,
           }
           - {
             name: "macOS Latest Clang (Release)",
             os: macos-latest,
             build_type: "Release",
-            coverage: false,
           }
           - {
             name: "Windows Latest (Release)",
             os: windows-latest,
             build_type: "Release",
-            coverage: false,
           }
 
     steps:
       - uses: actions/checkout@v4
 
       - name: Create Build Environment
-        # Some projects don't allow in-source building, so create a separate build directory
-        # We'll use this as our working directory for all subsequent commands
         run: cmake -E make_directory ${{github.workspace}}/build
 
       - name: Configure CMake
-        # Use a bash shell so we can use the same syntax for environment variable
-        # access regardless of the host operating system
-        shell: bash
         working-directory: ${{github.workspace}}/build
-        # Note the current convention is to use the -S and -B options here to specify source
-        # and build directories, but this is only available with CMake 3.13 and higher.
-        # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
-        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} -Dcpp_channel_build_examples=ON -Dcpp_channel_build_tests=ON
+        run: cmake ${{ github.workspace }} -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} -Dcpp_channel_build_examples=ON -Dcpp_channel_build_tests=ON
 
       - name: Build
         working-directory: ${{github.workspace}}/build
-        shell: bash
-        # Execute the build.  You can specify a specific target with "--target <NAME>"
         run: cmake --build . --config ${{ matrix.config.build_type }} --target tests
 
       - name: Test
         working-directory: ${{github.workspace}}/build
-        shell: bash
-        # Execute tests defined by the CMake configuration.
-        # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
         run: ctest -C ${{ matrix.config.build_type }} --verbose -R channel_test*
+
+      - name: Run examples
+        working-directory: ${{github.workspace}}/build
+        run: cmake --build . --config ${{ matrix.config.build_type }} --target examples
+
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create Build Environment
+        run: cmake -E make_directory ${{github.workspace}}/build
+
+      - name: Configure CMake
+        working-directory: ${{github.workspace}}/build
+        run: cmake ${{ github.workspace }} -DCMAKE_BUILD_TYPE=Debug -Dcpp_channel_build_tests=ON
+
+      - name: Build
+        working-directory: ${{github.workspace}}/build
+        run: cmake --build . --config Debug --target tests
+
+      - name: Test
+        working-directory: ${{github.workspace}}/build
+        run: ctest -C Debug --verbose -R channel_test11
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4.0.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-        if: matrix.config.coverage == true
-
-      - name: Run examples
-        working-directory: ${{github.workspace}}/build
-        shell: bash
-        run: cmake --build . --config ${{ matrix.config.build_type }} --target examples
