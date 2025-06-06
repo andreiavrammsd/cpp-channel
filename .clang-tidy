@@ -9,6 +9,8 @@ Checks: >
   -hicpp-named-parameter,
   -readability-named-parameter,
   -altera-unroll-loops,
+  -llvmlibc-inline-function-decl,
+  -cppcoreguidelines-avoid-const-or-ref-data-members
 
 WarningsAsErrors: "*"
 
