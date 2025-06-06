@@ -53,7 +53,7 @@ class channel {
      *
      * @param capacity Number of elements the channel can store before blocking.
      */
-    explicit constexpr channel(size_type capacity);
+    explicit constexpr channel(const size_type capacity) : cap_{capacity} {}
 
     /**
      * Pushes an element into the channel.
@@ -74,28 +74,35 @@ class channel {
     /**
      * Returns the number of elements in the channel.
      */
-    NODISCARD size_type constexpr size() const noexcept;
+    NODISCARD size_type constexpr size() const noexcept { return size_; }
 
     /**
      * Returns true if there are no elements in channel.
      */
-    NODISCARD bool constexpr empty() const noexcept;
+    NODISCARD bool constexpr empty() const noexcept { return size_ == 0; }
 
     /**
      * Closes the channel.
      */
-    inline void close() noexcept;
+    inline void close() noexcept
+    {
+        {
+            std::unique_lock<std::mutex> lock{mtx_};
+            is_closed_.store(true);
+        }
+        cnd_.notify_all();
+    }
 
     /**
      * Returns true if the channel is closed.
      */
-    NODISCARD inline bool closed() const noexcept;
+    NODISCARD inline bool closed() const noexcept { return is_closed_.load(); }
 
     /**
      * Iterator
      */
-    iterator begin() noexcept;
-    iterator end() noexcept;
+    iterator begin() noexcept { return blocking_iterator<channel<T>>{*this}; }
+    iterator end() noexcept { return blocking_iterator<channel<T>>{*this}; }
 
     /**
      * Channel cannot be copied or moved.
@@ -114,13 +121,64 @@ class channel {
     std::condition_variable cnd_;
     std::atomic<bool> is_closed_{false};
 
-    inline void waitBeforeRead(std::unique_lock<std::mutex>&);
-    inline void waitBeforeWrite(std::unique_lock<std::mutex>&);
+    inline void waitBeforeRead(std::unique_lock<std::mutex>& lock)
+    {
+        cnd_.wait(lock, [this]() { return !empty() || closed(); });
+    };
+
+    inline void waitBeforeWrite(std::unique_lock<std::mutex>& lock)
+    {
+        if (cap_ > 0 && size_ == cap_) {
+            cnd_.wait(lock, [this]() { return size_ < cap_; });
+        }
+    }
+
     friend class blocking_iterator<channel>;
 };
 
-}  // namespace msd
+template <typename T>
+channel<typename std::decay<T>::type>& operator<<(channel<typename std::decay<T>::type>& ch, T&& in)
+{
+    {
+        std::unique_lock<std::mutex> lock{ch.mtx_};
+        ch.waitBeforeWrite(lock);
 
-#include "channel.inl"
+        if (ch.closed()) {
+            throw closed_channel{"cannot write on closed channel"};
+        }
+
+        ch.queue_.push(std::forward<T>(in));
+        ++ch.size_;
+    }
+
+    ch.cnd_.notify_one();
+
+    return ch;
+}
+
+template <typename T>
+channel<T>& operator>>(channel<T>& ch, T& out)
+{
+    {
+        std::unique_lock<std::mutex> lock{ch.mtx_};
+        ch.waitBeforeRead(lock);
+
+        if (ch.closed() && ch.empty()) {
+            return ch;
+        }
+
+        if (!ch.empty()) {
+            out = std::move(ch.queue_.front());
+            ch.queue_.pop();
+            --ch.size_;
+        }
+    }
+
+    ch.cnd_.notify_one();
+
+    return ch;
+}
+
+}  // namespace msd
 
 #endif  // MSD_CHANNEL_HPP_
