@@ -1,0 +1,57 @@
+\doxysection{blocking\+\_\+iterator.\+hpp}
+\hypertarget{blocking__iterator_8hpp_source}{}\label{blocking__iterator_8hpp_source}\index{include/msd/blocking\_iterator.hpp@{include/msd/blocking\_iterator.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Copyright\ (C)\ 2020-\/2025\ Andrei\ Avram}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#ifndef\ MSD\_CHANNEL\_BLOCKING\_ITERATOR\_HPP\_}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#define\ MSD\_CHANNEL\_BLOCKING\_ITERATOR\_HPP\_}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <iterator>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <mutex>}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{namespace\ }msd\ \{}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Channel>}
+\DoxyCodeLine{00019\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classmsd_1_1blocking__iterator}{blocking\_iterator}}\ \{}
+\DoxyCodeLine{00020\ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classmsd_1_1blocking__iterator_ae07231ca822083cc5d324cb2f31c4755}{value\_type}}\ =\ \textcolor{keyword}{typename}\ Channel::value\_type;}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classmsd_1_1blocking__iterator_a584eb190837cc23a6e4351d5a9206fa4}{reference}}\ =\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ Channel::value\_type\&;}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classmsd_1_1blocking__iterator_a20dadefb5553f7c7c39a980463d600a7}{blocking\_iterator}}(Channel\&\ chan)\ :\ chan\_\{chan\}\ \{\}}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00043\ \ \ \ \ \mbox{\hyperlink{classmsd_1_1blocking__iterator}{blocking\_iterator<Channel>}}\ \mbox{\hyperlink{classmsd_1_1blocking__iterator_a105c24f3c1519c3e73ab932aa9669b6f}{operator++}}()\ const\ noexcept\ \{\ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};\ \}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00050\ \ \ \ \ \mbox{\hyperlink{classmsd_1_1blocking__iterator_a584eb190837cc23a6e4351d5a9206fa4}{reference}}\ \mbox{\hyperlink{classmsd_1_1blocking__iterator_a021d6d7eab5c1a7c012b46196074a47c}{operator*}}()}
+\DoxyCodeLine{00051\ \ \ \ \ \{}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ chan\_\ >>\ value\_;}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ value\_;}
+\DoxyCodeLine{00055\ \ \ \ \ \}}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classmsd_1_1blocking__iterator_a4512df43bc26605bb088b8cd56e36320}{operator!=}}(\mbox{\hyperlink{classmsd_1_1blocking__iterator}{blocking\_iterator<Channel>}})\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00064\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ std::unique\_lock<std::mutex>\ lock\{chan\_.mtx\_\};}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ chan\_.waitBeforeRead(lock);}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ !(chan\_.closed()\ \&\&\ chan\_.empty());}
+\DoxyCodeLine{00069\ \ \ \ \ \}}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00072\ \ \ \ \ Channel\&\ chan\_;}
+\DoxyCodeLine{00073\ \ \ \ \ \mbox{\hyperlink{classmsd_1_1blocking__iterator_ae07231ca822083cc5d324cb2f31c4755}{value\_type}}\ value\_\{\};}
+\DoxyCodeLine{00074\ \};}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \}\ \ \textcolor{comment}{//\ namespace\ msd}}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00082\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00083\ \textcolor{keyword}{struct\ }std::iterator\_traits<msd::blocking\_iterator<T>>\ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keyword}{using\ }value\_type\ =\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{classmsd_1_1blocking__iterator_ae07231ca822083cc5d324cb2f31c4755}{msd::blocking\_iterator<T>::value\_type}};}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keyword}{using\ }reference\ =\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{classmsd_1_1blocking__iterator_a584eb190837cc23a6e4351d5a9206fa4}{msd::blocking\_iterator<T>::reference}};}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keyword}{using\ }iterator\_category\ =\ std::input\_iterator\_tag;}
+\DoxyCodeLine{00087\ \};}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ MSD\_CHANNEL\_BLOCKING\_ITERATOR\_HPP\_}}
+
+\end{DoxyCode}

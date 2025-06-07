@@ -1,0 +1,5 @@
+<map id="msd::closed_channel" name="msd::closed_channel">
+<area shape="rect" id="Node000001" title="Exception thrown if trying to write on closed channel." alt="" coords="5,79,164,104"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="15,5,154,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="87,44,87,79,82,79,82,44"/>
+</map>
