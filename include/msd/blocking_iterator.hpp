@@ -29,6 +29,21 @@ class blocking_iterator {
     using reference = const typename Channel::value_type&;
 
     /**
+     * @brief Supporting single-pass reading of elements.
+     */
+    using iterator_category = std::input_iterator_tag;
+
+    /**
+     * @brief Signed integral type for iterator difference.
+     */
+    using difference_type = std::ptrdiff_t;
+
+    /**
+     * @brief Pointer type to the value_type.
+     */
+    using pointer = const value_type*;
+
+    /**
      * @brief Constructs a blocking iterator from a channel reference.
      *
      * @param chan Reference to the channel this iterator will iterate over.
@@ -74,17 +89,5 @@ class blocking_iterator {
 };
 
 }  // namespace msd
-
-/**
- * @brief Input iterator specialization
- */
-/// \cond
-template <typename T>
-struct std::iterator_traits<msd::blocking_iterator<T>> {
-    using value_type = typename msd::blocking_iterator<T>::value_type;
-    using reference = typename msd::blocking_iterator<T>::reference;
-    using iterator_category = std::input_iterator_tag;
-};
-/// \endcond
 
 #endif  // MSD_CHANNEL_BLOCKING_ITERATOR_HPP_
