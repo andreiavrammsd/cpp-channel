@@ -122,3 +122,23 @@ jobs:
 
       - name: Run Clang Format
         run: clang-format --dry-run --Werror $(find include -type f)
+
+  clang-tidy:
+    name: Clang Tidy
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install
+        run: sudo apt-get install -y clang-tidy
+
+      - name: Create Build Environment
+        run: cmake -E make_directory ${{github.workspace}}/build
+
+      - name: Configure CMake
+        working-directory: ${{github.workspace}}/build
+        run: cmake ${{ github.workspace }} -DCMAKE_BUILD_TYPE=Debug -DCPP_CHANNEL_BUILD_TESTS=ON
+
+      - name: Run Clang Tidy
+        run: clang-tidy -p ${{github.workspace}}/build $(find include -type f) -- -std=c++11
