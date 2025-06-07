@@ -23,9 +23,14 @@ function(package_add_test TESTNAME)
     set_target_warnings(${TESTNAME} PRIVATE)
     target_link_libraries(${TESTNAME} gtest gtest_main)
 
-    if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        target_link_libraries(${TESTNAME} -lgcov -lubsan)
-        target_compile_options(${TESTNAME} PRIVATE --coverage -fsanitize=undefined)
+    if (CPP_CHANNEL_COVERAGE)
+        target_link_libraries(${TESTNAME} -lgcov)
+        target_compile_options(${TESTNAME} PRIVATE --coverage)
+    endif ()
+
+    if (CPP_CHANNEL_SANITIZERS)
+        target_link_libraries(${TESTNAME} -lubsan)
+        target_compile_options(${TESTNAME} PRIVATE -fsanitize=undefined)
     endif ()
 
     add_test(NAME ${TESTNAME} COMMAND ${TESTNAME})
@@ -36,17 +41,11 @@ endfunction()
 add_custom_target(tests)
 
 # Tests
-package_add_test(channel_test11 channel_test.cpp blocking_iterator_test.cpp)
-package_add_test(channel_test14 channel_test.cpp blocking_iterator_test.cpp)
-package_add_test(channel_test17 channel_test.cpp blocking_iterator_test.cpp)
-
-set_target_properties(channel_test14 PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED YES)
-set_target_properties(channel_test17 PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED YES)
+package_add_test(channel_test channel_test.cpp blocking_iterator_test.cpp)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
     # Disable warnings about C++17 extensions
-    target_compile_options(channel_test11 PRIVATE -Wno-c++17-extensions)
-    target_compile_options(channel_test14 PRIVATE -Wno-c++17-extensions)
+    target_compile_options(channel_test PRIVATE -Wno-c++17-extensions)
 endif()
 
 # Benchmark
