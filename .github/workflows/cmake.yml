@@ -29,14 +29,14 @@ jobs:
       matrix:
         config:
           - {
-            name: "Ubuntu 22.04 GCC, C++11 (Debug)",
-            os: ubuntu-22.04,
+            name: "Ubuntu 24.04 GCC, C++11 (Debug)",
+            os: ubuntu-24.04,
             build_type: "Debug",
             std: "11",
           }
           - {
-            name: "Ubuntu 22.04 GCC, C++17 (Debug)",
-            os: ubuntu-22.04,
+            name: "Ubuntu Latest GCC, C++17 (Debug)",
+            os: ubuntu-latest,
             build_type: "Debug",
             std: "17",
           }
