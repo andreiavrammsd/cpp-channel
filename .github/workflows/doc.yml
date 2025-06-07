@@ -1,0 +1,40 @@
+name: doc
+
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - '.vscode/**'
+      - 'LICENSE'
+  pull_request:
+    paths-ignore:
+      - '.vscode/**'
+      - 'LICENSE'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Documentation
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y doxygen graphviz
+
+      - name: Generate documentation
+        run: doxygen
+
+      - name: Deploy documentation
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
+        if: github.ref == 'refs/heads/master'

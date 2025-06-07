@@ -1,6 +1,7 @@
 # Channel
 
 [![build](https://github.com/andreiavrammsd/cpp-channel/workflows/build/badge.svg)](https://github.com/andreiavrammsd/cpp-channel/actions) [![codecov](https://codecov.io/github/andreiavrammsd/cpp-channel/graph/badge.svg?token=CKQ0TVW62Z)](https://codecov.io/github/andreiavrammsd/cpp-channel)
+[![documentation](https://github.com/andreiavrammsd/cpp-channel/workflows/doc/badge.svg)](https://andreiavrammsd.github.io/cpp-channel/)
 
 ### Thread-safe container for sharing data between threads. Header-only.
 
@@ -19,9 +20,8 @@
 
 ## Installation
 
-Copy the [include](./include) directory to your project and add it to your include path. Or
-see [CMakeLists.txt](./examples/cmake-project/CMakeLists.txt) from the [CMake project example](./examples/cmake-project)
-.
+Copy the [include](https://github.com/andreiavrammsd/cpp-channel/tree/master/include) directory to your project and add it to your include path. Or
+see [CMakeLists.txt](https://github.com/andreiavrammsd/cpp-channel/blob/master/examples/cmake-project/CMakeLists.txt) from the [CMake project example](https://github.com/andreiavrammsd/cpp-channel/tree/master/examples/cmake-project).
 
 ## Usage
 
@@ -98,7 +98,7 @@ int main() {
 }
 ```
 
-See [examples](examples).
+See [examples](https://github.com/andreiavrammsd/cpp-channel/tree/master/examples).
 
 <br>
 
