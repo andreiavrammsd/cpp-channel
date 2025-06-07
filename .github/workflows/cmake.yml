@@ -67,7 +67,7 @@ jobs:
 
       - name: Configure CMake
         working-directory: ${{github.workspace}}/build
-        run: cmake ${{ github.workspace }} -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} -DCMAKE_CXX_STANDARD=${{ matrix.config.std }} -Dcpp_channel_build_examples=ON -Dcpp_channel_build_tests=ON
+        run: cmake ${{ github.workspace }} -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} -DCMAKE_CXX_STANDARD=${{ matrix.config.std }} -DCPP_CHANNEL_BUILD_EXAMPLES=ON -DCPP_CHANNEL_BUILD_TESTS=ON
 
       - name: Build
         working-directory: ${{github.workspace}}/build
@@ -93,7 +93,7 @@ jobs:
 
       - name: Configure CMake
         working-directory: ${{github.workspace}}/build
-        run: cmake ${{ github.workspace }} -DCMAKE_BUILD_TYPE=Debug -Dcpp_channel_build_tests=ON -Dcpp_channel_coverage=ON
+        run: cmake ${{ github.workspace }} -DCMAKE_BUILD_TYPE=Debug -DCPP_CHANNEL_BUILD_TESTS=ON -DCPP_CHANNEL_COVERAGE=ON
 
       - name: Build
         working-directory: ${{github.workspace}}/build

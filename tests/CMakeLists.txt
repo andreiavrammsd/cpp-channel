@@ -23,7 +23,7 @@ function(package_add_test TESTNAME)
     set_target_warnings(${TESTNAME} PRIVATE)
     target_link_libraries(${TESTNAME} gtest gtest_main)
 
-    if (cpp_channel_coverage)
+    if (CPP_CHANNEL_COVERAGE)
         target_link_libraries(${TESTNAME} -lgcov -lubsan)
         target_compile_options(${TESTNAME} PRIVATE --coverage -fsanitize=undefined)
     endif ()
