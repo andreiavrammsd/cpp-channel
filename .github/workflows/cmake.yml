@@ -71,15 +71,15 @@ jobs:
 
       - name: Build
         working-directory: ${{github.workspace}}/build
-        run: cmake --build . --config ${{ matrix.config.build_type }} --target tests
+        run: cmake --build . --config ${{ matrix.config.build_type }} --target tests -j
 
       - name: Test
         working-directory: ${{github.workspace}}/build
-        run: ctest -C ${{ matrix.config.build_type }} --verbose -R channel_test
+        run: ctest -C ${{ matrix.config.build_type }} --verbose -R channel_test --output-on-failure -j
 
       - name: Run examples
         working-directory: ${{github.workspace}}/build
-        run: cmake --build . --config ${{ matrix.config.build_type }} --target examples
+        run: cmake --build . --config ${{ matrix.config.build_type }} --target examples -j
 
   coverage:
     name: Coverage
