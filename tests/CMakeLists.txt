@@ -12,7 +12,7 @@ endif()
 
 include(FetchContent)
 if (NOT googletest_POPULATED)
-    FetchContent_Declare(googletest URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.zip)
+    FetchContent_Declare(googletest URL https://github.com/google/googletest/archive/refs/tags/v1.17.0.zip)
     FetchContent_MakeAvailable(googletest)
 endif ()
 
@@ -50,7 +50,7 @@ endif()
 
 # Benchmark
 if (NOT benchmark_POPULATED)
-    FetchContent_Declare(benchmark URL https://github.com/google/benchmark/archive/refs/tags/v1.8.5.zip)
+    FetchContent_Declare(benchmark URL https://github.com/google/benchmark/archive/refs/tags/v1.9.4.zip)
     FetchContent_MakeAvailable(benchmark)
 endif ()
 
