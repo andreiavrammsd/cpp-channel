@@ -33,30 +33,35 @@ jobs:
             os: ubuntu-24.04,
             build_type: "Debug",
             std: "11",
+            sanitizers: "ON",
           }
           - {
             name: "Ubuntu Latest GCC, C++17 (Debug)",
             os: ubuntu-latest,
             build_type: "Debug",
             std: "17",
+            sanitizers: "OFF",
           }
           - {
             name: "Ubuntu Latest GCC, C++11 (Release)",
             os: ubuntu-latest,
             build_type: "Release",
             std: "11",
+            sanitizers: "OFF",
           }
           - {
             name: "macOS Latest Clang, C++11 (Release)",
             os: macos-latest,
             build_type: "Release",
             std: "11",
+            sanitizers: "OFF",
           }
           - {
             name: "Windows Latest, C++11 (Release)",
             os: windows-latest,
             build_type: "Release",
             std: "11",
+            sanitizers: "OFF",
           }
 
     steps:
@@ -67,7 +72,13 @@ jobs:
 
       - name: Configure CMake
         working-directory: ${{github.workspace}}/build
-        run: cmake ${{ github.workspace }} -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} -DCMAKE_CXX_STANDARD=${{ matrix.config.std }} -DCPP_CHANNEL_BUILD_EXAMPLES=ON -DCPP_CHANNEL_BUILD_TESTS=ON
+        run: |
+          cmake ${{ github.workspace }} \
+            -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} \
+            -DCMAKE_CXX_STANDARD=${{ matrix.config.std }} \
+            -DCPP_CHANNEL_BUILD_EXAMPLES=ON \
+            -DCPP_CHANNEL_BUILD_TESTS=ON \
+            -DCPP_CHANNEL_SANITIZERS=${{ matrix.config.sanitizers }}
 
       - name: Build
         working-directory: ${{github.workspace}}/build

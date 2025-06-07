@@ -3,6 +3,7 @@
         "-DCPP_CHANNEL_BUILD_EXAMPLES=ON",
         "-DCPP_CHANNEL_BUILD_TESTS=ON",
         "-DCPP_CHANNEL_COVERAGE=ON",
+        "-DCPP_CHANNEL_SANITIZERS=ON",
         "-DCMAKE_CXX_STANDARD=11"
     ],
     "clang-tidy.fixOnSave": false,

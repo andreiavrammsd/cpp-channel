@@ -17,6 +17,7 @@ target_include_directories(msd_channel INTERFACE include)
 option(CPP_CHANNEL_BUILD_TESTS "Build all of cpp_channel's own tests." OFF)
 option(CPP_CHANNEL_BUILD_EXAMPLES "Build cpp_channel's example programs." OFF)
 option(CPP_CHANNEL_COVERAGE "Generate test coverage." OFF)
+option(CPP_CHANNEL_SANITIZERS "Build with sanitizers." OFF)
 
 if (CPP_CHANNEL_BUILD_TESTS)
     enable_testing()
