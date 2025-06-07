@@ -29,24 +29,52 @@ jobs:
       matrix:
         config:
           - {
-            name: "Ubuntu Latest GCC (Release)",
+            name: "Ubuntu Latest GCC, C++11 (Release)",
             os: ubuntu-latest,
             build_type: "Release",
+            std: "11",
           }
           - {
-            name: "Ubuntu 22.04 GCC (Debug)",
+            name: "Ubuntu 22.04 GCC, C++11 (Debug)",
             os: ubuntu-22.04,
             build_type: "Debug",
+            std: "11",
           }
           - {
-            name: "macOS Latest Clang (Release)",
+            name: "Ubuntu 22.04 GCC, C++14 (Debug)",
+            os: ubuntu-22.04,
+            build_type: "Debug",
+            std: "14",
+          }
+          - {
+            name: "Ubuntu 22.04 GCC, C++17 (Debug)",
+            os: ubuntu-22.04,
+            build_type: "Debug",
+            std: "17",
+          }
+          - {
+            name: "Ubuntu 22.04 GCC, C++20 (Debug)",
+            os: ubuntu-22.04,
+            build_type: "Debug",
+            std: "20",
+          }
+          - {
+            name: "Ubuntu 22.04 GCC, C++23 (Debug)",
+            os: ubuntu-22.04,
+            build_type: "Debug",
+            std: "23",
+          }
+          - {
+            name: "macOS Latest Clang, C++11 (Release)",
             os: macos-latest,
             build_type: "Release",
+            std: "11",
           }
           - {
-            name: "Windows Latest (Release)",
+            name: "Windows Latest, C++11 (Release)",
             os: windows-latest,
             build_type: "Release",
+            std: "11",
           }
 
     steps:
@@ -57,7 +85,7 @@ jobs:
 
       - name: Configure CMake
         working-directory: ${{github.workspace}}/build
-        run: cmake ${{ github.workspace }} -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} -Dcpp_channel_build_examples=ON -Dcpp_channel_build_tests=ON
+        run: cmake ${{ github.workspace }} -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} -DCMAKE_CXX_STANDARD=${{ matrix.config.std }} -Dcpp_channel_build_examples=ON -Dcpp_channel_build_tests=ON
 
       - name: Build
         working-directory: ${{github.workspace}}/build
@@ -65,7 +93,7 @@ jobs:
 
       - name: Test
         working-directory: ${{github.workspace}}/build
-        run: ctest -C ${{ matrix.config.build_type }} --verbose -R channel_test*
+        run: ctest -C ${{ matrix.config.build_type }} --verbose -R channel_test
 
       - name: Run examples
         working-directory: ${{github.workspace}}/build
@@ -91,7 +119,7 @@ jobs:
 
       - name: Test
         working-directory: ${{github.workspace}}/build
-        run: ctest -C Debug --verbose -R channel_test11
+        run: ctest -C Debug --verbose -R channel_test
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4.0.1
