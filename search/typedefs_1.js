@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['reference_0',['reference',['../classmsd_1_1blocking__iterator.html#a584eb190837cc23a6e4351d5a9206fa4',1,'msd::blocking_iterator']]]
+  ['iterator_0',['iterator',['../classmsd_1_1channel.html#a7b06047c030bad429d12bbe7c3f7f377',1,'msd::channel']]],
+  ['iterator_5fcategory_1',['iterator_category',['../classmsd_1_1blocking__iterator.html#aaa7a56e2788425f0042ef037cb794973',1,'msd::blocking_iterator']]]
 ];

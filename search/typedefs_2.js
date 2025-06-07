@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['size_5ftype_0',['size_type',['../classmsd_1_1channel.html#ae458eca85e982f3a11a461c6dd8c264d',1,'msd::channel']]]
+  ['pointer_0',['pointer',['../classmsd_1_1blocking__iterator.html#a288a4698d3367260c139d357fd20d03f',1,'msd::blocking_iterator']]]
 ];

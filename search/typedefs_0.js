@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['iterator_0',['iterator',['../classmsd_1_1channel.html#a7b06047c030bad429d12bbe7c3f7f377',1,'msd::channel']]]
+  ['difference_5ftype_0',['difference_type',['../classmsd_1_1blocking__iterator.html#a01a0f3aa3546a5de8ae145ae996b1ced',1,'msd::blocking_iterator']]]
 ];

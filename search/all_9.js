@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['safe_20container_20for_20sharing_20data_20between_20threads_20header_20only_0',['Thread-safe container for sharing data between threads. Header-only.',['../index.html#autotoc_md1',1,'']]],
-  ['sharing_20data_20between_20threads_20header_20only_1',['Thread-safe container for sharing data between threads. Header-only.',['../index.html#autotoc_md1',1,'']]],
-  ['size_2',['size',['../classmsd_1_1channel.html#afa7291cddc759e1d77f1609f7fe9e2f8',1,'msd::channel']]],
-  ['size_5ftype_3',['size_type',['../classmsd_1_1channel.html#ae458eca85e982f3a11a461c6dd8c264d',1,'msd::channel']]]
+  ['reference_0',['reference',['../classmsd_1_1blocking__iterator.html#a584eb190837cc23a6e4351d5a9206fa4',1,'msd::blocking_iterator']]],
+  ['requirements_1',['Requirements',['../index.html#autotoc_md2',1,'']]]
 ];
