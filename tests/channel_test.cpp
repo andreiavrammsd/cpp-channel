@@ -148,9 +148,9 @@ TEST(ChannelTest, Iterator)
 
 TEST(ChannelTest, Multithreading)
 {
-    const int numbers = 1000;
-    const std::int64_t expected = 500500;
-    constexpr std::size_t kThreadsToReadFrom = 50;
+    const int numbers = 10000;
+    const std::int64_t expected = 50005000;
+    constexpr std::size_t kThreadsToReadFrom = 100;
 
     msd::channel<int> channel{10};
 
@@ -176,8 +176,6 @@ TEST(ChannelTest, Multithreading)
 
             sum_numbers += out;
             ++count_numbers;
-
-            std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }
         --wait_counter;
         cond_wait.notify_one();
@@ -188,19 +186,16 @@ TEST(ChannelTest, Multithreading)
         threads.emplace_back(std::thread{worker});
     }
 
-    auto sender = [&] {
-        // Send numbers to channel
-        for (int i = 1; i <= numbers; ++i) {
-            channel << i;
+    // Send numbers to channel
+    for (int i = 1; i <= numbers; ++i) {
+        channel << i;
 
-            // Notify threads than then can start reading
-            if (!ready_to_read) {
-                ready_to_read = true;
-                cond_read.notify_all();
-            }
+        // Notify threads than then can start reading
+        if (!ready_to_read) {
+            ready_to_read = true;
+            cond_read.notify_all();
         }
-    };
-    threads.emplace_back(std::thread{sender});
+    }
 
     // Wait until all items have been read
     std::unique_lock<std::mutex> lock{mtx_wait};
