@@ -153,12 +153,12 @@ class channel {
     std::condition_variable cnd_;
     std::atomic<bool> is_closed_{false};
 
-    inline void waitBeforeRead(std::unique_lock<std::mutex>& lock)
+    void waitBeforeRead(std::unique_lock<std::mutex>& lock)
     {
         cnd_.wait(lock, [this]() { return !empty() || closed(); });
     };
 
-    inline void waitBeforeWrite(std::unique_lock<std::mutex>& lock)
+    void waitBeforeWrite(std::unique_lock<std::mutex>& lock)
     {
         if (cap_ > 0 && size_ == cap_) {
             cnd_.wait(lock, [this]() { return size_ < cap_; });
