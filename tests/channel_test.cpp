@@ -49,6 +49,39 @@ TEST(ChannelTest, PushAndFetch)
     EXPECT_EQ(4, out);
 }
 
+TEST(ChannelTest, PushAndFetchWithBufferedChannel)
+{
+    msd::channel<int> channel{2};
+
+    auto push = [&channel]() {
+        channel << 1;
+        channel << 2;
+        channel << 3;
+    };
+
+    auto read = [&channel]() {
+        // Wait before reading to test the case where the channel is full and waiting
+        // for the reader to read some items.
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+        int out = 0;
+
+        channel >> out;
+        EXPECT_EQ(1, out);
+
+        channel >> out;
+        EXPECT_EQ(2, out);
+
+        channel >> out;
+        EXPECT_EQ(3, out);
+    };
+
+    std::thread push_thread{push};
+    std::thread read_thread{read};
+    push_thread.join();
+    read_thread.join();
+}
+
 TEST(ChannelTest, PushAndFetchMultiple)
 {
     msd::channel<int> channel;

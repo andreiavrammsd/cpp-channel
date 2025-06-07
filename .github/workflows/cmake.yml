@@ -102,11 +102,11 @@ jobs:
 
       - name: Build
         working-directory: ${{github.workspace}}/build
-        run: cmake --build . --config Debug --target tests
+        run: cmake --build . --config Debug --target tests -j
 
       - name: Test
         working-directory: ${{github.workspace}}/build
-        run: ctest -C Debug --verbose -R channel_test
+        run: ctest -C Debug --verbose -R channel_test -j
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
