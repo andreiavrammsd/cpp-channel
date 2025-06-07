@@ -93,7 +93,7 @@ jobs:
 
       - name: Configure CMake
         working-directory: ${{github.workspace}}/build
-        run: cmake ${{ github.workspace }} -DCMAKE_BUILD_TYPE=Debug -Dcpp_channel_build_tests=ON
+        run: cmake ${{ github.workspace }} -DCMAKE_BUILD_TYPE=Debug -Dcpp_channel_build_tests=ON -Dcpp_channel_coverage=ON
 
       - name: Build
         working-directory: ${{github.workspace}}/build
