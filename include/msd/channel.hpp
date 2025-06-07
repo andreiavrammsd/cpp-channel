@@ -109,7 +109,7 @@ class channel {
     {
         {
             std::unique_lock<std::mutex> lock{mtx_};
-            is_closed_.store(true);
+            is_closed_.store(true, std::memory_order_seq_cst);
         }
         cnd_.notify_all();
     }
@@ -120,7 +120,7 @@ class channel {
      * @return true If no more elements can be added to the channel.
      * @return false Otherwise.
      */
-    NODISCARD bool closed() const noexcept { return is_closed_.load(); }
+    NODISCARD bool closed() const noexcept { return is_closed_.load(std::memory_order_seq_cst); }
 
     /**
      * @brief Returns an iterator to the beginning of the channel.
@@ -169,46 +169,46 @@ class channel {
 };
 
 template <typename T>
-channel<typename std::decay<T>::type>& operator<<(channel<typename std::decay<T>::type>& ch, T&& in)
+channel<typename std::decay<T>::type>& operator<<(channel<typename std::decay<T>::type>& chan, T&& value)
 {
     {
-        std::unique_lock<std::mutex> lock{ch.mtx_};
-        ch.waitBeforeWrite(lock);
+        std::unique_lock<std::mutex> lock{chan.mtx_};
+        chan.waitBeforeWrite(lock);
 
-        if (ch.closed()) {
+        if (chan.closed()) {
             throw closed_channel{"cannot write on closed channel"};
         }
 
-        ch.queue_.push(std::forward<T>(in));
-        ++ch.size_;
+        chan.queue_.push(std::forward<T>(value));
+        ++chan.size_;
     }
 
-    ch.cnd_.notify_one();
+    chan.cnd_.notify_one();
 
-    return ch;
+    return chan;
 }
 
 template <typename T>
-channel<T>& operator>>(channel<T>& ch, T& out)
+channel<T>& operator>>(channel<T>& chan, T& out)
 {
     {
-        std::unique_lock<std::mutex> lock{ch.mtx_};
-        ch.waitBeforeRead(lock);
+        std::unique_lock<std::mutex> lock{chan.mtx_};
+        chan.waitBeforeRead(lock);
 
-        if (ch.closed() && ch.empty()) {
-            return ch;
+        if (chan.closed() && chan.empty()) {
+            return chan;
         }
 
-        if (!ch.empty()) {
-            out = std::move(ch.queue_.front());
-            ch.queue_.pop();
-            --ch.size_;
+        if (!chan.empty()) {
+            out = std::move(chan.queue_.front());
+            chan.queue_.pop();
+            --chan.size_;
         }
     }
 
-    ch.cnd_.notify_one();
+    chan.cnd_.notify_one();
 
-    return ch;
+    return chan;
 }
 
 }  // namespace msd

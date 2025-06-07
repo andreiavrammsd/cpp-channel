@@ -3,6 +3,7 @@
 #ifndef MSD_CHANNEL_BLOCKING_ITERATOR_HPP_
 #define MSD_CHANNEL_BLOCKING_ITERATOR_HPP_
 
+#include <cstddef>
 #include <iterator>
 #include <mutex>
 
