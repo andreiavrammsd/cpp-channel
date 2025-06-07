@@ -24,8 +24,13 @@ function(package_add_test TESTNAME)
     target_link_libraries(${TESTNAME} gtest gtest_main)
 
     if (CPP_CHANNEL_COVERAGE)
-        target_link_libraries(${TESTNAME} -lgcov -lubsan)
-        target_compile_options(${TESTNAME} PRIVATE --coverage -fsanitize=undefined)
+        target_link_libraries(${TESTNAME} -lgcov)
+        target_compile_options(${TESTNAME} PRIVATE --coverage)
+    endif ()
+
+    if (CPP_CHANNEL_SANITIZERS)
+        target_link_libraries(${TESTNAME} -lubsan)
+        target_compile_options(${TESTNAME} PRIVATE -fsanitize=undefined)
     endif ()
 
     add_test(NAME ${TESTNAME} COMMAND ${TESTNAME})
