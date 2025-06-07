@@ -1,7 +1,8 @@
 {
     "cmake.configureArgs": [
         "-Dcpp_channel_build_examples=ON",
-        "-Dcpp_channel_build_tests=ON"
+        "-Dcpp_channel_build_tests=ON",
+        "-DCMAKE_CXX_STANDARD=11"
     ],
     "clang-tidy.fixOnSave": false,
     "clang-tidy.lintOnSave": false,
