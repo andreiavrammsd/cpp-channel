@@ -26,6 +26,11 @@ namespace msd {
  */
 class closed_channel : public std::runtime_error {
    public:
+    /**
+     * @brief Constructs the exception with an error message.
+     *
+     * @param msg A descriptive message explaining the cause of the error.
+     */
     explicit closed_channel(const char* msg) : std::runtime_error{msg} {}
 };
 
@@ -39,24 +44,35 @@ class closed_channel : public std::runtime_error {
 template <typename T>
 class channel {
    public:
+    /**
+     * @brief The type of elements stored in the channel.
+     */
     using value_type = T;
+
+    /**
+     * @brief The iterator type used to traverse the channel.
+     */
     using iterator = blocking_iterator<channel<T>>;
+
+    /**
+     * @brief The type used to represent sizes and counts.
+     */
     using size_type = std::size_t;
 
     /**
-     * Creates an unbuffered channel.
+     * @brief Creates an unbuffered channel.
      */
     constexpr channel() = default;
 
     /**
-     * Creates a buffered channel.
+     * @brief Creates a buffered channel.
      *
      * @param capacity Number of elements the channel can store before blocking.
      */
     explicit constexpr channel(const size_type capacity) : cap_{capacity} {}
 
     /**
-     * Pushes an element into the channel.
+     * @brief Pushes an element into the channel.
      *
      * @throws closed_channel if channel is closed.
      */
@@ -64,7 +80,7 @@ class channel {
     friend channel<typename std::decay<Type>::type>& operator<<(channel<typename std::decay<Type>::type>&, Type&&);
 
     /**
-     * Pops an element from the channel.
+     * @brief Pops an element from the channel.
      *
      * @tparam Type The type of the elements
      */
@@ -72,19 +88,24 @@ class channel {
     friend channel<Type>& operator>>(channel<Type>&, Type&);
 
     /**
-     * Returns the number of elements in the channel.
+     * @brief Returns the current size of the channel.
+     *
+     * @return The number of elements in the channel.
      */
     NODISCARD size_type constexpr size() const noexcept { return size_; }
 
     /**
-     * Returns true if there are no elements in channel.
+     * @brief Checks if the channel is empty.
+     *
+     * @return true If the channel contains no elements.
+     * @return false Otherwise.
      */
     NODISCARD bool constexpr empty() const noexcept { return size_ == 0; }
 
     /**
-     * Closes the channel.
+     * @brief Closes the channel.
      */
-    inline void close() noexcept
+    void close() noexcept
     {
         {
             std::unique_lock<std::mutex> lock{mtx_};
@@ -94,14 +115,25 @@ class channel {
     }
 
     /**
-     * Returns true if the channel is closed.
+     * @brief Checks if the channel has been closed.
+     *
+     * @return true If no more elements can be added to the channel.
+     * @return false Otherwise.
      */
-    NODISCARD inline bool closed() const noexcept { return is_closed_.load(); }
+    NODISCARD bool closed() const noexcept { return is_closed_.load(); }
 
     /**
-     * Iterator
+     * @brief Returns an iterator to the beginning of the channel.
+     *
+     * @return A blocking iterator pointing to the start of the channel.
      */
     iterator begin() noexcept { return blocking_iterator<channel<T>>{*this}; }
+
+    /**
+     * @brief Returns an iterator representing the end of the channel.
+     *
+     * @return A blocking iterator representing the end condition.
+     */
     iterator end() noexcept { return blocking_iterator<channel<T>>{*this}; }
 
     /**
