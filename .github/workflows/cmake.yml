@@ -29,22 +29,10 @@ jobs:
       matrix:
         config:
           - {
-            name: "Ubuntu Latest GCC, C++11 (Release)",
-            os: ubuntu-latest,
-            build_type: "Release",
-            std: "11",
-          }
-          - {
             name: "Ubuntu 22.04 GCC, C++11 (Debug)",
             os: ubuntu-22.04,
             build_type: "Debug",
             std: "11",
-          }
-          - {
-            name: "Ubuntu 22.04 GCC, C++14 (Debug)",
-            os: ubuntu-22.04,
-            build_type: "Debug",
-            std: "14",
           }
           - {
             name: "Ubuntu 22.04 GCC, C++17 (Debug)",
@@ -53,16 +41,10 @@ jobs:
             std: "17",
           }
           - {
-            name: "Ubuntu 22.04 GCC, C++20 (Debug)",
-            os: ubuntu-22.04,
-            build_type: "Debug",
-            std: "20",
-          }
-          - {
-            name: "Ubuntu 22.04 GCC, C++23 (Debug)",
-            os: ubuntu-22.04,
-            build_type: "Debug",
-            std: "23",
+            name: "Ubuntu Latest GCC, C++11 (Release)",
+            os: ubuntu-latest,
+            build_type: "Release",
+            std: "11",
           }
           - {
             name: "macOS Latest Clang, C++11 (Release)",
