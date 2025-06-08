@@ -20,9 +20,21 @@
 
 ## Installation
 
+Choose one of the methods:
+
 * Copy the [include](https://github.com/andreiavrammsd/cpp-channel/tree/master/include) directory into your project and add it to your include path.
-* With [CMake](https://github.com/andreiavrammsd/cpp-channel/tree/master/examples/cmake-project)
-* With [Bazel](https://github.com/andreiavrammsd/cpp-channel/tree/master/examples/bazel-project)
+* [CMake FetchContent](https://github.com/andreiavrammsd/cpp-channel/tree/master/examples/cmake-project)
+* [CMake install](https://cmake.org/cmake/help/latest/command/install.html)
+```shell
+VERSION=1.0.0 \
+    && wget https://github.com/andreiavrammsd/cpp-channel/archive/refs/tags/v$VERSION.zip \
+    && unzip v$VERSION.zip \
+    && cd cpp-channel-$VERSION \
+    && mkdir build && cd build \
+    && cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local \
+    && sudo cmake --install .
+```
+* [Bazel](https://github.com/andreiavrammsd/cpp-channel/tree/master/examples/bazel-project)
 
 ## Usage
 
