@@ -22,5 +22,5 @@ archive_override(
     ],
     urls = ["https://github.com/andreiavrammsd/cpp-channel/archive/refs/tags/v1.0.0.zip"],
     strip_prefix = "cpp-channel-1.0.0",
-    integrity = "sha256-CVEC3XvmoghyBvwi7C4ytOtofyX41X02NVKQ/7ID5Nc=",
+    integrity = "sha256-oPKZnQYPv0emOcjIcYMeZ6q9tUyOxuAARY+xvbYKHHw=",
 )
