@@ -20,8 +20,9 @@
 
 ## Installation
 
-Copy the [include](https://github.com/andreiavrammsd/cpp-channel/tree/master/include) directory to your project and add it to your include path. Or
-see [CMakeLists.txt](https://github.com/andreiavrammsd/cpp-channel/blob/master/examples/cmake-project/CMakeLists.txt) from the [CMake project example](https://github.com/andreiavrammsd/cpp-channel/tree/master/examples/cmake-project).
+* Copy the [include](https://github.com/andreiavrammsd/cpp-channel/tree/master/include) directory into your project and add it to your include path.
+* With [CMake](https://github.com/andreiavrammsd/cpp-channel/tree/master/examples/cmake-project)
+* With [Bazel](https://github.com/andreiavrammsd/cpp-channel/tree/master/examples/bazel-project)
 
 ## Usage
 
@@ -98,7 +99,7 @@ int main() {
 }
 ```
 
-See [examples](https://github.com/andreiavrammsd/cpp-channel/tree/master/examples).
+See [examples](https://github.com/andreiavrammsd/cpp-channel/tree/master/examples) and [documentation](https://andreiavrammsd.github.io/cpp-channel/).
 
 <br>
 

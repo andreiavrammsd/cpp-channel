@@ -1,4 +1,4 @@
-# CMake project
+# Bazel project
 
 Example of using C++ Channel in a project with Bazel. 
 
