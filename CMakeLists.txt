@@ -27,3 +27,5 @@ endif()
 if (CPP_CHANNEL_BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif()
+
+install(DIRECTORY include/ DESTINATION include)

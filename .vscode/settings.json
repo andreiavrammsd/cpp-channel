@@ -4,7 +4,8 @@
         "-DCPP_CHANNEL_BUILD_TESTS=ON",
         "-DCPP_CHANNEL_COVERAGE=ON",
         "-DCPP_CHANNEL_SANITIZERS=ON",
-        "-DCMAKE_CXX_STANDARD=11"
+        "-DCMAKE_CXX_STANDARD=11",
+        "-DCMAKE_INSTALL_PREFIX=${workspaceFolder}/install",
     ],
     "clang-tidy.fixOnSave": false,
     "clang-tidy.lintOnSave": false,
