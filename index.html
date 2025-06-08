@@ -92,10 +92,19 @@ Requirements</h1>
 </ul>
 <h1><a class="anchor" id="autotoc_md3"></a>
 Installation</h1>
+<p>Choose one of the methods:</p>
 <ul>
 <li>Copy the <a href="https://github.com/andreiavrammsd/cpp-channel/tree/master/include">include</a> directory into your project and add it to your include path.</li>
-<li>With <a href="https://github.com/andreiavrammsd/cpp-channel/tree/master/examples/cmake-project">CMake</a></li>
-<li>With <a href="https://github.com/andreiavrammsd/cpp-channel/tree/master/examples/bazel-project">Bazel</a></li>
+<li><a href="https://github.com/andreiavrammsd/cpp-channel/tree/master/examples/cmake-project">CMake FetchContent</a></li>
+<li><a href="https://cmake.org/cmake/help/latest/command/install.html">CMake install</a> <div class="fragment"><div class="line">VERSION=1.0.0 \</div>
+<div class="line">    &amp;&amp; wget https://github.com/andreiavrammsd/cpp-channel/archive/refs/tags/v$VERSION.zip \</div>
+<div class="line">    &amp;&amp; unzip v$VERSION.zip \</div>
+<div class="line">    &amp;&amp; cd cpp-channel-$VERSION \</div>
+<div class="line">    &amp;&amp; mkdir build &amp;&amp; cd build \</div>
+<div class="line">    &amp;&amp; cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local \</div>
+<div class="line">    &amp;&amp; sudo cmake --install .</div>
+</div><!-- fragment --></li>
+<li><a href="https://github.com/andreiavrammsd/cpp-channel/tree/master/examples/bazel-project">Bazel</a></li>
 </ul>
 <h1><a class="anchor" id="autotoc_md4"></a>
 Usage</h1>
