@@ -26,7 +26,7 @@ Choose one of the methods:
 * [CMake FetchContent](https://github.com/andreiavrammsd/cpp-channel/tree/master/examples/cmake-project)
 * [CMake install](https://cmake.org/cmake/help/latest/command/install.html)
 ```shell
-VERSION=1.0.0 \
+VERSION=1.0.1 \
     && wget https://github.com/andreiavrammsd/cpp-channel/archive/refs/tags/v$VERSION.zip \
     && unzip v$VERSION.zip \
     && cd cpp-channel-$VERSION \
