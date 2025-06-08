@@ -7,12 +7,12 @@ on:
     paths-ignore:
       - '.vscode/**'
       - 'LICENSE'
-      - 'README.md'
+      - '**/README.md'
   pull_request:
     paths-ignore:
       - '.vscode/**'
       - 'LICENSE'
-      - 'README.md'
+      - '**/README.md'
   workflow_dispatch:
 
 env:
