@@ -290,7 +290,7 @@ TEST(ChannelTest, ReadWriteClose)
     std::atomic<std::int64_t> sum{0};
     std::atomic<std::int64_t> nums{0};
 
-    std::thread writer([&channel, numbers]() {
+    std::thread writer([&channel]() {
         for (int i = 1; i <= numbers; ++i) {
             channel << i;
         }
