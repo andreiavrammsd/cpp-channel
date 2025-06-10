@@ -49,6 +49,30 @@ TEST(ChannelTest, PushAndFetch)
     EXPECT_EQ(4, out);
 }
 
+TEST(ChannelTest, WriteAndRead)
+{
+    msd::channel<int> channel;
+
+    int in = 1;
+    EXPECT_TRUE(channel.write(in));
+
+    const int cin = 3;
+    EXPECT_TRUE(channel.write(cin));
+
+    channel.close();
+    EXPECT_FALSE(channel.write(2));
+
+    int out = 0;
+
+    EXPECT_TRUE(channel.read(out));
+    EXPECT_EQ(1, out);
+
+    EXPECT_TRUE(channel.read(out));
+    EXPECT_EQ(3, out);
+
+    EXPECT_FALSE(channel.read(out));
+}
+
 TEST(ChannelTest, PushAndFetchWithBufferedChannel)
 {
     msd::channel<int> channel{2};
@@ -167,6 +191,23 @@ TEST(ChannelTest, close)
     EXPECT_THROW(channel << std::move(in), msd::closed_channel);
 }
 
+TEST(ChannelTest, drained)
+{
+    msd::channel<int> channel;
+    EXPECT_FALSE(channel.drained());
+
+    int in = 1;
+    channel << in;
+
+    channel.close();
+    EXPECT_FALSE(channel.drained());
+
+    int out = 0;
+    channel >> out;
+    EXPECT_EQ(1, out);
+    EXPECT_TRUE(channel.drained());
+}
+
 TEST(ChannelTest, Iterator)
 {
     msd::channel<int> channel;
@@ -237,4 +278,46 @@ TEST(ChannelTest, Multithreading)
     std::for_each(threads.begin(), threads.end(), [](std::thread& thread) { thread.join(); });
 
     EXPECT_EQ(expected, sum_numbers);
+}
+
+TEST(ChannelTest, ReadWriteClose)
+{
+    const int numbers = 10000;
+    const std::int64_t expected_sum = 50005000;
+    constexpr std::size_t kThreadsToReadFrom = 20;
+
+    msd::channel<int> channel{kThreadsToReadFrom};
+    std::atomic<std::int64_t> sum{0};
+    std::atomic<std::int64_t> nums{0};
+
+    std::thread writer([&channel]() {
+        for (int i = 1; i <= numbers; ++i) {
+            channel << i;
+        }
+        channel.close();
+    });
+
+    std::vector<std::thread> readers;
+    for (std::size_t i = 0; i < kThreadsToReadFrom; ++i) {
+        readers.emplace_back([&channel, &sum, &nums]() {
+            while (true) {
+                int value = 0;
+
+                if (!channel.read(value)) {
+                    return;
+                }
+
+                sum += value;
+                ++nums;
+            }
+        });
+    }
+
+    writer.join();
+    for (auto& reader : readers) {
+        reader.join();
+    }
+
+    EXPECT_EQ(sum, expected_sum);
+    EXPECT_EQ(nums, numbers);
 }
