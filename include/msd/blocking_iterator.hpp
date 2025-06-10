@@ -5,7 +5,6 @@
 
 #include <cstddef>
 #include <iterator>
-#include <mutex>
 
 namespace msd {
 
@@ -76,13 +75,7 @@ class blocking_iterator {
      * @return true if the channel is not closed or not empty (continue iterating).
      * @return false if the channel is closed and empty (stop iterating).
      */
-    bool operator!=(blocking_iterator<Channel>) const
-    {
-        std::unique_lock<std::mutex> lock{chan_.mtx_};
-        chan_.waitBeforeRead(lock);
-
-        return !(chan_.closed() && chan_.empty());
-    }
+    bool operator!=(blocking_iterator<Channel>) const { return !chan_.drained(); }
 
    private:
     Channel& chan_;

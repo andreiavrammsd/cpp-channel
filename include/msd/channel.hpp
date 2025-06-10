@@ -3,7 +3,6 @@
 #ifndef MSD_CHANNEL_HPP_
 #define MSD_CHANNEL_HPP_
 
-#include <atomic>
 #include <condition_variable>
 #include <cstdlib>
 #include <mutex>
@@ -82,17 +81,81 @@ class channel {
     /**
      * @brief Pops an element from the channel.
      *
-     * @tparam Type The type of the elements
+     * @tparam Type The type of the elements.
      */
     template <typename Type>
     friend channel<Type>& operator>>(channel<Type>&, Type&);
+
+    /**
+     * @brief Pushes an element into the channel.
+     *
+     * @tparam Type The type of the elements.
+     *
+     * @param value The element to be pushed into the channel.
+     *
+     * @return true If an element was successfully pushed into the channel.
+     * @return false If the channel is closed.
+     */
+    template <typename Type>
+    bool write(Type&& value)
+    {
+        {
+            std::unique_lock<std::mutex> lock{mtx_};
+            waitBeforeWrite(lock);
+
+            if (is_closed_) {
+                return false;
+            }
+
+            queue_.push(std::forward<Type>(value));
+            ++size_;
+        }
+
+        cnd_.notify_one();
+
+        return true;
+    }
+
+    /**
+     * @brief Pops an element from the channel.
+     *
+     * @param out Reference to the variable where the popped element will be stored.
+     *
+     * @return true If an element was successfully read from the channel.
+     * @return false If the channel is closed and empty.
+     */
+    bool read(T& out)
+    {
+        {
+            std::unique_lock<std::mutex> lock{mtx_};
+            waitBeforeRead(lock);
+
+            if (is_closed_ && size_ == 0) {
+                return false;
+            }
+
+            if (!(size_ == 0)) {
+                out = std::move(queue_.front());
+                queue_.pop();
+                --size_;
+            }
+        }
+
+        cnd_.notify_one();
+
+        return true;
+    }
 
     /**
      * @brief Returns the current size of the channel.
      *
      * @return The number of elements in the channel.
      */
-    NODISCARD size_type constexpr size() const noexcept { return size_; }
+    NODISCARD size_type size() const noexcept
+    {
+        std::unique_lock<std::mutex> lock{mtx_};
+        return size_;
+    }
 
     /**
      * @brief Checks if the channel is empty.
@@ -100,7 +163,11 @@ class channel {
      * @return true If the channel contains no elements.
      * @return false Otherwise.
      */
-    NODISCARD bool constexpr empty() const noexcept { return size_ == 0; }
+    NODISCARD bool empty() const noexcept
+    {
+        std::unique_lock<std::mutex> lock{mtx_};
+        return size_ == 0;
+    }
 
     /**
      * @brief Closes the channel.
@@ -109,7 +176,7 @@ class channel {
     {
         {
             std::unique_lock<std::mutex> lock{mtx_};
-            is_closed_.store(true, std::memory_order_seq_cst);
+            is_closed_ = true;
         }
         cnd_.notify_all();
     }
@@ -120,7 +187,23 @@ class channel {
      * @return true If no more elements can be added to the channel.
      * @return false Otherwise.
      */
-    NODISCARD bool closed() const noexcept { return is_closed_.load(std::memory_order_seq_cst); }
+    NODISCARD bool closed() const noexcept
+    {
+        std::unique_lock<std::mutex> lock{mtx_};
+        return is_closed_;
+    }
+
+    /**
+     * @brief Checks if the channel has been closed and is empty.
+     *
+     * @return true If nothing can be read anymore from the channel.
+     * @return false Otherwise.
+     */
+    NODISCARD bool drained() noexcept
+    {
+        std::unique_lock<std::mutex> lock{mtx_};
+        return is_closed_ && size_ == 0;
+    }
 
     /**
      * @brief Returns an iterator to the beginning of the channel.
@@ -146,16 +229,16 @@ class channel {
     virtual ~channel() = default;
 
    private:
-    const size_type cap_{0};
     std::queue<T> queue_;
-    std::atomic<std::size_t> size_{0};
-    std::mutex mtx_;
+    std::size_t size_{0};
+    const size_type cap_{0};
+    mutable std::mutex mtx_;
     std::condition_variable cnd_;
-    std::atomic<bool> is_closed_{false};
+    bool is_closed_{false};
 
     void waitBeforeRead(std::unique_lock<std::mutex>& lock)
     {
-        cnd_.wait(lock, [this]() { return !empty() || closed(); });
+        cnd_.wait(lock, [this]() { return !(size_ == 0) || is_closed_; });
     };
 
     void waitBeforeWrite(std::unique_lock<std::mutex>& lock)
@@ -171,19 +254,9 @@ class channel {
 template <typename T>
 channel<typename std::decay<T>::type>& operator<<(channel<typename std::decay<T>::type>& chan, T&& value)
 {
-    {
-        std::unique_lock<std::mutex> lock{chan.mtx_};
-        chan.waitBeforeWrite(lock);
-
-        if (chan.closed()) {
-            throw closed_channel{"cannot write on closed channel"};
-        }
-
-        chan.queue_.push(std::forward<T>(value));
-        ++chan.size_;
+    if (!chan.write(std::forward<T>(value))) {
+        throw closed_channel{"cannot write on closed channel"};
     }
-
-    chan.cnd_.notify_one();
 
     return chan;
 }
@@ -191,22 +264,7 @@ channel<typename std::decay<T>::type>& operator<<(channel<typename std::decay<T>
 template <typename T>
 channel<T>& operator>>(channel<T>& chan, T& out)
 {
-    {
-        std::unique_lock<std::mutex> lock{chan.mtx_};
-        chan.waitBeforeRead(lock);
-
-        if (chan.closed() && chan.empty()) {
-            return chan;
-        }
-
-        if (!chan.empty()) {
-            out = std::move(chan.queue_.front());
-            chan.queue_.pop();
-            --chan.size_;
-        }
-    }
-
-    chan.cnd_.notify_one();
+    chan.read(out);
 
     return chan;
 }
