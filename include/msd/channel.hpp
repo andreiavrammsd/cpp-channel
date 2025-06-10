@@ -170,7 +170,7 @@ class channel {
     }
 
     /**
-     * @brief Closes the channel.
+     * @brief Closes the channel, no longer accepting new elements.
      */
     void close() noexcept
     {
