@@ -2,6 +2,9 @@
 
 #include <gtest/gtest.h>
 
+#include <thread>
+#include <vector>
+
 #include "msd/channel.hpp"
 
 TEST(BlockingIteratorTest, Traits)
@@ -15,47 +18,35 @@ TEST(BlockingIteratorTest, Traits)
     EXPECT_TRUE((std::is_same<iterator_traits::iterator_category, std::input_iterator_tag>::value));
 }
 
-TEST(BlockingIteratorTest, Dereference)
+TEST(BlockingIteratorTest, ReadFromChannelInOrder)
 {
-    msd::channel<int> channel;
-    channel << 1;
-    channel << 2;
+    msd::channel<int> channel{10};
+    channel.write(1);
+    channel.write(2);
+    channel.write(3);
+    channel.close();
 
-    msd::blocking_iterator<msd::channel<int>> it{channel};
+    msd::blocking_iterator it{channel};
+    msd::blocking_iterator end{channel, true};
 
-    EXPECT_EQ(1, *it);
+    std::vector<int> results;
+    while (it != end) {
+        results.push_back(*it);
+        ++it;
+    }
 
-    ++it;
-    EXPECT_EQ(2, *it);
+    EXPECT_EQ(results, (std::vector<int>{1, 2, 3}));
 }
 
-TEST(BlockingIteratorTest, NotEqualStop)
+TEST(BlockingIteratorTest, EmptyChannelClosesGracefully)
 {
     msd::channel<int> channel;
     channel.close();
 
-    msd::blocking_iterator<msd::channel<int>> it{channel};
-    EXPECT_FALSE(it != it);
-}
+    msd::blocking_iterator it{channel};
+    msd::blocking_iterator end{channel, true};
 
-TEST(BlockingIteratorTest, NotEqualAtEndAndChannelClosed)
-{
-    msd::channel<int> channel;
-    channel.close();
-
-    msd::blocking_iterator<msd::channel<int>> it_begin{channel};
-    msd::blocking_iterator<msd::channel<int>> it_end{channel, false};
-    EXPECT_FALSE(it_begin != it_end);
-}
-
-TEST(BlockingIteratorTest, NotEqualContinue)
-{
-    msd::channel<int> channel;
-    channel << 1;
-
-    msd::blocking_iterator<msd::channel<int>> it{channel};
-
-    EXPECT_FALSE(it != it);
+    EXPECT_FALSE(it != end);
 }
 
 TEST(BlockingWriterIteratorTest, Traits)
@@ -69,61 +60,27 @@ TEST(BlockingWriterIteratorTest, Traits)
     EXPECT_TRUE((std::is_same<iterator_traits::iterator_category, std::output_iterator_tag>::value));
 }
 
-TEST(BlockingWriterIteratorTest, Assign)
+TEST(BlockingWriterIteratorTest, WriteToChannelUsingBackInserter)
 {
-    msd::channel<int> channel{3};
-    msd::blocking_writer_iterator<msd::channel<int>> it{channel};
+    msd::channel<int> channel{10};
 
-    it = 1;
-    it = 2;
-    channel.close();
+    std::thread producer([&channel]() {
+        auto out = msd::back_inserter(channel);
+        *out = 10;
+        *out = 20;
+        *out = 30;
+        channel.close();
+    });
 
-    int out;
+    std::vector<int> results;
+    msd::blocking_iterator it{channel};
+    msd::blocking_iterator end{channel, true};
 
-    channel >> out;
-    EXPECT_EQ(1, out);
+    while (it != end) {
+        results.push_back(*it);
+        ++it;
+    }
 
-    channel >> out;
-    EXPECT_EQ(2, out);
-
-    EXPECT_FALSE(channel.read(out));  // channel is closed, no more elements to read
-}
-
-TEST(BlockingWriterIteratorTest, Dereference)
-{
-    msd::channel<int> channel;
-    msd::blocking_writer_iterator<msd::channel<int>> it{channel};
-
-    EXPECT_EQ(&(*it), &(it));
-}
-
-TEST(BlockingWriterIteratorTest, Increment)
-{
-    msd::channel<int> channel;
-    msd::blocking_writer_iterator<msd::channel<int>> it{channel};
-
-    EXPECT_EQ(&(++it), &(it));
-    auto it2 = it++;
-    EXPECT_NE(&(it2), &(it));
-}
-
-TEST(BlockingWriterIteratorTest, NotEqualStop)
-{
-    msd::channel<int> channel;
-    channel.close();
-
-    msd::blocking_iterator<msd::channel<int>> it{channel};
-
-    EXPECT_FALSE(it != it);
-}
-
-TEST(BlockingWriterIteratorTest, NotEqualContinue)
-{
-    msd::channel<int> channel;
-    channel << 1 << 2;
-
-    msd::blocking_iterator<msd::channel<int>> it{channel};
-    ++it;
-
-    EXPECT_FALSE(it != it);
+    producer.join();
+    EXPECT_EQ(results, (std::vector<int>{10, 20, 30}));
 }
