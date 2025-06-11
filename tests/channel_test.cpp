@@ -6,6 +6,7 @@
 #include <atomic>
 #include <cstdint>
 #include <future>
+#include <numeric>
 #include <string>
 #include <thread>
 #include <type_traits>
@@ -437,4 +438,56 @@ TEST(ChannelTest, Transform)
 
     EXPECT_EQ(sum, expected_sum);
     EXPECT_EQ(nums, numbers);
+}
+
+TEST(ChannelTest, TransformAndAccumulate)
+{
+    msd::channel<int> input_chan{10};
+    msd::channel<int> output_chan{10};
+
+    // Producer: fill input channel with 1..5
+    const auto producer = [&input_chan]() {
+        for (int i = 1; i <= 5; ++i) {
+            input_chan.write(i);
+        }
+        input_chan.close();
+    };
+
+    // Transformer: double the values using std::transform with blocking iterators
+    const auto transformer = [&input_chan, &output_chan]() {
+        std::transform(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan),
+                       [](int v) { return v * 2; });
+        output_chan.close();
+    };
+
+    const auto producer_task = std::async(std::launch::async, producer);
+    const auto transformer_task = std::async(std::launch::async, transformer);
+
+    producer_task.wait();
+    transformer_task.wait();
+
+    // Consumer: accumulate output channel values
+    const int sum = std::accumulate(output_chan.begin(), output_chan.end(), 0);
+    EXPECT_EQ(sum, 30);
+}
+
+TEST(ChannelTest, CopyToVector)
+{
+    msd::channel<int> chan{10};
+    std::vector<int> results;
+
+    // Producer: write 1..4 into channel and close
+    const auto producer = [&]() {
+        for (int i = 1; i <= 4; ++i) {
+            chan.write(i);
+        }
+        chan.close();
+    };
+
+    producer();
+
+    // Use std::copy to copy from channel to vector using channel's blocking iterator
+    std::copy(chan.begin(), chan.end(), std::back_inserter(results));
+
+    EXPECT_EQ(results, std::vector<int>({1, 2, 3, 4}));
 }
