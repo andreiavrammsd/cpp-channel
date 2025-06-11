@@ -13,6 +13,7 @@
 * Close to prevent pushing and stop waiting to fetch.
 * Integrates well with STL algorithms in some cases. Eg: std::move(ch.begin(), ch.end(), ...).
 * Tested with GCC, Clang, and MSVC.
+* Includes stack-based, exception-free alternative (static channel).
 
 ## Requirements
 
@@ -108,6 +109,26 @@ int main() {
     for (const auto out : chan) { // blocking: forever waiting for channel items
         std::cout << out << '\n';
     }
+}
+```
+
+```c++
+#include <msd/static_channel.hpp>
+
+int main() {
+    msd::static_channel<int, 2> chan{};  // always buffered
+
+    int in = 1;
+    int out = 0;
+
+    // Send to channel
+    chan.write(in);
+    chan.write(in);
+
+    // Read from channel
+    chan.read(out);
+    chan.read(out);
+    chan.read(out);  // blocking because channel is empty (and no one writes on it)
 }
 ```
 
