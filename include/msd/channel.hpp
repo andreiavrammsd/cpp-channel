@@ -200,7 +200,7 @@ class channel {
     NODISCARD bool drained() noexcept
     {
         std::unique_lock<std::mutex> lock{mtx_};
-        return is_closed_ && size_ == 0;
+        return size_ == 0 && is_closed_;
     }
 
     /**
@@ -236,7 +236,7 @@ class channel {
 
     void waitBeforeRead(std::unique_lock<std::mutex>& lock)
     {
-        cnd_.wait(lock, [this]() { return !(size_ == 0) || is_closed_; });
+        cnd_.wait(lock, [this]() { return size_ > 0 || is_closed_; });
     };
 
     void waitBeforeWrite(std::unique_lock<std::mutex>& lock)

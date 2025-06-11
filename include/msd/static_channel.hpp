@@ -162,7 +162,7 @@ class static_channel {
     NODISCARD bool drained() noexcept
     {
         std::unique_lock<std::mutex> lock{mtx_};
-        return is_closed_ && size_ == 0;
+        return size_ == 0 && is_closed_;
     }
 
     /**
@@ -192,20 +192,19 @@ class static_channel {
     std::array<T, Capacity> array_{};
     size_type front_{0};
     std::size_t size_{0};
-    const size_type cap_{Capacity};
     mutable std::mutex mtx_;
     std::condition_variable cnd_;
     bool is_closed_{false};
 
     void waitBeforeRead(std::unique_lock<std::mutex>& lock)
     {
-        cnd_.wait(lock, [this]() { return !(size_ == 0) || is_closed_; });
+        cnd_.wait(lock, [this]() { return size_ > 0 || is_closed_; });
     };
 
     void waitBeforeWrite(std::unique_lock<std::mutex>& lock)
     {
-        if (cap_ > 0 && size_ == cap_) {
-            cnd_.wait(lock, [this]() { return size_ < cap_; });
+        if (size_ == Capacity) {
+            cnd_.wait(lock, [this]() { return size_ < Capacity; });
         }
     }
 };
