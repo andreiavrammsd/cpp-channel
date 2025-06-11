@@ -257,7 +257,7 @@ TEST(ChannelTest, Multithreading)
 
     std::vector<std::thread> threads{};
     for (std::size_t i = 0U; i < kThreadsToReadFrom; ++i) {
-        threads.emplace_back(std::thread{worker});
+        threads.emplace_back(worker);
     }
 
     // Send numbers to channel
