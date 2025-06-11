@@ -177,7 +177,7 @@ class static_channel {
      *
      * @return A blocking iterator representing the end condition.
      */
-    iterator end() noexcept { return blocking_iterator<static_channel<T, Capacity>>{*this}; }
+    iterator end() noexcept { return blocking_iterator<static_channel<T, Capacity>>{*this, true}; }
 
     /**
      * Channel cannot be copied or moved.

@@ -18,30 +18,46 @@ TEST(BlockingIteratorTest, Traits)
 TEST(BlockingIteratorTest, Dereference)
 {
     msd::channel<int> channel;
+    channel << 1;
+    channel << 2;
+
     msd::blocking_iterator<msd::channel<int>> it{channel};
 
-    int in = 1;
-    channel << in;
-    in = 2;
-    channel << in;
-
     EXPECT_EQ(1, *it);
+
+    ++it;
     EXPECT_EQ(2, *it);
 }
 
 TEST(BlockingIteratorTest, NotEqualStop)
 {
     msd::channel<int> channel;
-    msd::blocking_iterator<msd::channel<int>> it{channel};
-
     channel.close();
 
+    msd::blocking_iterator<msd::channel<int>> it{channel};
     EXPECT_FALSE(it != it);
+}
+
+TEST(BlockingIteratorTest, NotEqualAtEndAndChannelClosed)
+{
+    msd::channel<int> channel;
+    channel.close();
+
+    msd::blocking_iterator<msd::channel<int>> it_begin{channel};
+    msd::blocking_iterator<msd::channel<int>> it_end{channel, false};
+    EXPECT_FALSE(it_begin != it_end);
 }
 
 TEST(BlockingIteratorTest, NotEqualContinue)
 {
     msd::channel<int> channel;
+    channel << 1;
+
+    msd::blocking_iterator<msd::channel<int>> it{channel};
+
+    EXPECT_FALSE(it != it);
+}
+
     msd::blocking_iterator<msd::channel<int>> it{channel};
 
     channel << 1;

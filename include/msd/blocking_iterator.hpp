@@ -13,7 +13,7 @@ namespace msd {
  *
  * Used to implement channel range-based for loop.
  *
- * @tparam Channel Instance of channel.
+ * @tparam Channel Type of channel being iterated.
  */
 template <typename Channel>
 class blocking_iterator {
@@ -47,40 +47,51 @@ class blocking_iterator {
      * @brief Constructs a blocking iterator from a channel reference.
      *
      * @param chan Reference to the channel this iterator will iterate over.
+     * @param is_end If true, the iterator is in an end state (no elements to read).
      */
-    explicit blocking_iterator(Channel& chan) : chan_{chan} {}
+    explicit blocking_iterator(Channel& chan, bool is_end = false) : chan_{chan}, is_end_{is_end}
+    {
+        if (!is_end_ && !chan_.read(value_)) {
+            is_end_ = true;
+        }
+    }
 
     /**
-     * @brief Advances the iterator to the next element.
+     * @brief Retrieves the next element from the channel.
      *
      * @return The iterator itself.
      */
-    blocking_iterator<Channel> operator++() const noexcept { return *this; }
+    blocking_iterator<Channel> operator++() noexcept
+    {
+        if (!chan_.read(value_)) {
+            is_end_ = true;
+        }
+        return *this;
+    }
 
     /**
-     * @brief Retrieves and returns the next element from the channel.
+     * @brief Returns the latest element retrieved from the channel.
      *
-     * @return A const reference to the current element.
+     * @return A const reference to the element.
      */
-    reference operator*()
-    {
-        chan_.read(value_);
-
-        return value_;
-    }
+    reference operator*() { return value_; }
 
     /**
      * @brief Makes iteration continue until the channel is closed and empty.
      *
+     * @param other Another blocking_iterator to compare with.
+     *
      * @return true if the channel is not closed or not empty (continue iterating).
      * @return false if the channel is closed and empty (stop iterating).
      */
-    bool operator!=(blocking_iterator<Channel>) const { return !chan_.drained(); }
+    bool operator!=(const blocking_iterator& other) { return is_end_ != other.is_end_; }
 
    private:
     Channel& chan_;
     value_type value_{};
+    bool is_end_{false};
 };
+
 
 }  // namespace msd
 
