@@ -1,9 +1,9 @@
 # Channel
 
-[![build](https://github.com/andreiavrammsd/cpp-channel/workflows/build/badge.svg)](https://github.com/andreiavrammsd/cpp-channel/actions) [![codecov](https://codecov.io/github/andreiavrammsd/cpp-channel/graph/badge.svg?token=CKQ0TVW62Z)](https://codecov.io/github/andreiavrammsd/cpp-channel)
+[![build](https://github.com/andreiavrammsd/cpp-channel/actions/workflows/cmake.yml/badge.svg)](https://github.com/andreiavrammsd/cpp-channel/actions) [![codecov](https://codecov.io/github/andreiavrammsd/cpp-channel/graph/badge.svg?token=CKQ0TVW62Z)](https://codecov.io/github/andreiavrammsd/cpp-channel)
 [![documentation](https://github.com/andreiavrammsd/cpp-channel/workflows/doc/badge.svg)](https://andreiavrammsd.github.io/cpp-channel/)
 
-### Thread-safe container for sharing data between threads. Header-only.
+### Thread-safe container for sharing data between threads (synchronized queue). Header-only. Compatible with C++11.
 
 * Thread-safe push and fetch.
 * Use stream operators to push (<<) and fetch (>>) items.
@@ -11,7 +11,9 @@
 * Blocking (forever waiting to fetch).
 * Range-based for loop supported.
 * Close to prevent pushing and stop waiting to fetch.
-* Integrates well with STL algorithms in some cases. Eg: std::move(ch.begin(), ch.end(), ...).
+* Integrates well with STL algorithms in some cases. Eg:
+    * `std::move(ch.begin(), ch.end(), ...)`
+    * `std::transform(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan))`.
 * Tested with GCC, Clang, and MSVC.
 * Includes stack-based, exception-free alternative (static channel).
 
@@ -25,9 +27,9 @@ Choose one of the methods:
 
 * Copy the [include](https://github.com/andreiavrammsd/cpp-channel/tree/master/include) directory into your project and add it to your include path.
 * [CMake FetchContent](https://github.com/andreiavrammsd/cpp-channel/tree/master/examples/cmake-project)
-* [CMake install](https://cmake.org/cmake/help/latest/command/install.html)
+* [CMake install](https://cmake.org/cmake/help/latest/command/install.html) - Choose a [version](https://github.com/andreiavrammsd/cpp-channel/releases), then run:
 ```shell
-VERSION=1.1.0 \
+VERSION=X.Y.Z \
     && wget https://github.com/andreiavrammsd/cpp-channel/archive/refs/tags/v$VERSION.zip \
     && unzip v$VERSION.zip \
     && cd cpp-channel-$VERSION \

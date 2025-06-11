@@ -210,7 +210,7 @@ class channel {
      *
      * @return A blocking iterator representing the end condition.
      */
-    iterator end() noexcept { return blocking_iterator<channel<T>>{*this}; }
+    iterator end() noexcept { return blocking_iterator<channel<T>>{*this, true}; }
 
     /**
      * Channel cannot be copied or moved.
