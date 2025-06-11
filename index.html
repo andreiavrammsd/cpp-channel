@@ -72,9 +72,9 @@ $(function() {
   <div class="headertitle"><div class="title">Channel </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="md_README"></a> <a href="https://github.com/andreiavrammsd/cpp-channel/actions"><img src="https://github.com/andreiavrammsd/cpp-channel/workflows/build/badge.svg" alt="build" style="pointer-events: none;" class="inline"/></a> <a href="https://codecov.io/github/andreiavrammsd/cpp-channel"><img src="https://codecov.io/github/andreiavrammsd/cpp-channel/graph/badge.svg?token=CKQ0TVW62Z" alt="codecov" style="pointer-events: none;" class="inline"/></a> <a href="https://andreiavrammsd.github.io/cpp-channel/"><img src="https://github.com/andreiavrammsd/cpp-channel/workflows/doc/badge.svg" alt="documentation" style="pointer-events: none;" class="inline"/></a></p>
+<div class="textblock"><p><a class="anchor" id="md_README"></a> <a href="https://github.com/andreiavrammsd/cpp-channel/actions"><img src="https://github.com/andreiavrammsd/cpp-channel/actions/workflows/cmake.yml/badge.svg" alt="build" style="pointer-events: none;" class="inline"/></a> <a href="https://codecov.io/github/andreiavrammsd/cpp-channel"><img src="https://codecov.io/github/andreiavrammsd/cpp-channel/graph/badge.svg?token=CKQ0TVW62Z" alt="codecov" style="pointer-events: none;" class="inline"/></a> <a href="https://andreiavrammsd.github.io/cpp-channel/"><img src="https://github.com/andreiavrammsd/cpp-channel/workflows/doc/badge.svg" alt="documentation" style="pointer-events: none;" class="inline"/></a></p>
 <h2><a class="anchor" id="autotoc_md1"></a>
-Thread-safe container for sharing data between threads. Header-only.</h2>
+Thread-safe container for sharing data between threads (synchronized queue). Header-only. Compatible with C++11.</h2>
 <ul>
 <li>Thread-safe push and fetch.</li>
 <li>Use stream operators to push (&lt;&lt;) and fetch (&gt;&gt;) items.</li>
@@ -82,7 +82,11 @@ Thread-safe container for sharing data between threads. Header-only.</h2>
 <li>Blocking (forever waiting to fetch).</li>
 <li>Range-based for loop supported.</li>
 <li>Close to prevent pushing and stop waiting to fetch.</li>
-<li>Integrates well with STL algorithms in some cases. Eg: std::move(ch.begin(), ch.end(), ...).</li>
+<li>Integrates well with STL algorithms in some cases. Eg:<ul>
+<li><code>std::move(ch.begin(), ch.end(), ...)</code></li>
+<li><code>std::transform(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan))</code>.</li>
+</ul>
+</li>
 <li>Tested with GCC, Clang, and MSVC.</li>
 <li>Includes stack-based, exception-free alternative (static channel).</li>
 </ul>
@@ -97,7 +101,7 @@ Installation</h1>
 <ul>
 <li>Copy the <a href="https://github.com/andreiavrammsd/cpp-channel/tree/master/include">include</a> directory into your project and add it to your include path.</li>
 <li><a href="https://github.com/andreiavrammsd/cpp-channel/tree/master/examples/cmake-project">CMake FetchContent</a></li>
-<li><a href="https://cmake.org/cmake/help/latest/command/install.html">CMake install</a> <div class="fragment"><div class="line">VERSION=1.1.0 \</div>
+<li><a href="https://cmake.org/cmake/help/latest/command/install.html">CMake install</a> - Choose a <a href="https://github.com/andreiavrammsd/cpp-channel/releases">version</a>, then run: <div class="fragment"><div class="line">VERSION=X.Y.Z \</div>
 <div class="line">    &amp;&amp; wget https://github.com/andreiavrammsd/cpp-channel/archive/refs/tags/v$VERSION.zip \</div>
 <div class="line">    &amp;&amp; unzip v$VERSION.zip \</div>
 <div class="line">    &amp;&amp; cd cpp-channel-$VERSION \</div>
@@ -115,7 +119,7 @@ Usage</h1>
 <div class="line"><span class="preprocessor">#include &lt;msd/channel.hpp&gt;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main() {</div>
-<div class="line">    <a class="code hl_class" href="classmsd_1_1channel.html">msd::channel&lt;int&gt;</a> chan; <span class="comment">// unbuffered</span></div>
+<div class="line">    <a class="code hl_class" href="classmsd_1_1blocking__writer__iterator.html">msd::channel&lt;int&gt;</a> chan; <span class="comment">// unbuffered</span></div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordtype">int</span> in = 1;</div>
 <div class="line">    <span class="keywordtype">int</span> out = 0;</div>
@@ -128,12 +132,12 @@ Usage</h1>
 <div class="line"> </div>
 <div class="line">    assert(out == 1);</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassmsd_1_1channel_html"><div class="ttname"><a href="classmsd_1_1channel.html">msd::channel</a></div><div class="ttdoc">Thread-safe container for sharing data between threads.</div><div class="ttdef"><b>Definition</b> channel.hpp:39</div></div>
+<div class="ttc" id="aclassmsd_1_1blocking__writer__iterator_html"><div class="ttname"><a href="classmsd_1_1blocking__writer__iterator.html">msd::blocking_writer_iterator</a></div><div class="ttdoc">An output iterator pushes elements into a channel. Blocking until the channel is not full.</div><div class="ttdef"><b>Definition</b> blocking_iterator.hpp:103</div></div>
 </div><!-- fragment --><div class="fragment"><div class="line"> ++</div>
 <div class="line"><span class="preprocessor">#include &lt;msd/channel.hpp&gt;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main() {</div>
-<div class="line">    <a class="code hl_class" href="classmsd_1_1channel.html">msd::channel&lt;int&gt;</a> chan{2}; <span class="comment">// buffered</span></div>
+<div class="line">    <a class="code hl_class" href="classmsd_1_1blocking__writer__iterator.html">msd::channel&lt;int&gt;</a> chan{2}; <span class="comment">// buffered</span></div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Send to channel</span></div>
 <div class="line">    chan &lt;&lt; 1;</div>
@@ -144,7 +148,7 @@ Usage</h1>
 <div class="line"><span class="preprocessor">#include &lt;msd/channel.hpp&gt;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main() {</div>
-<div class="line">    <a class="code hl_class" href="classmsd_1_1channel.html">msd::channel&lt;int&gt;</a> chan{2}; <span class="comment">// buffered</span></div>
+<div class="line">    <a class="code hl_class" href="classmsd_1_1blocking__writer__iterator.html">msd::channel&lt;int&gt;</a> chan{2}; <span class="comment">// buffered</span></div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordtype">int</span> in = 1;</div>
 <div class="line">    <span class="keywordtype">int</span> out = 0;</div>
@@ -164,7 +168,7 @@ Usage</h1>
 <div class="line"><span class="preprocessor">#include &lt;msd/channel.hpp&gt;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main() {</div>
-<div class="line">    <a class="code hl_class" href="classmsd_1_1channel.html">msd::channel&lt;int&gt;</a> chan;</div>
+<div class="line">    <a class="code hl_class" href="classmsd_1_1blocking__writer__iterator.html">msd::channel&lt;int&gt;</a> chan;</div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordtype">int</span> in1 = 1;</div>
 <div class="line">    <span class="keywordtype">int</span> in2 = 2;</div>
@@ -179,22 +183,20 @@ Usage</h1>
 <div class="line"><span class="preprocessor">#include &lt;msd/static_channel.hpp&gt;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main() {</div>
-<div class="line">    <a class="code hl_class" href="classmsd_1_1channel.html">msd::static_channel&lt;int, 2&gt;</a> chan{};  <span class="comment">// always buffered</span></div>
+<div class="line">    <a class="code hl_class" href="classmsd_1_1blocking__writer__iterator.html">msd::static_channel&lt;int, 2&gt;</a> chan{};  <span class="comment">// always buffered</span></div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordtype">int</span> in = 1;</div>
 <div class="line">    <span class="keywordtype">int</span> out = 0;</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Send to channel</span></div>
-<div class="line">    chan.<a class="code hl_function" href="classmsd_1_1channel.html#a4176bdfa034424200521e1de12217c84">write</a>(in);</div>
-<div class="line">    chan.<a class="code hl_function" href="classmsd_1_1channel.html#a4176bdfa034424200521e1de12217c84">write</a>(in);</div>
+<div class="line">    chan.write(in);</div>
+<div class="line">    chan.write(in);</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Read from channel</span></div>
-<div class="line">    chan.<a class="code hl_function" href="classmsd_1_1channel.html#af10a793b2bf21de063ffc0464b24888f">read</a>(out);</div>
-<div class="line">    chan.<a class="code hl_function" href="classmsd_1_1channel.html#af10a793b2bf21de063ffc0464b24888f">read</a>(out);</div>
-<div class="line">    chan.<a class="code hl_function" href="classmsd_1_1channel.html#af10a793b2bf21de063ffc0464b24888f">read</a>(out);  <span class="comment">// blocking because channel is empty (and no one writes on it)</span></div>
+<div class="line">    chan.read(out);</div>
+<div class="line">    chan.read(out);</div>
+<div class="line">    chan.read(out);  <span class="comment">// blocking because channel is empty (and no one writes on it)</span></div>
 <div class="line">}</div>
-<div class="ttc" id="aclassmsd_1_1channel_html_a4176bdfa034424200521e1de12217c84"><div class="ttname"><a href="classmsd_1_1channel.html#a4176bdfa034424200521e1de12217c84">msd::channel::write</a></div><div class="ttdeci">bool write(Type &amp;&amp;value)</div><div class="ttdoc">Pushes an element into the channel.</div><div class="ttdef"><b>Definition</b> channel.hpp:95</div></div>
-<div class="ttc" id="aclassmsd_1_1channel_html_af10a793b2bf21de063ffc0464b24888f"><div class="ttname"><a href="classmsd_1_1channel.html#af10a793b2bf21de063ffc0464b24888f">msd::channel::read</a></div><div class="ttdeci">bool read(T &amp;out)</div><div class="ttdoc">Pops an element from the channel.</div><div class="ttdef"><b>Definition</b> channel.hpp:122</div></div>
 </div><!-- fragment --><p>See <a href="https://github.com/andreiavrammsd/cpp-channel/tree/master/examples">examples</a> and <a href="https://andreiavrammsd.github.io/cpp-channel/">documentation</a>.</p>
 <p><br  />
 </p>
