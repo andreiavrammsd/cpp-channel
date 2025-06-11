@@ -479,6 +479,8 @@ TEST(ChannelTest, CopyToVector)
 
     // Producer: write 1..4 into channel and close
     const auto producer = [&]() {
+        std::fill_n(msd::back_inserter(chan), 4, 0);
+
         for (int i = 1; i <= 4; ++i) {
             chan.write(i);
         }
@@ -490,5 +492,5 @@ TEST(ChannelTest, CopyToVector)
     // Copy from channel to vector
     std::copy(chan.begin(), chan.end(), std::back_inserter(results));
 
-    EXPECT_EQ(results, std::vector<int>({1, 2, 3, 4}));
+    EXPECT_EQ(results, std::vector<int>({0, 0, 0, 0, 1, 2, 3, 4}));
 }
