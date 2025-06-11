@@ -379,8 +379,40 @@ TEST(ChannelTest, Transform)
 
     // Transform input channel values from MovableOnly to int by multiplying by 2 and write to output channel
     const auto double_transformer = [&input_chan, &output_chan]() {
-        std::transform(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan),
-                       [](auto&& value) -> int { return value.getValue() * 2; });
+        const auto double_value = [](auto&& value) -> int { return value.getValue() * 2; };
+
+#ifdef _MSC_VER
+        for (auto&& value : input_chan) {
+            output_chan.write(double_value(value));
+        }
+
+        // Does not work with std::transform:
+        //
+        // could be 'void std::queue<T,std::deque<T,std::allocator<int>>>::push(int &&)'
+        //   with
+        //   [
+        //       T=ChannelTest_Traits_Test::TestBody::type
+        //   ]
+        //   D:\a\cpp-channel\cpp-channel\include\msd\channel.hpp(105,20):
+        //   'void std::queue<T,std::deque<T,std::allocator<int>>>::push(int &&)': cannot convert argument 1 from
+        //   '_OutIt' to 'int &&' with
+        //   [
+        //       T=ChannelTest_Traits_Test::TestBody::type
+        //   ]
+        //   and
+        //   [
+        //       _OutIt=msd::blocking_writer_iterator<msd::channel<ChannelTest_Traits_Test::TestBody::type>>
+        //   ]
+        //       D:\a\cpp-channel\cpp-channel\include\msd\channel.hpp(105,43):
+        //       Reason: cannot convert from '_OutIt' to 'int'
+        //   with
+        //   [
+        //       _OutIt=msd::blocking_writer_iterator<msd::channel<ChannelTest_Traits_Test::TestBody::type>>
+        //   ]
+#else
+        std::transform(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan), double_value);
+#endif  // _MSC_VER
+
         output_chan.close();
     };
 

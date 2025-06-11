@@ -1,7 +1,7 @@
 # Channel
 
 [![build](https://github.com/andreiavrammsd/cpp-channel/actions/workflows/cmake.yml/badge.svg)](https://github.com/andreiavrammsd/cpp-channel/actions) [![codecov](https://codecov.io/github/andreiavrammsd/cpp-channel/graph/badge.svg?token=CKQ0TVW62Z)](https://codecov.io/github/andreiavrammsd/cpp-channel)
-[![documentation](https://github.com/andreiavrammsd/cpp-channel/workflows/doc/badge.svg)](https://andreiavrammsd.github.io/cpp-channel/)
+[![documentation](https://github.com/andreiavrammsd/cpp-channel/actions/workflows/doc.yml/badge.svg)](https://andreiavrammsd.github.io/cpp-channel/)
 
 ### Thread-safe container for sharing data between threads (synchronized queue). Header-only. Compatible with C++11.
 
@@ -11,7 +11,7 @@
 * Blocking (forever waiting to fetch).
 * Range-based for loop supported.
 * Close to prevent pushing and stop waiting to fetch.
-* Integrates well with STL algorithms in some cases. Eg:
+* Integrates well with STD algorithms in some cases. Eg:
     * `std::move(ch.begin(), ch.end(), ...)`
     * `std::transform(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan))`.
 * Tested with GCC, Clang, and MSVC.
@@ -135,6 +135,10 @@ int main() {
 ```
 
 See [examples](https://github.com/andreiavrammsd/cpp-channel/tree/master/examples) and [documentation](https://andreiavrammsd.github.io/cpp-channel/).
+
+## Known limitations
+
+* Integration with some STD algorithms does not compile with MSVC
 
 <br>
 
