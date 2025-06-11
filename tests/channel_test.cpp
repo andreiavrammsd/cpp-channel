@@ -367,7 +367,7 @@ TEST(ChannelTest, Transform)
     std::atomic<std::int64_t> nums{0};
 
     msd::channel<MovableOnly> input_chan{30};
-    msd::channel<int> output_chan{10};
+    msd::channel<MovableOnly> output_chan{10};
 
     // Send to channel input channel
     const auto writer = [&input_chan]() {
@@ -377,18 +377,17 @@ TEST(ChannelTest, Transform)
         input_chan.close();
     };
 
-    // Transform input channel values from MovableOnly to int
-    // by multiplying by 2 and write to output channel
+    // Transform input channel values by multiplying by 2 and write to output channel
     const auto double_transformer = [&input_chan, &output_chan]() {
         std::transform(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan),
-                       [](auto&& value) -> int { return value.getValue() * 2; });
+                       [](auto&& value) { return MovableOnly{value.getValue() * 2}; });
         output_chan.close();
     };
 
     // Read from output channel
     const auto reader = [&output_chan, &sum, &nums]() {
-        for (const auto out : output_chan) {  // blocking until channel is drained (closed and empty)
-            sum += out;
+        for (auto&& out : output_chan) {  // blocking until channel is drained (closed and empty)
+            sum += out.getValue();
             ++nums;
         }
     };
