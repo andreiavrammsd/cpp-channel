@@ -381,7 +381,7 @@ TEST(ChannelTest, Transform)
     // by multiplying by 2 and write to output channel
     const auto double_transformer = [&input_chan, &output_chan]() {
         std::transform(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan),
-                       [](auto&& value) { return value.getValue() * 2; });
+                       [](auto&& value) -> int { return value.getValue() * 2; });
         output_chan.close();
     };
 
