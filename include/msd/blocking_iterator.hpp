@@ -110,7 +110,7 @@ class blocking_writer_iterator {
     /**
      * @brief Constant reference to the type of the elements stored in the channel.
      */
-    using reference = value_type&;
+    using reference = const value_type&;
 
     /**
      * @brief Supporting writing of elements.
@@ -125,7 +125,7 @@ class blocking_writer_iterator {
     /**
      * @brief Pointer type to the value_type.
      */
-    using pointer = value_type*;
+    using pointer = const value_type*;
 
     /**
      * @brief Constructs a blocking iterator from a channel reference.
@@ -140,14 +140,9 @@ class blocking_writer_iterator {
      * @param val The value to be written into the channel.
      *
      * @return The iterator itself.
-     *
-     * @note This function is enabled for all types except `blocking_writer_iterator` itself. Reason: either I am awful
-     * at C++ or MSVC has a bug. It works fine with GCC and Clang, but MSVC fails to compile.
      */
     template <typename T>
-    typename std::enable_if<!std::is_same<typename std::decay<T>::type, blocking_writer_iterator>::value,
-                            blocking_writer_iterator&>::type
-    operator=(T&& val)
+    blocking_writer_iterator& operator=(T&& val)
     {
         chan_->write(std::forward<T>(val));
         return *this;
