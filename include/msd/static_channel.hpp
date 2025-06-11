@@ -9,14 +9,14 @@
 #include <mutex>
 
 #include "blocking_iterator.hpp"
-#include "channel.hpp"
+#include "nodiscard.hpp"
 
 namespace msd {
 
 /**
  * @brief Thread-safe container for sharing data between threads.
  *
- * Allocates on the stack.
+ * Allocates elements on the stack.
  * Does not throw exceptions.
  * Implements a blocking input iterator.
  *

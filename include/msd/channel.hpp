@@ -11,14 +11,9 @@
 #include <type_traits>
 
 #include "blocking_iterator.hpp"
+#include "nodiscard.hpp"
 
 namespace msd {
-
-#if (__cplusplus >= 201703L || (defined(_MSVC_LANG) && _MSVC_LANG >= 201703L))
-#define NODISCARD [[nodiscard]]
-#else
-#define NODISCARD
-#endif
 
 /**
  * @brief Exception thrown if trying to write on closed channel.
