@@ -326,7 +326,7 @@ TEST(ChannelTest, ReadWriteClose)
 
 class MovableOnly {
    public:
-    explicit MovableOnly(int v) : value(v) {}
+    explicit MovableOnly(int value) : value_{value} {}
 
     MovableOnly() = default;
 
@@ -336,7 +336,7 @@ class MovableOnly {
         std::abort();
     }
 
-    MovableOnly(MovableOnly&& other) noexcept : value{std::move(other.value)} { other.value = 0; }
+    MovableOnly(MovableOnly&& other) noexcept : value_{std::move(other.value_)} { other.value_ = 0; }
 
     MovableOnly& operator=(const MovableOnly&)
     {
@@ -347,17 +347,19 @@ class MovableOnly {
     MovableOnly& operator=(MovableOnly&& other) noexcept
     {
         if (this != &other) {
-            value = other.value;
-            other.value = 0;
+            value_ = other.value_;
+            other.value_ = 0;
         }
 
         return *this;
     }
 
-    int getValue() const { return value; }
+    int getValue() const { return value_; }
+
+    virtual ~MovableOnly() = default;
 
    private:
-    int value{0};
+    int value_{0};
 };
 
 TEST(ChannelTest, Transform)
@@ -380,39 +382,8 @@ TEST(ChannelTest, Transform)
 
     // Transform input channel values from MovableOnly to int by multiplying by 2 and write to output channel
     const auto double_transformer = [&input_chan, &output_chan]() {
-        const auto double_value = [](auto&& value) -> int { return value.getValue() * 2; };
-
-#ifdef _MSC_VER
-        for (auto&& value : input_chan) {
-            output_chan.write(double_value(value));
-        }
-
-        // Does not work with std::transform:
-        //
-        // could be 'void std::queue<T,std::deque<T,std::allocator<int>>>::push(int &&)'
-        //   with
-        //   [
-        //       T=ChannelTest_Traits_Test::TestBody::type
-        //   ]
-        //   D:\a\cpp-channel\cpp-channel\include\msd\channel.hpp(105,20):
-        //   'void std::queue<T,std::deque<T,std::allocator<int>>>::push(int &&)': cannot convert argument 1 from
-        //   '_OutIt' to 'int &&' with
-        //   [
-        //       T=ChannelTest_Traits_Test::TestBody::type
-        //   ]
-        //   and
-        //   [
-        //       _OutIt=msd::blocking_writer_iterator<msd::channel<ChannelTest_Traits_Test::TestBody::type>>
-        //   ]
-        //       D:\a\cpp-channel\cpp-channel\include\msd\channel.hpp(105,43):
-        //       Reason: cannot convert from '_OutIt' to 'int'
-        //   with
-        //   [
-        //       _OutIt=msd::blocking_writer_iterator<msd::channel<ChannelTest_Traits_Test::TestBody::type>>
-        //   ]
-#else
-        std::transform(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan), double_value);
-#endif  // _MSC_VER
+        std::transform(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan),
+                       [](auto&& value) { return value.getValue() * 2; });
 
         output_chan.close();
     };
