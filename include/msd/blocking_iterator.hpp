@@ -64,7 +64,7 @@ class blocking_iterator {
      */
     reference operator*()
     {
-        chan_ >> value_;
+        chan_.read(value_);
 
         return value_;
     }
