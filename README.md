@@ -14,7 +14,7 @@
 * Integrates with some of the STD algorithms. Eg:
     * `std::move(ch.begin(), ch.end(), ...)`
     * `std::transform(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan))`.
-    * `std::copy(chan.begin(), chan.end(), ...);`
+    * `std::copy_if(chan.begin(), chan.end(), ...);`
 * Tested with GCC, Clang, and MSVC.
 * Includes stack-based, exception-free alternative (static channel).
 
