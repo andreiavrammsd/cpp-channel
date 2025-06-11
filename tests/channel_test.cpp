@@ -323,24 +323,69 @@ TEST(ChannelTest, ReadWriteClose)
     EXPECT_EQ(nums, numbers);
 }
 
-TEST(ChannelTest, MergeChannels)
+class MovableOnly {
+   public:
+    explicit MovableOnly(int v) : value(v) {}
+
+    MovableOnly() = default;
+
+    MovableOnly(const MovableOnly&)
+    {
+        std::cout << "Copy constructor should not be called for MovableOnly";
+        std::abort();
+    }
+
+    MovableOnly(MovableOnly&& other) noexcept : value{std::move(other.value)} { other.value = 0; }
+
+    MovableOnly& operator=(const MovableOnly&)
+    {
+        std::cout << "Copy assignment should not be called for MovableOnly";
+        std::abort();
+    }
+
+    MovableOnly& operator=(MovableOnly&& other) noexcept
+    {
+        if (this != &other) {
+            value = other.value;
+            other.value = 0;
+        }
+
+        return *this;
+    }
+
+    int getValue() const { return value; }
+
+   private:
+    int value{0};
+};
+
+TEST(ChannelTest, Transform)
 {
     const int numbers = 100;
     const std::int64_t expected_sum = 5050 * 2;
     std::atomic<std::int64_t> sum{0};
     std::atomic<std::int64_t> nums{0};
 
-    msd::channel<int> input_chan{30};
+    msd::channel<MovableOnly> input_chan{30};
     msd::channel<int> output_chan{10};
 
-    // Send to channel
+    // Send to channel input channel
     const auto writer = [&input_chan]() {
         for (int i = 1; i <= numbers; ++i) {
-            input_chan.write(i);
+            input_chan.write(MovableOnly{i});
         }
         input_chan.close();
     };
 
+    // Transform input channel values from MovableOnly to int
+    // by multiplying by 2 and write to output channel
+    const auto double_transformer = [&input_chan, &output_chan]() {
+        std::transform(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan),
+                       [](auto&& value) { return value.getValue() * 2; });
+        output_chan.close();
+    };
+
+    // Read from output channel
     const auto reader = [&output_chan, &sum, &nums]() {
         for (const auto out : output_chan) {  // blocking until channel is drained (closed and empty)
             sum += out;
@@ -348,21 +393,16 @@ TEST(ChannelTest, MergeChannels)
         }
     };
 
-    const auto double_transformer = [&input_chan, &output_chan]() {
-        std::transform(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan),
-                       [](int value) { return value * 2; });
-        output_chan.close();
-    };
-
-    const auto reader_1 = std::async(std::launch::async, reader);
-    const auto reader_2 = std::async(std::launch::async, reader);
+    // Create async tasks for reading, transforming, and writing
+    const auto reader_task_1 = std::async(std::launch::async, reader);
+    const auto reader_task_2 = std::async(std::launch::async, reader);
     const auto writer_task = std::async(std::launch::async, writer);
     const auto transformer_task = std::async(std::launch::async, double_transformer);
 
-    reader_1.wait();
-    reader_2.wait();
     writer_task.wait();
     transformer_task.wait();
+    reader_task_1.wait();
+    reader_task_2.wait();
 
     EXPECT_EQ(sum, expected_sum);
     EXPECT_EQ(nums, numbers);

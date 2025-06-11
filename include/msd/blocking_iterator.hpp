@@ -61,7 +61,7 @@ class blocking_iterator {
      *
      * @return The iterator itself.
      */
-    blocking_iterator<Channel> operator++() noexcept
+    blocking_iterator<Channel>& operator++() noexcept
     {
         if (!chan_->read(value_)) {
             is_end_ = true;
@@ -141,9 +141,10 @@ class blocking_writer_iterator {
      *
      * @return The iterator itself.
      */
-    blocking_writer_iterator& operator=(const value_type& val)
+    template <typename T>
+    blocking_writer_iterator& operator=(T&& val)
     {
-        chan_->write(val);
+        chan_->write(std::forward<T>(val));
         return *this;
     }
 
