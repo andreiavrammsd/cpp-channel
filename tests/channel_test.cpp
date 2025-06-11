@@ -324,27 +324,27 @@ TEST(ChannelTest, ReadWriteClose)
     EXPECT_EQ(nums, numbers);
 }
 
-class MovableOnly {
+class movable_only {
    public:
-    explicit MovableOnly(int value) : value_{value} {}
+    explicit movable_only(int value) : value_{value} {}
 
-    MovableOnly() = default;
+    movable_only() = default;
 
-    MovableOnly(const MovableOnly&)
+    movable_only(const movable_only&)
     {
-        std::cout << "Copy constructor should not be called for MovableOnly";
+        std::cout << "Copy constructor should not be called";
         std::abort();
     }
 
-    MovableOnly(MovableOnly&& other) noexcept : value_{std::move(other.value_)} { other.value_ = 0; }
+    movable_only(movable_only&& other) noexcept : value_{std::move(other.value_)} { other.value_ = 0; }
 
-    MovableOnly& operator=(const MovableOnly&)
+    movable_only& operator=(const movable_only&)
     {
-        std::cout << "Copy assignment should not be called for MovableOnly";
+        std::cout << "Copy assignment should not be called";
         std::abort();
     }
 
-    MovableOnly& operator=(MovableOnly&& other) noexcept
+    movable_only& operator=(movable_only&& other) noexcept
     {
         if (this != &other) {
             value_ = other.value_;
@@ -356,7 +356,7 @@ class MovableOnly {
 
     int getValue() const { return value_; }
 
-    virtual ~MovableOnly() = default;
+    virtual ~movable_only() = default;
 
    private:
     int value_{0};
@@ -365,22 +365,22 @@ class MovableOnly {
 TEST(ChannelTest, Transform)
 {
     const int numbers = 100;
-    const std::int64_t expected_sum = 5050 * 2;
-    std::atomic<std::int64_t> sum{0};
-    std::atomic<std::int64_t> nums{0};
+    const int expected_sum = 5050 * 2;
+    std::atomic<int> sum{0};
+    std::atomic<int> nums{0};
 
-    msd::channel<MovableOnly> input_chan{30};
+    msd::channel<movable_only> input_chan{30};
     msd::channel<int> output_chan{10};
 
     // Send to channel input channel
     const auto writer = [&input_chan]() {
         for (int i = 1; i <= numbers; ++i) {
-            input_chan.write(MovableOnly{i});
+            input_chan.write(movable_only{i});
         }
         input_chan.close();
     };
 
-    // Transform input channel values from MovableOnly to int by multiplying by 2 and write to output channel
+    // Transform input channel values from movable_only to int by multiplying by 2 and write to output channel
     const auto double_transformer = [&input_chan, &output_chan]() {
         std::transform(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan),
                        [](auto&& value) { return value.getValue() * 2; });
@@ -427,7 +427,7 @@ TEST(ChannelTest, TransformAndAccumulate)
     // Filter: take even numbers
     const auto filter = [&input_chan, &output_chan]() {
         std::copy_if(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan),
-                     [](int v) { return v % 2 == 0; });
+                     [](int value) { return value % 2 == 0; });
         output_chan.close();
     };
 

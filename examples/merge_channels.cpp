@@ -39,7 +39,6 @@ int main()
     const auto transformer = [&input_chan, &output_chan]() {
         std::transform(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan),
                        [](int value) { return value * 2; });
-
         output_chan.close();
     };
 
