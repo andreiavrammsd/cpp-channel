@@ -33,6 +33,11 @@ function(package_add_test TESTNAME)
         target_compile_options(${TESTNAME} PRIVATE -fsanitize=undefined)
     endif ()
 
+    if (CPP_CHANNEL_SANITIZE_THREADS)
+        target_link_libraries(${TESTNAME} -fsanitize=thread) 
+        target_compile_options(${TESTNAME} PRIVATE -fsanitize=thread)
+    endif ()
+
     add_test(NAME ${TESTNAME} COMMAND ${TESTNAME})
     set_tests_properties(${TESTNAME} PROPERTIES LABELS "channel_tests")
 
