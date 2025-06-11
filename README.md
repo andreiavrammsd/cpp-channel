@@ -11,7 +11,9 @@
 * Blocking (forever waiting to fetch).
 * Range-based for loop supported.
 * Close to prevent pushing and stop waiting to fetch.
-* Integrates well with STL algorithms in some cases. Eg: std::move(ch.begin(), ch.end(), ...).
+* Integrates well with STL algorithms in some cases. Eg:
+    * `std::move(ch.begin(), ch.end(), ...)`
+    * `std::transform(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan))`.
 * Tested with GCC, Clang, and MSVC.
 * Includes stack-based, exception-free alternative (static channel).
 
