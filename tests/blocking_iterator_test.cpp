@@ -4,7 +4,7 @@
 
 #include "msd/channel.hpp"
 
-TEST(ChannelIteratorTest, Traits)
+TEST(BlockingIteratorTest, Traits)
 {
     using type = int;
     using iterator = msd::blocking_iterator<msd::channel<type>>;
@@ -15,7 +15,7 @@ TEST(ChannelIteratorTest, Traits)
     EXPECT_TRUE((std::is_same<iterator_traits::iterator_category, std::input_iterator_tag>::value));
 }
 
-TEST(ChannelIteratorTest, Dereference)
+TEST(BlockingIteratorTest, Dereference)
 {
     msd::channel<int> channel;
     msd::blocking_iterator<msd::channel<int>> it{channel};
@@ -29,7 +29,7 @@ TEST(ChannelIteratorTest, Dereference)
     EXPECT_EQ(2, *it);
 }
 
-TEST(ChannelIteratorTest, NotEqualStop)
+TEST(BlockingIteratorTest, NotEqualStop)
 {
     msd::channel<int> channel;
     msd::blocking_iterator<msd::channel<int>> it{channel};
@@ -39,7 +39,7 @@ TEST(ChannelIteratorTest, NotEqualStop)
     EXPECT_FALSE(it != it);
 }
 
-TEST(ChannelIteratorTest, NotEqualContinue)
+TEST(BlockingIteratorTest, NotEqualContinue)
 {
     msd::channel<int> channel;
     msd::blocking_iterator<msd::channel<int>> it{channel};
