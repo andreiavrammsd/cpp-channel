@@ -27,9 +27,9 @@ Choose one of the methods:
 
 * Copy the [include](https://github.com/andreiavrammsd/cpp-channel/tree/master/include) directory into your project and add it to your include path.
 * [CMake FetchContent](https://github.com/andreiavrammsd/cpp-channel/tree/master/examples/cmake-project)
-* [CMake install](https://cmake.org/cmake/help/latest/command/install.html)
+* [CMake install](https://cmake.org/cmake/help/latest/command/install.html) - Choose a [version](https://github.com/andreiavrammsd/cpp-channel/releases), then run:
 ```shell
-VERSION=1.1.0 \
+VERSION=X.Y.Z \
     && wget https://github.com/andreiavrammsd/cpp-channel/archive/refs/tags/v$VERSION.zip \
     && unzip v$VERSION.zip \
     && cd cpp-channel-$VERSION \
