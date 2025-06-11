@@ -10,7 +10,6 @@ Checks: >
   -readability-named-parameter,
   -altera-unroll-loops,
   -llvmlibc-inline-function-decl,
-  -cppcoreguidelines-avoid-const-or-ref-data-members,
   -cert-dcl21-cpp,
   -fuchsia-default-arguments-declarations
 

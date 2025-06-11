@@ -49,9 +49,9 @@ class blocking_iterator {
      * @param chan Reference to the channel this iterator will iterate over.
      * @param is_end If true, the iterator is in an end state (no elements to read).
      */
-    explicit blocking_iterator(Channel& chan, bool is_end = false) : chan_{chan}, is_end_{is_end}
+    explicit blocking_iterator(Channel& chan, bool is_end = false) : chan_{&chan}, is_end_{is_end}
     {
-        if (!is_end_ && !chan_.read(value_)) {
+        if (!is_end_ && !chan_->read(value_)) {
             is_end_ = true;
         }
     }
@@ -63,7 +63,7 @@ class blocking_iterator {
      */
     blocking_iterator<Channel> operator++() noexcept
     {
-        if (!chan_.read(value_)) {
+        if (!chan_->read(value_)) {
             is_end_ = true;
         }
         return *this;
@@ -87,7 +87,7 @@ class blocking_iterator {
     bool operator!=(const blocking_iterator& other) { return is_end_ != other.is_end_; }
 
    private:
-    Channel& chan_;
+    Channel* chan_;
     value_type value_{};
     bool is_end_{false};
 };
@@ -132,7 +132,7 @@ class blocking_writer_iterator {
      *
      * @param chan Reference to the channel this iterator will write into.
      */
-    explicit blocking_writer_iterator(Channel& chan) : chan_{chan} {}
+    explicit blocking_writer_iterator(Channel& chan) : chan_{&chan} {}
 
     /**
      * @brief Writes an element into the channel, blocking until space is available.
@@ -143,7 +143,7 @@ class blocking_writer_iterator {
      */
     blocking_writer_iterator& operator=(const value_type& val)
     {
-        chan_.write(val);
+        chan_->write(val);
         return *this;
     }
 
@@ -169,7 +169,7 @@ class blocking_writer_iterator {
     blocking_writer_iterator operator++(int) { return *this; }
 
    private:
-    Channel& chan_;
+    Channel* chan_;
 };
 
 /**
