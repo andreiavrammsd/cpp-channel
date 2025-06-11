@@ -137,7 +137,7 @@ class blocking_writer_iterator {
     /**
      * @brief Writes an element into the channel, blocking until space is available.
      *
-     * @param val The value to be written into the channel.
+     * @param value The value to be written into the channel.
      *
      * @return The iterator itself.
      */
