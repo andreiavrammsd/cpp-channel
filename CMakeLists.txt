@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 project(cpp_channel)
-set(PROJECT_VERSION 1.0.1)
+set(PROJECT_VERSION 1.1.0)
 
 set(CMAKE_CXX_STANDARD 11 CACHE STRING "C++ standard")
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
@@ -18,6 +18,7 @@ option(CPP_CHANNEL_BUILD_TESTS "Build all of cpp_channel's own tests." OFF)
 option(CPP_CHANNEL_BUILD_EXAMPLES "Build cpp_channel's example programs." OFF)
 option(CPP_CHANNEL_COVERAGE "Generate test coverage." OFF)
 option(CPP_CHANNEL_SANITIZERS "Build with sanitizers." OFF)
+option(CPP_CHANNEL_SANITIZE_THREADS "Build with thread sanitizer." OFF)
 
 if (CPP_CHANNEL_BUILD_TESTS)
     enable_testing()

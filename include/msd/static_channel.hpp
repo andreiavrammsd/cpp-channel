@@ -1,14 +1,12 @@
 // Copyright (C) 2020-2025 Andrei Avram
 
-#ifndef MSD_CHANNEL_HPP_
-#define MSD_CHANNEL_HPP_
+#ifndef MSD_STATIC_CHANNEL_HPP_
+#define MSD_STATIC_CHANNEL_HPP_
 
+#include <array>
 #include <condition_variable>
 #include <cstdlib>
 #include <mutex>
-#include <queue>
-#include <stdexcept>
-#include <type_traits>
 
 #include "blocking_iterator.hpp"
 #include "nodiscard.hpp"
@@ -16,28 +14,20 @@
 namespace msd {
 
 /**
- * @brief Exception thrown if trying to write on closed channel.
- */
-class closed_channel : public std::runtime_error {
-   public:
-    /**
-     * @brief Constructs the exception with an error message.
-     *
-     * @param msg A descriptive message explaining the cause of the error.
-     */
-    explicit closed_channel(const char* msg) : std::runtime_error{msg} {}
-};
-
-/**
  * @brief Thread-safe container for sharing data between threads.
  *
+ * Allocates elements on the stack.
+ * Does not throw exceptions.
  * Implements a blocking input iterator.
  *
  * @tparam T The type of the elements.
+ * @tparam Capacity The maximum number of elements the channel can hold before blocking.
  */
-template <typename T>
-class channel {
+template <typename T, std::size_t Capacity>
+class static_channel {
    public:
+    static_assert(Capacity > 0, "Channel capacity must be greater than zero.");
+
     /**
      * @brief The type of elements stored in the channel.
      */
@@ -46,7 +36,7 @@ class channel {
     /**
      * @brief The iterator type used to traverse the channel.
      */
-    using iterator = blocking_iterator<channel<T>>;
+    using iterator = blocking_iterator<static_channel<T, Capacity>>;
 
     /**
      * @brief The type used to represent sizes and counts.
@@ -54,32 +44,9 @@ class channel {
     using size_type = std::size_t;
 
     /**
-     * @brief Creates an unbuffered channel.
+     * @brief Creates a new channel.
      */
-    constexpr channel() = default;
-
-    /**
-     * @brief Creates a buffered channel.
-     *
-     * @param capacity Number of elements the channel can store before blocking.
-     */
-    explicit constexpr channel(const size_type capacity) : cap_{capacity} {}
-
-    /**
-     * @brief Pushes an element into the channel.
-     *
-     * @throws closed_channel if channel is closed.
-     */
-    template <typename Type>
-    friend channel<typename std::decay<Type>::type>& operator<<(channel<typename std::decay<Type>::type>&, Type&&);
-
-    /**
-     * @brief Pops an element from the channel.
-     *
-     * @tparam Type The type of the elements.
-     */
-    template <typename Type>
-    friend channel<Type>& operator>>(channel<Type>&, Type&);
+    constexpr static_channel() = default;
 
     /**
      * @brief Pushes an element into the channel.
@@ -102,7 +69,7 @@ class channel {
                 return false;
             }
 
-            queue_.push(std::forward<Type>(value));
+            array_[(front_ + size_) % Capacity] = std::forward<Type>(value);
             ++size_;
         }
 
@@ -129,8 +96,8 @@ class channel {
                 return false;
             }
 
-            out = std::move(queue_.front());
-            queue_.pop();
+            out = std::move(array_[front_]);
+            front_ = (front_ + 1) % Capacity;
             --size_;
         }
 
@@ -203,28 +170,28 @@ class channel {
      *
      * @return A blocking iterator pointing to the start of the channel.
      */
-    iterator begin() noexcept { return blocking_iterator<channel<T>>{*this}; }
+    iterator begin() noexcept { return blocking_iterator<static_channel<T, Capacity>>{*this}; }
 
     /**
      * @brief Returns an iterator representing the end of the channel.
      *
      * @return A blocking iterator representing the end condition.
      */
-    iterator end() noexcept { return blocking_iterator<channel<T>>{*this}; }
+    iterator end() noexcept { return blocking_iterator<static_channel<T, Capacity>>{*this}; }
 
     /**
      * Channel cannot be copied or moved.
      */
-    channel(const channel&) = delete;
-    channel& operator=(const channel&) = delete;
-    channel(channel&&) = delete;
-    channel& operator=(channel&&) = delete;
-    virtual ~channel() = default;
+    static_channel(const static_channel&) = delete;
+    static_channel& operator=(const static_channel&) = delete;
+    static_channel(static_channel&&) = delete;
+    static_channel& operator=(static_channel&&) = delete;
+    virtual ~static_channel() = default;
 
    private:
-    std::queue<T> queue_;
+    std::array<T, Capacity> array_{};
+    size_type front_{0};
     std::size_t size_{0};
-    const size_type cap_{0};
     mutable std::mutex mtx_;
     std::condition_variable cnd_;
     bool is_closed_{false};
@@ -236,30 +203,12 @@ class channel {
 
     void waitBeforeWrite(std::unique_lock<std::mutex>& lock)
     {
-        if (cap_ > 0 && size_ == cap_) {
-            cnd_.wait(lock, [this]() { return size_ < cap_; });
+        if (size_ == Capacity) {
+            cnd_.wait(lock, [this]() { return size_ < Capacity; });
         }
     }
 };
 
-template <typename T>
-channel<typename std::decay<T>::type>& operator<<(channel<typename std::decay<T>::type>& chan, T&& value)
-{
-    if (!chan.write(std::forward<T>(value))) {
-        throw closed_channel{"cannot write on closed channel"};
-    }
-
-    return chan;
-}
-
-template <typename T>
-channel<T>& operator>>(channel<T>& chan, T& out)
-{
-    chan.read(out);
-
-    return chan;
-}
-
 }  // namespace msd
 
-#endif  // MSD_CHANNEL_HPP_
+#endif  // MSD_STATIC_CHANNEL_HPP_

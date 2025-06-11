@@ -76,11 +76,11 @@ jobs:
 
       - name: Build
         working-directory: ${{github.workspace}}/build
-        run: cmake --build . --config ${{ matrix.config.build_type }} --target tests -j
+        run: cmake --build . --config ${{ matrix.config.build_type }} --target channel_tests -j
 
       - name: Test
         working-directory: ${{github.workspace}}/build
-        run: ctest -C ${{ matrix.config.build_type }} --verbose -R channel_test --output-on-failure -j
+        run: ctest -C ${{ matrix.config.build_type }} --verbose -L channel_tests --output-on-failure -j
 
       - name: Run examples
         working-directory: ${{github.workspace}}/build
@@ -102,11 +102,11 @@ jobs:
 
       - name: Build
         working-directory: ${{github.workspace}}/build
-        run: cmake --build . --config Debug --target tests -j
+        run: cmake --build . --config Debug --target channel_tests -j
 
       - name: Test
         working-directory: ${{github.workspace}}/build
-        run: ctest -C Debug --verbose -R channel_test -j
+        run: ctest -C Debug --verbose -L channel_tests -j
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5

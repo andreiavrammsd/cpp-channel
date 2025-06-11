@@ -33,15 +33,23 @@ function(package_add_test TESTNAME)
         target_compile_options(${TESTNAME} PRIVATE -fsanitize=undefined)
     endif ()
 
-    add_test(NAME ${TESTNAME} COMMAND ${TESTNAME})
+    if (CPP_CHANNEL_SANITIZE_THREADS)
+        target_link_libraries(${TESTNAME} -fsanitize=thread) 
+        target_compile_options(${TESTNAME} PRIVATE -fsanitize=thread)
+    endif ()
 
-    add_dependencies(tests ${TESTNAME})
+    add_test(NAME ${TESTNAME} COMMAND ${TESTNAME})
+    set_tests_properties(${TESTNAME} PROPERTIES LABELS "channel_tests")
+
+    add_dependencies(channel_tests ${TESTNAME})
 endfunction()
 
-add_custom_target(tests)
+add_custom_target(channel_tests)
 
 # Tests
-package_add_test(channel_test channel_test.cpp blocking_iterator_test.cpp)
+package_add_test(channel_test channel_test.cpp)
+package_add_test(static_channel_test static_channel_test.cpp)
+package_add_test(blocking_iterator_test blocking_iterator_test.cpp)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
     # Disable warnings about C++17 extensions

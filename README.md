@@ -13,6 +13,7 @@
 * Close to prevent pushing and stop waiting to fetch.
 * Integrates well with STL algorithms in some cases. Eg: std::move(ch.begin(), ch.end(), ...).
 * Tested with GCC, Clang, and MSVC.
+* Includes stack-based, exception-free alternative (static channel).
 
 ## Requirements
 
@@ -26,7 +27,7 @@ Choose one of the methods:
 * [CMake FetchContent](https://github.com/andreiavrammsd/cpp-channel/tree/master/examples/cmake-project)
 * [CMake install](https://cmake.org/cmake/help/latest/command/install.html)
 ```shell
-VERSION=1.0.1 \
+VERSION=1.1.0 \
     && wget https://github.com/andreiavrammsd/cpp-channel/archive/refs/tags/v$VERSION.zip \
     && unzip v$VERSION.zip \
     && cd cpp-channel-$VERSION \
@@ -108,6 +109,26 @@ int main() {
     for (const auto out : chan) { // blocking: forever waiting for channel items
         std::cout << out << '\n';
     }
+}
+```
+
+```c++
+#include <msd/static_channel.hpp>
+
+int main() {
+    msd::static_channel<int, 2> chan{};  // always buffered
+
+    int in = 1;
+    int out = 0;
+
+    // Send to channel
+    chan.write(in);
+    chan.write(in);
+
+    // Read from channel
+    chan.read(out);
+    chan.read(out);
+    chan.read(out);  // blocking because channel is empty (and no one writes on it)
 }
 ```
 
