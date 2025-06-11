@@ -103,7 +103,6 @@ class channel {
             }
 
             queue_.push(std::forward<Type>(value));
-            ++size_;
         }
 
         cnd_.notify_one();
@@ -125,13 +124,12 @@ class channel {
             std::unique_lock<std::mutex> lock{mtx_};
             waitBeforeRead(lock);
 
-            if (is_closed_ && size_ == 0) {
+            if (is_closed_ && queue_.empty()) {
                 return false;
             }
 
             out = std::move(queue_.front());
             queue_.pop();
-            --size_;
         }
 
         cnd_.notify_one();
@@ -147,7 +145,7 @@ class channel {
     NODISCARD size_type size() const noexcept
     {
         std::unique_lock<std::mutex> lock{mtx_};
-        return size_;
+        return queue_.size();
     }
 
     /**
@@ -159,7 +157,7 @@ class channel {
     NODISCARD bool empty() const noexcept
     {
         std::unique_lock<std::mutex> lock{mtx_};
-        return size_ == 0;
+        return queue_.empty();
     }
 
     /**
@@ -195,7 +193,7 @@ class channel {
     NODISCARD bool drained() noexcept
     {
         std::unique_lock<std::mutex> lock{mtx_};
-        return size_ == 0 && is_closed_;
+        return queue_.empty() && is_closed_;
     }
 
     /**
@@ -223,7 +221,6 @@ class channel {
 
    private:
     std::queue<T> queue_;
-    std::size_t size_{0};
     const size_type cap_{0};
     mutable std::mutex mtx_;
     std::condition_variable cnd_;
@@ -231,13 +228,13 @@ class channel {
 
     void waitBeforeRead(std::unique_lock<std::mutex>& lock)
     {
-        cnd_.wait(lock, [this]() { return size_ > 0 || is_closed_; });
+        cnd_.wait(lock, [this]() { return !queue_.empty() || is_closed_; });
     };
 
     void waitBeforeWrite(std::unique_lock<std::mutex>& lock)
     {
-        if (cap_ > 0 && size_ == cap_) {
-            cnd_.wait(lock, [this]() { return size_ < cap_; });
+        if (cap_ > 0 && queue_.size() == cap_) {
+            cnd_.wait(lock, [this]() { return queue_.size() < cap_; });
         }
     }
 };
