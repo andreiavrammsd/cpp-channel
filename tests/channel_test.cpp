@@ -445,30 +445,31 @@ TEST(ChannelTest, TransformAndAccumulate)
     msd::channel<int> input_chan{10};
     msd::channel<int> output_chan{10};
 
-    // Producer: fill input channel with 1..5
+    // Producer: fill input channel with 1..101
     const auto producer = [&input_chan]() {
-        for (int i = 1; i <= 5; ++i) {
+        for (int i = 1; i <= 101; ++i) {
             input_chan.write(i);
         }
         input_chan.close();
     };
 
-    // Transformer: double the values using std::transform with blocking iterators
-    const auto transformer = [&input_chan, &output_chan]() {
-        std::transform(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan),
-                       [](int v) { return v * 2; });
+    // Filter: take even numbers
+    const auto filter = [&input_chan, &output_chan]() {
+        std::copy_if(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan),
+                     [](int v) { return v % 2 == 0; });
         output_chan.close();
     };
 
     const auto producer_task = std::async(std::launch::async, producer);
-    const auto transformer_task = std::async(std::launch::async, transformer);
-
-    producer_task.wait();
-    transformer_task.wait();
+    const auto filter_task = std::async(std::launch::async, filter);
 
     // Consumer: accumulate output channel values
     const int sum = std::accumulate(output_chan.begin(), output_chan.end(), 0);
-    EXPECT_EQ(sum, 30);
+
+    producer_task.wait();
+    filter_task.wait();
+
+    EXPECT_EQ(sum, 2550);
 }
 
 TEST(ChannelTest, CopyToVector)
@@ -486,7 +487,7 @@ TEST(ChannelTest, CopyToVector)
 
     producer();
 
-    // Use std::copy to copy from channel to vector using channel's blocking iterator
+    // Copy from channel to vector
     std::copy(chan.begin(), chan.end(), std::back_inserter(results));
 
     EXPECT_EQ(results, std::vector<int>({1, 2, 3, 4}));
