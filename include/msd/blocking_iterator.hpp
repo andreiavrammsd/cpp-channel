@@ -92,6 +92,100 @@ class blocking_iterator {
     bool is_end_{false};
 };
 
+/**
+ * @brief An output iterator pushes elements into a channel. Blocking until the channel is not full.
+ *
+ * Used to integrate with standard algorithms that require an output iterator.
+ *
+ * @tparam Channel Type of channel being iterated.
+ */
+template <typename Channel>
+class blocking_writer_iterator {
+   public:
+    /**
+     * @brief The type of the elements stored in the channel.
+     */
+    using value_type = typename Channel::value_type;
+
+    /**
+     * @brief Constant reference to the type of the elements stored in the channel.
+     */
+    using reference = const value_type&;
+
+    /**
+     * @brief Supporting writing of elements.
+     */
+    using iterator_category = std::output_iterator_tag;
+
+    /**
+     * @brief Signed integral type for iterator difference.
+     */
+    using difference_type = std::ptrdiff_t;
+
+    /**
+     * @brief Pointer type to the value_type.
+     */
+    using pointer = const value_type*;
+
+    /**
+     * @brief Constructs a blocking iterator from a channel reference.
+     *
+     * @param chan Reference to the channel this iterator will write into.
+     */
+    explicit blocking_writer_iterator(Channel& chan) : chan_{chan} {}
+
+    /**
+     * @brief Writes an element into the channel, blocking until space is available.
+     *
+     * @param val The value to be written into the channel.
+     *
+     * @return The iterator itself.
+     */
+    blocking_writer_iterator& operator=(const value_type& val)
+    {
+        chan_.write(val);
+        return *this;
+    }
+
+    /**
+     * @brief Not applicable (handled by operator=).
+     *
+     * @return The iterator itself.
+     */
+    blocking_writer_iterator& operator*() { return *this; }
+
+    /**
+     * @brief Not applicable (handled by operator=).
+     *
+     * @return The iterator itself.
+     */
+    blocking_writer_iterator& operator++() { return *this; }
+
+    /**
+     * @brief Not applicable (handled by operator=).
+     *
+     * @return The iterator itself.
+     */
+    blocking_writer_iterator operator++(int) { return *this; }
+
+   private:
+    Channel& chan_;
+};
+
+/**
+ * @brief Creates a blocking iterator for the given channel.
+ *
+ * @tparam Channel Type of channel being iterated.
+ *
+ * @param chan Reference to the channel this iterator will iterate over.
+ *
+ * @return A blocking iterator for the specified channel.
+ */
+template <typename Channel>
+blocking_writer_iterator<Channel> back_inserter(Channel& chan)
+{
+    return blocking_writer_iterator<Channel>{chan};
+}
 
 }  // namespace msd
 

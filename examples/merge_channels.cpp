@@ -1,19 +1,21 @@
+#include <algorithm>
 #include <chrono>
 #include <future>
 #include <iostream>
 #include <sstream>
 #include <thread>
 
-#include "msd/static_channel.hpp"
+#include "msd/channel.hpp"
 
 int main()
 {
-    msd::static_channel<int, 50> chan{};  // always buffered
+    msd::channel<int> input_chan{30};
+    msd::channel<int> output_chan{10};
 
     // Send to channel
-    const auto writer = [&chan](int begin, int end) {
+    const auto writer = [&input_chan](int begin, int end) {
         for (int i = begin; i <= end; ++i) {
-            chan.write(i);
+            input_chan.write(i);
 
             std::stringstream msg;
             msg << "Sent " << i << " from " << std::this_thread::get_id() << "\n";
@@ -21,11 +23,11 @@ int main()
 
             std::this_thread::sleep_for(std::chrono::milliseconds(10));  // simulate work
         }
-        chan.close();
+        input_chan.close();
     };
 
-    const auto reader = [&chan]() {
-        for (const auto out : chan) {  // blocking until channel is drained (closed and empty)
+    const auto reader = [&output_chan]() {
+        for (const auto out : output_chan) {  // blocking until channel is drained (closed and empty)
             std::stringstream msg;
             msg << "Received " << out << " on " << std::this_thread::get_id() << "\n";
             std::cout << msg.str();
@@ -34,15 +36,21 @@ int main()
         }
     };
 
+    const auto transformer = [&input_chan, &output_chan]() {
+        std::transform(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan),
+                       [](int value) { return value * 2; });
+        output_chan.close();
+    };
+
     const auto reader_1 = std::async(std::launch::async, reader);
     const auto reader_2 = std::async(std::launch::async, reader);
-    const auto reader_3 = std::async(std::launch::async, reader);
-    const auto writer_1 = std::async(std::launch::async, writer, 1, 50);
-    const auto writer_2 = std::async(std::launch::async, writer, 51, 100);
+    const auto writer_1 = std::async(std::launch::async, writer, 1, 30);
+    const auto writer_2 = std::async(std::launch::async, writer, 31, 40);
+    const auto transformer_task = std::async(std::launch::async, transformer);
 
     reader_1.wait();
     reader_2.wait();
-    reader_3.wait();
     writer_1.wait();
     writer_2.wait();
+    transformer_task.wait();
 }

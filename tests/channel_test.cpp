@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <atomic>
 #include <cstdint>
+#include <future>
 #include <string>
 #include <thread>
 #include <type_traits>
@@ -317,6 +318,51 @@ TEST(ChannelTest, ReadWriteClose)
     for (auto& reader : readers) {
         reader.join();
     }
+
+    EXPECT_EQ(sum, expected_sum);
+    EXPECT_EQ(nums, numbers);
+}
+
+TEST(ChannelTest, MergeChannels)
+{
+    const int numbers = 100;
+    const std::int64_t expected_sum = 5050 * 2;
+    std::atomic<std::int64_t> sum{0};
+    std::atomic<std::int64_t> nums{0};
+
+    msd::channel<int> input_chan{30};
+    msd::channel<int> output_chan{10};
+
+    // Send to channel
+    const auto writer = [&input_chan]() {
+        for (int i = 1; i <= numbers; ++i) {
+            input_chan.write(i);
+        }
+        input_chan.close();
+    };
+
+    const auto reader = [&output_chan, &sum, &nums]() {
+        for (const auto out : output_chan) {  // blocking until channel is drained (closed and empty)
+            sum += out;
+            ++nums;
+        }
+    };
+
+    const auto double_transformer = [&input_chan, &output_chan]() {
+        std::transform(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan),
+                       [](int value) { return value * 2; });
+        output_chan.close();
+    };
+
+    const auto reader_1 = std::async(std::launch::async, reader);
+    const auto reader_2 = std::async(std::launch::async, reader);
+    const auto writer_task = std::async(std::launch::async, writer);
+    const auto transformer_task = std::async(std::launch::async, double_transformer);
+
+    reader_1.wait();
+    reader_2.wait();
+    writer_task.wait();
+    transformer_task.wait();
 
     EXPECT_EQ(sum, expected_sum);
     EXPECT_EQ(nums, numbers);
