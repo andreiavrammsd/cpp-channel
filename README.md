@@ -139,7 +139,7 @@ See [examples](https://github.com/andreiavrammsd/cpp-channel/tree/master/example
 
 ## Known limitations
 
-* Integration with some STD algorithms does not compile with MSVC
+* Integration with some [STD algorithms](https://github.com/andreiavrammsd/cpp-channel/blob/master/examples/merge_channels.cpp) does not compile with MSVC
 
 <br>
 

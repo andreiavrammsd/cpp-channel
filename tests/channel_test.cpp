@@ -382,8 +382,19 @@ TEST(ChannelTest, Transform)
 
     // Transform input channel values from movable_only to int by multiplying by 2 and write to output channel
     const auto double_transformer = [&input_chan, &output_chan]() {
-        std::transform(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan),
-                       [](auto&& value) { return value.getValue() * 2; });
+        const auto double_value = [](auto&& value) { return value.getValue() * 2; };
+#ifdef _MSC_VER
+        for (auto&& value : input_chan) {
+            output_chan.write(double_value(value));
+        }
+
+        // Does not work with std::transform: warning C4702: unreachable code
+        // -- Building for: Visual Studio 17 2022
+        // -- The C compiler identification is MSVC 19.43.34808.0
+        // -- The CXX compiler identification is MSVC 19.43.34808.0
+#else
+        std::transform(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan), double_value);
+#endif  // _MSC_VER
 
         output_chan.close();
     };
