@@ -43,7 +43,7 @@ class queue_storage {
      * @brief Removes the front element from the queue and moves it to the output.
      *
      * @param out Reference to the variable where the front element will be moved.
-     * @note It's undefined behaviour to pop from an empty queue.
+     * @warning It's undefined behaviour to pop from an empty queue.
      */
     void pop_front(T& out)
     {
@@ -94,7 +94,7 @@ class vector_storage {
      * @brief Removes the front element from the vector and moves it to the output.
      *
      * @param out Reference to the variable where the front element will be moved.
-     * @note It's undefined behaviour to pop from an empty vector.
+     * @warning It's undefined behaviour to pop from an empty vector.
      */
     void pop_front(T& out)
     {
@@ -127,7 +127,7 @@ class array_storage {
     /**
      * @brief The storage capacity.
      *
-     * @note Required for static storage.
+     * @attention Required for static storage.
      */
     static constexpr std::size_t capacity = N;
 
@@ -141,6 +141,7 @@ class array_storage {
      *
      * @tparam Type Type of the element to insert.
      * @param value The value to insert (perfect forwarded).
+     * @warning It's undefined behaviour to push into a full array.
      */
     template <typename Type>
     void push_back(Type&& value)
@@ -153,7 +154,7 @@ class array_storage {
      * @brief Marks the front element as removed and moves it to the output.
      *
      * @param out Reference to the variable where the front element will be moved.
-     * @note It's undefined behaviour to pop from an empty array.
+     * @warning It's undefined behaviour to pop from an empty array.
      */
     void pop_front(T& out)
     {
