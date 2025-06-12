@@ -6,6 +6,7 @@
 #include <cstdlib>
 
 #include "channel.hpp"
+#include "storage.hpp"
 
 /** @file */
 
