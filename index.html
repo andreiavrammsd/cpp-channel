@@ -72,7 +72,7 @@ $(function() {
   <div class="headertitle"><div class="title">Channel </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="md_README"></a> <a href="https://github.com/andreiavrammsd/cpp-channel/actions"><img src="https://github.com/andreiavrammsd/cpp-channel/actions/workflows/cmake.yml/badge.svg" alt="build" style="pointer-events: none;" class="inline"/></a> <a href="https://codecov.io/github/andreiavrammsd/cpp-channel"><img src="https://codecov.io/github/andreiavrammsd/cpp-channel/graph/badge.svg?token=CKQ0TVW62Z" alt="codecov" style="pointer-events: none;" class="inline"/></a> <a href="https://andreiavrammsd.github.io/cpp-channel/"><img src="https://github.com/andreiavrammsd/cpp-channel/workflows/doc/badge.svg" alt="documentation" style="pointer-events: none;" class="inline"/></a></p>
+<div class="textblock"><p><a class="anchor" id="md_README"></a> <a href="https://github.com/andreiavrammsd/cpp-channel/actions"><img src="https://github.com/andreiavrammsd/cpp-channel/actions/workflows/cmake.yml/badge.svg" alt="build" style="pointer-events: none;" class="inline"/></a> <a href="https://codecov.io/github/andreiavrammsd/cpp-channel"><img src="https://codecov.io/github/andreiavrammsd/cpp-channel/graph/badge.svg?token=CKQ0TVW62Z" alt="codecov" style="pointer-events: none;" class="inline"/></a> <a href="https://andreiavrammsd.github.io/cpp-channel/"><img src="https://github.com/andreiavrammsd/cpp-channel/actions/workflows/doc.yml/badge.svg" alt="documentation" style="pointer-events: none;" class="inline"/></a></p>
 <h2><a class="anchor" id="autotoc_md1"></a>
 Thread-safe container for sharing data between threads (synchronized queue). Header-only. Compatible with C++11.</h2>
 <ul>
@@ -82,9 +82,10 @@ Thread-safe container for sharing data between threads (synchronized queue). Hea
 <li>Blocking (forever waiting to fetch).</li>
 <li>Range-based for loop supported.</li>
 <li>Close to prevent pushing and stop waiting to fetch.</li>
-<li>Integrates well with STL algorithms in some cases. Eg:<ul>
+<li>Integrates with some of the STD algorithms. Eg:<ul>
 <li><code>std::move(ch.begin(), ch.end(), ...)</code></li>
 <li><code>std::transform(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan))</code>.</li>
+<li><code>std::copy_if(chan.begin(), chan.end(), ...);</code></li>
 </ul>
 </li>
 <li>Tested with GCC, Clang, and MSVC.</li>
@@ -132,7 +133,7 @@ Usage</h1>
 <div class="line"> </div>
 <div class="line">    assert(out == 1);</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassmsd_1_1blocking__writer__iterator_html"><div class="ttname"><a href="classmsd_1_1blocking__writer__iterator.html">msd::blocking_writer_iterator</a></div><div class="ttdoc">An output iterator pushes elements into a channel. Blocking until the channel is not full.</div><div class="ttdef"><b>Definition</b> blocking_iterator.hpp:103</div></div>
+<div class="ttc" id="aclassmsd_1_1blocking__writer__iterator_html"><div class="ttname"><a href="classmsd_1_1blocking__writer__iterator.html">msd::blocking_writer_iterator</a></div><div class="ttdoc">An output iterator pushes elements into a channel. Blocking until the channel is not full.</div><div class="ttdef"><b>Definition</b> blocking_iterator.hpp:102</div></div>
 </div><!-- fragment --><div class="fragment"><div class="line"> ++</div>
 <div class="line"><span class="preprocessor">#include &lt;msd/channel.hpp&gt;</span></div>
 <div class="line"> </div>
@@ -198,6 +199,11 @@ Usage</h1>
 <div class="line">    chan.read(out);  <span class="comment">// blocking because channel is empty (and no one writes on it)</span></div>
 <div class="line">}</div>
 </div><!-- fragment --><p>See <a href="https://github.com/andreiavrammsd/cpp-channel/tree/master/examples">examples</a> and <a href="https://andreiavrammsd.github.io/cpp-channel/">documentation</a>.</p>
+<h1><a class="anchor" id="autotoc_md5"></a>
+Known limitations</h1>
+<ul>
+<li>In some cases, the integration with some STD algorithms does not compile with MSVC. See the <a href="https://github.com/andreiavrammsd/cpp-channel/blob/master/tests/channel_test.cpp">Transform test</a>.</li>
+</ul>
 <p><br  />
 </p>
 <p>Developed with <a href="https://www.jetbrains.com/?from=serializer">CLion</a> and <a href="https://code.visualstudio.com/">Visual Studio Code</a>. </p>

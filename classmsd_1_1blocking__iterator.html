@@ -81,7 +81,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>An iterator that block the current thread, waiting to fetch elements from the channel.  
+<p>An iterator that blocks the current thread, waiting to fetch elements from the channel.  
  <a href="classmsd_1_1blocking__iterator.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="blocking__iterator_8hpp_source.html">blocking_iterator.hpp</a>&gt;</code></p>
@@ -114,9 +114,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a331c6d5ca659bafef14047811b3afa54" id="r_a331c6d5ca659bafef14047811b3afa54"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmsd_1_1blocking__iterator.html#a331c6d5ca659bafef14047811b3afa54">blocking_iterator</a> (<a class="el" href="classmsd_1_1blocking__writer__iterator.html">Channel</a> &amp;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">chan</a>, <a class="el" href="classmsd_1_1blocking__writer__iterator.html">bool</a> <a class="el" href="classmsd_1_1blocking__writer__iterator.html">is_end</a>=<a class="el" href="classmsd_1_1blocking__writer__iterator.html">false</a>)</td></tr>
 <tr class="memdesc:a331c6d5ca659bafef14047811b3afa54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a blocking iterator from a channel reference.  <br /></td></tr>
 <tr class="separator:a331c6d5ca659bafef14047811b3afa54"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9bde8d0561bd472756d9bf3dfb684072" id="r_a9bde8d0561bd472756d9bf3dfb684072"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmsd_1_1blocking__iterator.html">blocking_iterator</a>&lt; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">Channel</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmsd_1_1blocking__iterator.html#a9bde8d0561bd472756d9bf3dfb684072">operator++</a> () <a class="el" href="classmsd_1_1blocking__writer__iterator.html">noexcept</a></td></tr>
-<tr class="memdesc:a9bde8d0561bd472756d9bf3dfb684072"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the next element from the channel.  <br /></td></tr>
-<tr class="separator:a9bde8d0561bd472756d9bf3dfb684072"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2509d637932b686aabca166ca402c087" id="r_a2509d637932b686aabca166ca402c087"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmsd_1_1blocking__iterator.html">blocking_iterator</a>&lt; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">Channel</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmsd_1_1blocking__iterator.html#a2509d637932b686aabca166ca402c087">operator++</a> () <a class="el" href="classmsd_1_1blocking__writer__iterator.html">noexcept</a></td></tr>
+<tr class="memdesc:a2509d637932b686aabca166ca402c087"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the next element from the channel.  <br /></td></tr>
+<tr class="separator:a2509d637932b686aabca166ca402c087"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a021d6d7eab5c1a7c012b46196074a47c" id="r_a021d6d7eab5c1a7c012b46196074a47c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmsd_1_1blocking__iterator.html#a584eb190837cc23a6e4351d5a9206fa4">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmsd_1_1blocking__iterator.html#a021d6d7eab5c1a7c012b46196074a47c">operator*</a> ()</td></tr>
 <tr class="memdesc:a021d6d7eab5c1a7c012b46196074a47c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the latest element retrieved from the channel.  <br /></td></tr>
 <tr class="separator:a021d6d7eab5c1a7c012b46196074a47c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -126,7 +126,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typename</a> <a class="el" href="classmsd_1_1blocking__writer__iterator.html">Channel</a>&gt;<br />
-class msd::blocking_iterator&lt; Channel &gt;</div><p>An iterator that block the current thread, waiting to fetch elements from the channel. </p>
+class msd::blocking_iterator&lt; Channel &gt;</div><p>An iterator that blocks the current thread, waiting to fetch elements from the channel. </p>
 <p>Used to implement channel range-based for loop.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
@@ -212,7 +212,7 @@ template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typ
 <p>Makes iteration continue until the channel is closed and empty. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">other</td><td>Another <a class="el" href="classmsd_1_1blocking__iterator.html" title="An iterator that block the current thread, waiting to fetch elements from the channel.">blocking_iterator</a> to compare with.</td></tr>
+    <tr><td class="paramname">other</td><td>Another <a class="el" href="classmsd_1_1blocking__iterator.html" title="An iterator that blocks the current thread, waiting to fetch elements from the channel.">blocking_iterator</a> to compare with. </td></tr>
   </table>
   </dd>
 </dl>
@@ -252,8 +252,8 @@ template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typ
 
 </div>
 </div>
-<a id="a9bde8d0561bd472756d9bf3dfb684072" name="a9bde8d0561bd472756d9bf3dfb684072"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9bde8d0561bd472756d9bf3dfb684072">&#9670;&#160;</a></span>operator++()</h2>
+<a id="a2509d637932b686aabca166ca402c087" name="a2509d637932b686aabca166ca402c087"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2509d637932b686aabca166ca402c087">&#9670;&#160;</a></span>operator++()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -264,7 +264,7 @@ template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typ
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmsd_1_1blocking__iterator.html">blocking_iterator</a>&lt; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">Channel</a> &gt; <a class="el" href="classmsd_1_1blocking__iterator.html">msd::blocking_iterator</a>&lt; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">Channel</a> &gt;::operator++ </td>
+          <td class="memname"><a class="el" href="classmsd_1_1blocking__iterator.html">blocking_iterator</a>&lt; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">Channel</a> &gt; &amp; <a class="el" href="classmsd_1_1blocking__iterator.html">msd::blocking_iterator</a>&lt; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">Channel</a> &gt;::operator++ </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>

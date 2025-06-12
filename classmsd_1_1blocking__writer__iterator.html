@@ -114,9 +114,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ada2a37c69017a4c38eed03e37f15227c" id="r_ada2a37c69017a4c38eed03e37f15227c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmsd_1_1blocking__writer__iterator.html#ada2a37c69017a4c38eed03e37f15227c">blocking_writer_iterator</a> (<a class="el" href="classmsd_1_1blocking__writer__iterator.html">Channel</a> &amp;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">chan</a>)</td></tr>
 <tr class="memdesc:ada2a37c69017a4c38eed03e37f15227c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a blocking iterator from a channel reference.  <br /></td></tr>
 <tr class="separator:ada2a37c69017a4c38eed03e37f15227c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4dd90d81a2bd459ab679bf6969d5ea11" id="r_a4dd90d81a2bd459ab679bf6969d5ea11"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmsd_1_1blocking__writer__iterator.html">blocking_writer_iterator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmsd_1_1blocking__writer__iterator.html#a4dd90d81a2bd459ab679bf6969d5ea11">operator=</a> (<a class="el" href="classmsd_1_1blocking__writer__iterator.html">const</a> <a class="el" href="classmsd_1_1blocking__writer__iterator.html#abc135ceb85f51622a55db95ac933533d">value_type</a> &amp;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">val</a>)</td></tr>
-<tr class="memdesc:a4dd90d81a2bd459ab679bf6969d5ea11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes an element into the channel, blocking until space is available.  <br /></td></tr>
-<tr class="separator:a4dd90d81a2bd459ab679bf6969d5ea11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7daca86b4b911f5b064d7281f50c719a" id="r_a7daca86b4b911f5b064d7281f50c719a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmsd_1_1blocking__writer__iterator.html">blocking_writer_iterator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmsd_1_1blocking__writer__iterator.html#a7daca86b4b911f5b064d7281f50c719a">operator=</a> (<a class="el" href="classmsd_1_1blocking__writer__iterator.html#a15ce2df0fdc4ea79b85ac56bfbf789c5">reference</a> <a class="el" href="classmsd_1_1blocking__writer__iterator.html">value</a>)</td></tr>
+<tr class="memdesc:a7daca86b4b911f5b064d7281f50c719a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes an element into the channel, blocking until space is available.  <br /></td></tr>
+<tr class="separator:a7daca86b4b911f5b064d7281f50c719a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab11525d4c26c0a4c62470504955005c2" id="r_ab11525d4c26c0a4c62470504955005c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmsd_1_1blocking__writer__iterator.html">blocking_writer_iterator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmsd_1_1blocking__writer__iterator.html#ab11525d4c26c0a4c62470504955005c2">operator*</a> ()</td></tr>
 <tr class="memdesc:ab11525d4c26c0a4c62470504955005c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Not applicable (handled by operator=).  <br /></td></tr>
 <tr class="separator:ab11525d4c26c0a4c62470504955005c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -201,7 +201,8 @@ template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typ
 </div><div class="memdoc">
 
 <p>Not applicable (handled by operator=). </p>
-<dl class="section return"><dt>Returns</dt><dd>The iterator itself. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The iterator itself.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>It's uncommon to return a reference to an iterator, but I don't want to return a value from the channel. This iterator is supposed to be used only to write values. I don't know if it's a terrible idea or not, but it looks related to the issue with MSVC in the Transform test in tests/channel_test.cpp. </dd></dl>
 
 </div>
 </div>
@@ -266,8 +267,8 @@ template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typ
 
 </div>
 </div>
-<a id="a4dd90d81a2bd459ab679bf6969d5ea11" name="a4dd90d81a2bd459ab679bf6969d5ea11"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4dd90d81a2bd459ab679bf6969d5ea11">&#9670;&#160;</a></span>operator=()</h2>
+<a id="a7daca86b4b911f5b064d7281f50c719a" name="a7daca86b4b911f5b064d7281f50c719a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7daca86b4b911f5b064d7281f50c719a">&#9670;&#160;</a></span>operator=()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -280,8 +281,8 @@ template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typ
         <tr>
           <td class="memname"><a class="el" href="classmsd_1_1blocking__writer__iterator.html">blocking_writer_iterator</a> &amp; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">msd::blocking_writer_iterator</a>&lt; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">Channel</a> &gt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html#ada2a37c69017a4c38eed03e37f15227c">::operator</a>= </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classmsd_1_1blocking__writer__iterator.html">const</a> <a class="el" href="classmsd_1_1blocking__writer__iterator.html#abc135ceb85f51622a55db95ac933533d">value_type</a> &amp;&#160;</td>
-          <td class="paramname"><em>val</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classmsd_1_1blocking__writer__iterator.html#a15ce2df0fdc4ea79b85ac56bfbf789c5">reference</a>&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -295,11 +296,12 @@ template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typ
 <p>Writes an element into the channel, blocking until space is available. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">val</td><td>The value to be written into the channel.</td></tr>
+    <tr><td class="paramname">value</td><td>The value to be written into the channel. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The iterator itself. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>There is no effect if the channel is closed. </dd></dl>
 
 </div>
 </div>

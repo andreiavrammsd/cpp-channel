@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['read_0',['read',['../classmsd_1_1channel.html#af10a793b2bf21de063ffc0464b24888f',1,'msd::channel::read()'],['../classmsd_1_1static__channel.html#a26de12116eeb103248b2df77652bc80f',1,'msd::static_channel::read()']]],
-  ['reference_1',['reference',['../classmsd_1_1blocking__iterator.html#a584eb190837cc23a6e4351d5a9206fa4',1,'msd::blocking_iterator::reference'],['../classmsd_1_1blocking__writer__iterator.html#a15ce2df0fdc4ea79b85ac56bfbf789c5',1,'msd::blocking_writer_iterator::reference']]],
-  ['requirements_2',['Requirements',['../index.html#autotoc_md2',1,'']]]
+  ['pointer_0',['pointer',['../classmsd_1_1blocking__iterator.html#a288a4698d3367260c139d357fd20d03f',1,'msd::blocking_iterator::pointer'],['../classmsd_1_1blocking__writer__iterator.html#adcf662449b5a167386885feb9e59c99e',1,'msd::blocking_writer_iterator::pointer']]]
 ];

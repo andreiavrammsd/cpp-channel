@@ -140,7 +140,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3b6ec47f4c3ae6ede32d22584fa8e86d" id="r_a3b6ec47f4c3ae6ede32d22584fa8e86d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmsd_1_1channel.html#a7b06047c030bad429d12bbe7c3f7f377">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmsd_1_1channel.html#a3b6ec47f4c3ae6ede32d22584fa8e86d">end</a> () <a class="el" href="classmsd_1_1blocking__writer__iterator.html">noexcept</a></td></tr>
 <tr class="memdesc:a3b6ec47f4c3ae6ede32d22584fa8e86d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an iterator representing the end of the channel.  <br /></td></tr>
 <tr class="separator:a3b6ec47f4c3ae6ede32d22584fa8e86d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add5f179ebfe3e6fe47fd76f7552014ea" id="r_add5f179ebfe3e6fe47fd76f7552014ea"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmsd_1_1channel.html#add5f179ebfe3e6fe47fd76f7552014ea">channel</a> (<a class="el" href="classmsd_1_1blocking__writer__iterator.html">const</a> <a class="el" href="classmsd_1_1channel.html">channel</a> &amp;)=<a class="el" href="classmsd_1_1blocking__writer__iterator.html">delete</a></td></tr>
+<tr class="memitem:add5f179ebfe3e6fe47fd76f7552014ea" id="r_add5f179ebfe3e6fe47fd76f7552014ea"><td class="memItemLeft" align="right" valign="top"><a id="add5f179ebfe3e6fe47fd76f7552014ea" name="add5f179ebfe3e6fe47fd76f7552014ea"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>channel</b> (<a class="el" href="classmsd_1_1blocking__writer__iterator.html">const</a> <a class="el" href="classmsd_1_1channel.html">channel</a> &amp;)=<a class="el" href="classmsd_1_1blocking__writer__iterator.html">delete</a></td></tr>
 <tr class="separator:add5f179ebfe3e6fe47fd76f7552014ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab42db08d0c3e3c4813a9774f7a7b0f72" id="r_ab42db08d0c3e3c4813a9774f7a7b0f72"><td class="memItemLeft" align="right" valign="top"><a id="ab42db08d0c3e3c4813a9774f7a7b0f72" name="ab42db08d0c3e3c4813a9774f7a7b0f72"></a>
 <a class="el" href="classmsd_1_1channel.html">channel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classmsd_1_1blocking__writer__iterator.html">const</a> <a class="el" href="classmsd_1_1channel.html">channel</a> &amp;)=<a class="el" href="classmsd_1_1blocking__writer__iterator.html">delete</a></td></tr>
@@ -166,7 +167,10 @@ Friends</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typename</a> <a class="el" href="classmsd_1_1blocking__writer__iterator.html">T</a>&gt;<br />
 class msd::channel&lt; T &gt;</div><p>Thread-safe container for sharing data between threads. </p>
-<p>Implements a blocking input iterator.</p>
+<ul>
+<li>Not movable, not copyable.</li>
+<li>Includes a blocking input iterator.</li>
+</ul>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td>The type of the elements. </td></tr>
@@ -175,7 +179,7 @@ class msd::channel&lt; T &gt;</div><p>Thread-safe container for sharing data bet
 </dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="af2bb853987d690e5c5815d174013bb7b" name="af2bb853987d690e5c5815d174013bb7b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af2bb853987d690e5c5815d174013bb7b">&#9670;&#160;</a></span>channel() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af2bb853987d690e5c5815d174013bb7b">&#9670;&#160;</a></span>channel()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -207,35 +211,6 @@ template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typ
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="add5f179ebfe3e6fe47fd76f7552014ea" name="add5f179ebfe3e6fe47fd76f7552014ea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#add5f179ebfe3e6fe47fd76f7552014ea">&#9670;&#160;</a></span>channel() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typename</a> <a class="el" href="classmsd_1_1blocking__writer__iterator.html">T</a> &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classmsd_1_1channel.html">msd::channel</a>&lt; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">T</a> &gt;::channel </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classmsd_1_1blocking__writer__iterator.html">const</a> <a class="el" href="classmsd_1_1channel.html">channel</a>&lt; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">T</a> &gt; &amp;&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Channel cannot be copied or moved. </p>
 
 </div>
 </div>
@@ -425,7 +400,7 @@ template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typ
 <p>Pops an element from the channel. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">out</td><td>Reference to the variable where the popped element will be stored.</td></tr>
+    <tr><td class="paramname">out</td><td>Reference to the variable where the popped element will be stored. </td></tr>
   </table>
   </dd>
 </dl>
@@ -496,13 +471,13 @@ template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typ
 <p>Pushes an element into the channel. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">Type</td><td>The type of the elements.</td></tr>
+    <tr><td class="paramname">Type</td><td>The type of the elements. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">value</td><td>The element to be pushed into the channel.</td></tr>
+    <tr><td class="paramname">value</td><td>The element to be pushed into the channel. </td></tr>
   </table>
   </dd>
 </dl>

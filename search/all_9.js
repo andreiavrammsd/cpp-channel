@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['pointer_0',['pointer',['../classmsd_1_1blocking__iterator.html#a288a4698d3367260c139d357fd20d03f',1,'msd::blocking_iterator::pointer'],['../classmsd_1_1blocking__writer__iterator.html#adcf662449b5a167386885feb9e59c99e',1,'msd::blocking_writer_iterator::pointer']]]
+  ['limitations_0',['Known limitations',['../index.html#autotoc_md5',1,'']]]
 ];
