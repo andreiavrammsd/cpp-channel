@@ -41,19 +41,17 @@ using default_storage = queue_storage<T>;
 
 /**
  * @brief Trait to check if a type has a static **capacity** member.
- *
- * @tparam T The type to check.
  */
 template <typename, typename = void>
-struct has_static_capacity : std::false_type {};
+struct is_static_storage : std::false_type {};
 
 /**
  * @brief Trait to check if a type has a static **capacity** member.
  *
- * @tparam T The type to check.
+ * @tparam Storage The storage type to check.
  */
-template <typename T>
-struct has_static_capacity<T, decltype((void)T::capacity, void())> : std::true_type {};
+template <typename Storage>
+struct is_static_storage<Storage, decltype((void)Storage::capacity, void())> : std::true_type {};
 
 /**
  * @brief Thread-safe container for sharing data between threads.
@@ -83,21 +81,28 @@ class channel {
     using size_type = std::size_t;
 
     /**
-     * @brief Creates a buffered channel if **Storage** is static (has static **capacity** member) or
-     * an unbuffered channel otherwise.
+     * @brief Creates a buffered channel if **Storage** is static (has static **capacity** member)
      */
-    constexpr channel() : storage_{0} {};
+    template <typename S = Storage, typename std::enable_if<is_static_storage<S>::value, int>::type = 0>
+    constexpr channel() : storage_{0}, capacity_{Storage::capacity}
+    {
+    }
 
     /**
-     * @brief Creates a buffered channel.
+     * @brief Creates an unbuffered channel if **Storage** is not static (does not have static **capacity** member).
+     */
+    template <typename S = Storage, typename std::enable_if<!is_static_storage<S>::value, int>::type = 0>
+    constexpr channel() : storage_{0}, capacity_{0}
+    {
+    }
+
+    /**
+     * @brief Creates a buffered channel if **Storage** is not static (does not have static **capacity** member).
      *
      * @param capacity Number of elements the channel can store before blocking.
-     *
-     * @note This constructor is available only if the **Storage** is not static (does not have static **capacity**
-     * member). A static storage is always buffered.
      */
-    template <typename S = Storage, typename std::enable_if<!has_static_capacity<S>::value, int>::type = 0>
-    explicit constexpr channel(const size_type capacity) : storage_{capacity}
+    template <typename S = Storage, typename std::enable_if<!is_static_storage<S>::value, int>::type = 0>
+    explicit constexpr channel(const size_type capacity) : storage_{capacity}, capacity_{capacity}
     {
     }
 
@@ -250,8 +255,9 @@ class channel {
 
    private:
     Storage storage_;
-    mutable std::mutex mtx_;
     std::condition_variable cnd_;
+    mutable std::mutex mtx_;
+    std::size_t capacity_{};
     bool is_closed_{};
 
     void wait_before_read(std::unique_lock<std::mutex>& lock)
@@ -261,8 +267,8 @@ class channel {
 
     void wait_before_write(std::unique_lock<std::mutex>& lock)
     {
-        if (storage_.max_size() > 0 && storage_.size() == storage_.max_size()) {
-            cnd_.wait(lock, [this]() { return storage_.size() < storage_.max_size(); });
+        if (capacity_ > 0 && storage_.size() == capacity_) {
+            cnd_.wait(lock, [this]() { return storage_.size() < capacity_; });
         }
     }
 };

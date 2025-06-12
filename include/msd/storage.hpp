@@ -23,11 +23,9 @@ template <typename T>
 class queue_storage {
    public:
     /**
-     * @brief Constructs a queue storage with a given capacity.
-     *
-     * @param capacity Maximum number of elements the storage can hold.
+     * @brief Constructs the queue storage (parameter ignored, required for interface compatibility).
      */
-    explicit queue_storage(std::size_t capacity) : capacity_{capacity} {}
+    explicit queue_storage(std::size_t) {}
 
     /**
      * @brief Adds an element to the back of the queue.
@@ -60,16 +58,8 @@ class queue_storage {
      */
     NODISCARD std::size_t size() const noexcept { return queue_.size(); }
 
-    /**
-     * @brief Returns the maximum capacity of the storage.
-     *
-     * @return Maximum size.
-     */
-    NODISCARD std::size_t max_size() const noexcept { return capacity_; }
-
    private:
     std::queue<T> queue_;
-    std::size_t capacity_{};
 };
 
 /**
@@ -84,9 +74,9 @@ class vector_storage {
      * @brief Constructs a queue storage with a given capacity.
      *
      * @param capacity Maximum number of elements the storage can hold.
-     * @note It reserves the memory up-front.
+     * @note Reserves the memory up-front.
      */
-    explicit vector_storage(std::size_t capacity) : capacity_{capacity} { vector_.reserve(capacity); }
+    explicit vector_storage(std::size_t capacity) { vector_.reserve(capacity); }
 
     /**
      * @brief Adds an element to the back of the vector.
@@ -119,16 +109,8 @@ class vector_storage {
      */
     NODISCARD std::size_t size() const noexcept { return vector_.size(); }
 
-    /**
-     * @brief Returns the maximum capacity of the storage.
-     *
-     * @return Maximum size.
-     */
-    NODISCARD std::size_t max_size() const noexcept { return capacity_; }
-
    private:
     std::vector<T> vector_;
-    std::size_t capacity_;
 };
 
 /**
@@ -152,7 +134,7 @@ class array_storage {
     /**
      * @brief Constructs the array storage (parameter ignored, required for interface compatibility).
      */
-    explicit array_storage(std::size_t = 0) {}
+    explicit array_storage(std::size_t) {}
 
     /**
      * @brief Adds an element to the back of the array.
@@ -186,13 +168,6 @@ class array_storage {
      * @return Current size.
      */
     NODISCARD std::size_t size() const noexcept { return size_; }
-
-    /**
-     * @brief Returns the maximum capacity of the storage.
-     *
-     * @return Maximum size.
-     */
-    NODISCARD std::size_t max_size() const noexcept { return N; }
 
    private:
     std::array<T, N> array_{};

@@ -30,12 +30,6 @@ TYPED_TEST(StorageTest, PushAndPop)
     EXPECT_EQ(storage.size(), 0);
 }
 
-TYPED_TEST(StorageTest, MaxSize)
-{
-    TypeParam storage{10};
-    EXPECT_EQ(storage.max_size(), 10);
-}
-
 template <typename Storage>
 class StorageWithMovableOnlyTypeTest : public ::testing::Test {};
 
