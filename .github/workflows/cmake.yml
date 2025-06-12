@@ -108,10 +108,18 @@ jobs:
         working-directory: ${{github.workspace}}/build
         run: ctest -C Debug --verbose -L channel_tests -j
 
+      - name: Generate coverage
+        working-directory: ${{github.workspace}}/build
+        run: |
+          sudo apt-get install lcov -y
+          lcov --capture --directory . --output-file coverage.info --rc geninfo_unexecuted_blocks=1 --ignore-errors mismatch
+          lcov --remove coverage.info "*/usr/*" -o coverage.info
+
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          files: ${{github.workspace}}/build/coverage.info
 
   clang-format:
     name: Clang Format
