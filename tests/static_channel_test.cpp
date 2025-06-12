@@ -122,65 +122,65 @@ TEST(StaticChannelTest, Iterator)
     }
 }
 
-// TEST(StaticChannelTest, Multithreading)
-// {
-//     const int numbers = 10000;
-//     const std::int64_t expected = 50005000;
-//     constexpr std::size_t kThreadsToReadFrom = 100;
+TEST(StaticChannelTest, Multithreading)
+{
+    const int numbers = 10000;
+    const std::int64_t expected = 50005000;
+    constexpr std::size_t kThreadsToReadFrom = 100;
 
-//     msd::static_channel<int, kThreadsToReadFrom> channel{};
+    msd::static_channel<int, kThreadsToReadFrom> channel{};
 
-//     std::mutex mtx_read{};
-//     std::condition_variable cond_read{};
-//     bool ready_to_read{};
-//     std::atomic<std::int64_t> count_numbers{};
-//     std::atomic<std::int64_t> sum_numbers{};
+    std::mutex mtx_read{};
+    std::condition_variable cond_read{};
+    bool ready_to_read{};
+    std::atomic<std::int64_t> count_numbers{};
+    std::atomic<std::int64_t> sum_numbers{};
 
-//     std::mutex mtx_wait{};
-//     std::condition_variable cond_wait{};
-//     std::atomic<std::size_t> wait_counter{kThreadsToReadFrom};
+    std::mutex mtx_wait{};
+    std::condition_variable cond_wait{};
+    std::atomic<std::size_t> wait_counter{kThreadsToReadFrom};
 
-//     auto worker = [&] {
-//         // Wait until there is data on the channel
-//         std::unique_lock<std::mutex> lock{mtx_read};
-//         cond_read.wait(lock, [&ready_to_read] { return ready_to_read; });
+    auto worker = [&] {
+        // Wait until there is data on the channel
+        std::unique_lock<std::mutex> lock{mtx_read};
+        cond_read.wait(lock, [&ready_to_read] { return ready_to_read; });
 
-//         // Read until all items have been read from the channel
-//         while (count_numbers < numbers) {
-//             int out{};
-//             channel.read(out);
+        // Read until all items have been read from the channel
+        while (count_numbers < numbers) {
+            int out{};
+            channel.read(out);
 
-//             sum_numbers += out;
-//             ++count_numbers;
-//         }
-//         --wait_counter;
-//         cond_wait.notify_one();
-//     };
+            sum_numbers += out;
+            ++count_numbers;
+        }
+        --wait_counter;
+        cond_wait.notify_one();
+    };
 
-//     std::vector<std::thread> threads{};
-//     for (std::size_t i = 0U; i < kThreadsToReadFrom; ++i) {
-//         threads.emplace_back(worker);
-//     }
+    std::vector<std::thread> threads{};
+    for (std::size_t i = 0U; i < kThreadsToReadFrom; ++i) {
+        threads.emplace_back(worker);
+    }
 
-//     // Send numbers to channel
-//     for (int i = 1; i <= numbers; ++i) {
-//         channel.write(i);
+    // Send numbers to channel
+    for (int i = 1; i <= numbers; ++i) {
+        channel.write(i);
 
-//         // Notify threads than then can start reading
-//         if (!ready_to_read) {
-//             ready_to_read = true;
-//             cond_read.notify_all();
-//         }
-//     }
+        // Notify threads than then can start reading
+        if (!ready_to_read) {
+            ready_to_read = true;
+            cond_read.notify_all();
+        }
+    }
 
-//     // Wait until all items have been read
-//     std::unique_lock<std::mutex> lock{mtx_wait};
-//     cond_wait.wait(lock, [&wait_counter]() { return wait_counter.load() == 0; });
+    // Wait until all items have been read
+    std::unique_lock<std::mutex> lock{mtx_wait};
+    cond_wait.wait(lock, [&wait_counter]() { return wait_counter.load() == 0; });
 
-//     std::for_each(threads.begin(), threads.end(), [](std::thread& thread) { thread.join(); });
+    std::for_each(threads.begin(), threads.end(), [](std::thread& thread) { thread.join(); });
 
-//     EXPECT_EQ(expected, sum_numbers);
-// }
+    EXPECT_EQ(expected, sum_numbers);
+}
 
 TEST(StaticChannelTest, ReadWriteClose)
 {
