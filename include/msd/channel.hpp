@@ -130,7 +130,7 @@ class channel {
     {
         {
             std::unique_lock<std::mutex> lock{mtx_};
-            waitBeforeWrite(lock);
+            wait_before_write(lock);
 
             if (is_closed_) {
                 return false;
@@ -155,7 +155,7 @@ class channel {
     {
         {
             std::unique_lock<std::mutex> lock{mtx_};
-            waitBeforeRead(lock);
+            wait_before_read(lock);
 
             if (storage_.size() == 0 && is_closed_) {
                 return false;
@@ -254,12 +254,12 @@ class channel {
     std::condition_variable cnd_;
     bool is_closed_{};
 
-    void waitBeforeRead(std::unique_lock<std::mutex>& lock)
+    void wait_before_read(std::unique_lock<std::mutex>& lock)
     {
         cnd_.wait(lock, [this]() { return storage_.size() > 0 || is_closed_; });
     };
 
-    void waitBeforeWrite(std::unique_lock<std::mutex>& lock)
+    void wait_before_write(std::unique_lock<std::mutex>& lock)
     {
         if (storage_.max_size() > 0 && storage_.size() == storage_.max_size()) {
             cnd_.wait(lock, [this]() { return storage_.size() < storage_.max_size(); });
