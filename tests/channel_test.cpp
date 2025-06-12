@@ -399,6 +399,8 @@ TEST(ChannelTest, Transform)
         // Posibilities:
         // - I am doing something very wrong (see operator* in blocking_writer_iterator)
         // - MSVC has a bug
+        //  - https://github.com/ericniebler/range-v3/issues/1814
+        //  - https://github.com/ericniebler/range-v3/issues/1762
         // - Other compilers are more permissive
 #else
         std::transform(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan), double_value);
