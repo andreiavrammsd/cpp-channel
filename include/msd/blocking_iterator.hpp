@@ -141,10 +141,9 @@ class blocking_writer_iterator {
      *
      * @return The iterator itself.
      */
-    template <typename T>
-    blocking_writer_iterator& operator=(T&& value)
+    blocking_writer_iterator& operator=(reference value)
     {
-        chan_->write(std::forward<T>(value));
+        chan_->write(value);
         return *this;
     }
 
