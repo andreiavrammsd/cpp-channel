@@ -372,7 +372,7 @@ TEST(ChannelTest, Transform)
     msd::channel<movable_only> input_chan{30};
     msd::channel<int> output_chan{10};
 
-    // Send to channel input channel
+    // Send to input channel
     const auto writer = [&input_chan]() {
         for (int i = 1; i <= numbers; ++i) {
             input_chan.write(movable_only{i});
@@ -427,7 +427,7 @@ TEST(ChannelTest, FilterAndAccumulate)
     msd::channel<int> input_chan{10};
     msd::channel<int> output_chan{10};
 
-    // Producer: fill input channel with 1..101
+    // Producer: send numbers on input channel
     const auto producer = [&input_chan]() {
         for (int i = 1; i <= 101; ++i) {
             input_chan.write(i);
@@ -435,7 +435,7 @@ TEST(ChannelTest, FilterAndAccumulate)
         input_chan.close();
     };
 
-    // Filter: take even numbers
+    // Filter: take even numbers from input channel and write them to output channel
     const auto filter = [&input_chan, &output_chan]() {
         std::copy_if(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan),
                      [](int value) { return value % 2 == 0; });
