@@ -92,7 +92,7 @@ class channel {
      * @brief Creates an unbuffered channel if **Storage** is not static (does not have static **capacity** member).
      */
     template <typename S = Storage, typename std::enable_if<!is_static_storage<S>::value, int>::type = 0>
-    constexpr channel() : storage_{0}, capacity_{0}
+    constexpr channel() : storage_{0}
     {
     }
 
