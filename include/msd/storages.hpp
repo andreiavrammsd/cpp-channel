@@ -150,7 +150,7 @@ class array_storage {
     /**
      * @brief Constructs the array storage (parameter ignored, required for interface compatibility).
      */
-    explicit array_storage(std::size_t) {}
+    explicit array_storage(std::size_t = 0) {}
 
     /**
      * @brief Adds an element to the back of the array.
