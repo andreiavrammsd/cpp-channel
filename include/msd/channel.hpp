@@ -1,17 +1,19 @@
 // Copyright (C) 2020-2025 Andrei Avram
 
-#ifndef MSD_CHANNEL_HPP_
-#define MSD_CHANNEL_HPP_
+#ifndef MSD_CHANNEL_CHANNEL_HPP_
+#define MSD_CHANNEL_CHANNEL_HPP_
 
 #include <condition_variable>
 #include <cstdlib>
 #include <mutex>
-#include <queue>
 #include <stdexcept>
 #include <type_traits>
 
 #include "blocking_iterator.hpp"
 #include "nodiscard.hpp"
+#include "storages.hpp"
+
+/** @file */
 
 namespace msd {
 
@@ -29,14 +31,40 @@ class closed_channel : public std::runtime_error {
 };
 
 /**
+ * @brief Default storage for msd::channel.
+ *
+ * @tparam T The type of the elements.
+ * @typedef default_storage
+ */
+template <typename T>
+using default_storage = queue_storage<T>;
+
+/**
+ * @brief Trait to check if a type has a static **capacity** member.
+ *
+ * @tparam T The type to check.
+ */
+template <typename, typename = void>
+struct has_static_capacity : std::false_type {};
+
+/**
+ * @brief Trait to check if a type has a static **capacity** member.
+ *
+ * @tparam T The type to check.
+ */
+template <typename T>
+struct has_static_capacity<T, decltype((void)T::capacity, void())> : std::true_type {};
+
+/**
  * @brief Thread-safe container for sharing data between threads.
  *
  * - Not movable, not copyable.
  * - Includes a blocking input iterator.
  *
  * @tparam T The type of the elements.
+ * @tparam Storage The storage type used to hold the elements. Default: msd::queue_storage.
  */
-template <typename T>
+template <typename T, typename Storage = default_storage<T>>
 class channel {
    public:
     /**
@@ -47,7 +75,7 @@ class channel {
     /**
      * @brief The iterator type used to traverse the channel.
      */
-    using iterator = blocking_iterator<channel<T>>;
+    using iterator = blocking_iterator<channel<T, Storage>>;
 
     /**
      * @brief The type used to represent sizes and counts.
@@ -55,32 +83,39 @@ class channel {
     using size_type = std::size_t;
 
     /**
-     * @brief Creates an unbuffered channel.
+     * @brief Creates a buffered channel if **Storage** is static (has static **capacity** member) or
+     * an unbuffered channel otherwise.
      */
-    constexpr channel() = default;
+    constexpr channel() : storage_{0} {};
 
     /**
      * @brief Creates a buffered channel.
      *
      * @param capacity Number of elements the channel can store before blocking.
+     *
+     * @note This constructor is available only if the **Storage** is not static (does not have static **capacity**
+     * member). Static storages are always buffered.
      */
-    explicit constexpr channel(const size_type capacity) : cap_{capacity} {}
+    template <typename S = Storage, typename std::enable_if<!has_static_capacity<S>::value, int>::type = 0>
+    explicit constexpr channel(const size_type capacity) : storage_{capacity}
+    {
+    }
 
     /**
      * @brief Pushes an element into the channel.
      *
      * @throws closed_channel if channel is closed.
      */
-    template <typename Type>
-    friend channel<typename std::decay<Type>::type>& operator<<(channel<typename std::decay<Type>::type>&, Type&&);
-
+    template <typename Type, typename Store>
+    friend channel<typename std::decay<Type>::type, Store>& operator<<(channel<typename std::decay<Type>::type, Store>&,
+                                                                       Type&&);
     /**
      * @brief Pops an element from the channel.
      *
      * @tparam Type The type of the elements.
      */
-    template <typename Type>
-    friend channel<Type>& operator>>(channel<Type>&, Type&);
+    template <typename Type, typename Store>
+    friend channel<Type, Store>& operator>>(channel<Type, Store>&, Type&);
 
     /**
      * @brief Pushes an element into the channel.
@@ -101,7 +136,7 @@ class channel {
                 return false;
             }
 
-            queue_.push(std::forward<Type>(value));
+            storage_.push_back(std::forward<Type>(value));
         }
 
         cnd_.notify_one();
@@ -122,12 +157,11 @@ class channel {
             std::unique_lock<std::mutex> lock{mtx_};
             waitBeforeRead(lock);
 
-            if (is_closed_ && queue_.empty()) {
+            if (storage_.size() == 0 && is_closed_) {
                 return false;
             }
 
-            out = std::move(queue_.front());
-            queue_.pop();
+            storage_.pop_front(out);
         }
 
         cnd_.notify_one();
@@ -143,7 +177,7 @@ class channel {
     NODISCARD size_type size() const noexcept
     {
         std::unique_lock<std::mutex> lock{mtx_};
-        return queue_.size();
+        return storage_.size();
     }
 
     /**
@@ -155,7 +189,7 @@ class channel {
     NODISCARD bool empty() const noexcept
     {
         std::unique_lock<std::mutex> lock{mtx_};
-        return queue_.empty();
+        return storage_.size() == 0;
     }
 
     /**
@@ -191,7 +225,7 @@ class channel {
     NODISCARD bool drained() noexcept
     {
         std::unique_lock<std::mutex> lock{mtx_};
-        return queue_.empty() && is_closed_;
+        return storage_.size() == 0 && is_closed_;
     }
 
     /**
@@ -199,14 +233,14 @@ class channel {
      *
      * @return A blocking iterator pointing to the start of the channel.
      */
-    iterator begin() noexcept { return blocking_iterator<channel<T>>{*this}; }
+    iterator begin() noexcept { return blocking_iterator<channel<T, Storage>>{*this}; }
 
     /**
      * @brief Returns an iterator representing the end of the channel.
      *
      * @return A blocking iterator representing the end condition.
      */
-    iterator end() noexcept { return blocking_iterator<channel<T>>{*this, true}; }
+    iterator end() noexcept { return blocking_iterator<channel<T, Storage>>{*this, true}; }
 
     channel(const channel&) = delete;
     channel& operator=(const channel&) = delete;
@@ -215,27 +249,31 @@ class channel {
     virtual ~channel() = default;
 
    private:
-    std::queue<T> queue_;
-    const size_type cap_{0};
+    Storage storage_;
     mutable std::mutex mtx_;
     std::condition_variable cnd_;
-    bool is_closed_{false};
+    bool is_closed_{};
 
     void waitBeforeRead(std::unique_lock<std::mutex>& lock)
     {
-        cnd_.wait(lock, [this]() { return !queue_.empty() || is_closed_; });
+        cnd_.wait(lock, [this]() { return storage_.size() > 0 || is_closed_; });
     };
 
     void waitBeforeWrite(std::unique_lock<std::mutex>& lock)
     {
-        if (cap_ > 0 && queue_.size() == cap_) {
-            cnd_.wait(lock, [this]() { return queue_.size() < cap_; });
+        if (storage_.max_size() > 0 && storage_.size() == storage_.max_size()) {
+            cnd_.wait(lock, [this]() { return storage_.size() < storage_.max_size(); });
         }
     }
 };
 
-template <typename T>
-channel<typename std::decay<T>::type>& operator<<(channel<typename std::decay<T>::type>& chan, T&& value)
+/**
+ * @copydoc msd::channel::write
+ * @param chan
+ */
+template <typename T, typename Storage>
+channel<typename std::decay<T>::type, Storage>& operator<<(channel<typename std::decay<T>::type, Storage>& chan,
+                                                           T&& value)
 {
     if (!chan.write(std::forward<T>(value))) {
         throw closed_channel{"cannot write on closed channel"};
@@ -244,8 +282,12 @@ channel<typename std::decay<T>::type>& operator<<(channel<typename std::decay<T>
     return chan;
 }
 
-template <typename T>
-channel<T>& operator>>(channel<T>& chan, T& out)
+/**
+ * @copydoc msd::channel::read
+ * @param chan
+ */
+template <typename T, typename Storage>
+channel<T, Storage>& operator>>(channel<T, Storage>& chan, T& out)
 {
     chan.read(out);
 
@@ -254,4 +296,4 @@ channel<T>& operator>>(channel<T>& chan, T& out)
 
 }  // namespace msd
 
-#endif  // MSD_CHANNEL_HPP_
+#endif  // MSD_CHANNEL_CHANNEL_HPP_

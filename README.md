@@ -3,7 +3,41 @@
 [![build](https://github.com/andreiavrammsd/cpp-channel/actions/workflows/cmake.yml/badge.svg)](https://github.com/andreiavrammsd/cpp-channel/actions) [![codecov](https://codecov.io/github/andreiavrammsd/cpp-channel/graph/badge.svg?token=CKQ0TVW62Z)](https://codecov.io/github/andreiavrammsd/cpp-channel)
 [![documentation](https://github.com/andreiavrammsd/cpp-channel/actions/workflows/doc.yml/badge.svg)](https://andreiavrammsd.github.io/cpp-channel/)
 
-### Thread-safe container for sharing data between threads (synchronized queue). Header-only. Compatible with C++11.
+### Thread-safe container for sharing data between threads (synchronized queue). Header-only. Compatible with C++11 and newer.
+
+## What and how
+
+`channel` is:
+* A synchronized queue that can be easily and safely shared between multiple threads.
+* Tested with GCC, Clang, and MSVC.
+* Using [std::mutex](https://en.cppreference.com/w/cpp/thread/mutex.html) for synchronization.
+* Using a changeable `storage` to store elements.
+
+It's a class that can be constructed in several ways.
+
+* Buffered:
+    * The channel accepts a specified number of elements, after which it blocks the writer threads and waits for a reader thread to read an element.
+    * It blocks the reader threads when it's empty, until a writer thread writes elements.
+    * `msd::channel<int> chan{2};`
+* Unbuffered:
+    * Never blocks writes.
+    * It blocks the reader threads when it's empty, until a writer thread writes elements.
+    * `msd::channel<int> chan{};`
+* Heap or stack allocated: you can pass a custom storage or you can choose one of the [built-in storages](https://github.com/andreiavrammsd/cpp-channel/blob/master/include/msd/storages.hpp):
+    * `msd::queue_storage` (default): uses [std::queue](https://en.cppreference.com/w/cpp/container/queue.html)
+    * `msd::vector_storage`: uses [std::vector](https://en.cppreference.com/w/cpp/container/vector.html) (if cache locality is important to you)
+        * `msd::channel<int, msd::vector_storage<int>> chan{2};`
+    * `msd::array_storage` (always buffered): uses [std::array](https://en.cppreference.com/w/cpp/container/array.html) (if you want stack allocation)
+        * `msd::channel<int, msd::array_storage<int, 10>> chan{};`
+        * `msd::channel<int, msd::array_storage<int, 10>> chan{999}; // does not compile because capacity is already passed at compile-time`
+        * aka `msd::static_channel<int, 10>`
+
+A `storage` is:
+* A class with a specific interface that stores elements.
+* Must implement [FIFO](https://en.wikipedia.org/wiki/FIFO) logic.
+* See [built-in storages](https://github.com/andreiavrammsd/cpp-channel/blob/master/include/msd/storages.hpp).
+
+## Features
 
 * Thread-safe push and fetch.
 * Use stream operators to push (<<) and fetch (>>) items.
@@ -15,12 +49,6 @@
     * `std::move(ch.begin(), ch.end(), ...)`
     * `std::transform(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan))`.
     * `std::copy_if(chan.begin(), chan.end(), ...);`
-* Tested with GCC, Clang, and MSVC.
-* Includes stack-based, exception-free alternative (static channel).
-
-## Requirements
-
-* C++11 or newer
 
 ## Installation
 
@@ -67,7 +95,7 @@ int main() {
 #include <msd/channel.hpp>
 
 int main() {
-    msd::channel<int> chan{2}; // buffered
+    msd::channel<int, msd::vector_storage<int>> chan{2}; // buffered
 
     // Send to channel
     chan << 1;

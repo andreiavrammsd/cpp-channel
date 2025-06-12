@@ -6,6 +6,8 @@
 #include <cstddef>
 #include <iterator>
 
+/** @file */
+
 namespace msd {
 
 /**
