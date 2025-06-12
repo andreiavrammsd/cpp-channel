@@ -14,6 +14,8 @@ include(FetchContent)
 if (NOT googletest_POPULATED)
     FetchContent_Declare(googletest URL https://github.com/google/googletest/archive/refs/tags/v1.17.0.zip)
     FetchContent_MakeAvailable(googletest)
+    set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
+    set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
 endif ()
 
 # Test macro
@@ -60,6 +62,8 @@ endif()
 if (NOT benchmark_POPULATED)
     FetchContent_Declare(benchmark URL https://github.com/google/benchmark/archive/refs/tags/v1.9.4.zip)
     FetchContent_MakeAvailable(benchmark)
+    set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "" FORCE)
+    set(BENCHMARK_ENABLE_GTEST_TESTS OFF CACHE BOOL "" FORCE)
 endif ()
 
 add_executable(channel_benchmark channel_benchmark.cpp)
