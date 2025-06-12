@@ -31,7 +31,8 @@ class closed_channel : public std::runtime_error {
 /**
  * @brief Thread-safe container for sharing data between threads.
  *
- * Implements a blocking input iterator.
+ * - Not movable, not copyable.
+ * - Includes a blocking input iterator.
  *
  * @tparam T The type of the elements.
  */
@@ -85,9 +86,7 @@ class channel {
      * @brief Pushes an element into the channel.
      *
      * @tparam Type The type of the elements.
-     *
      * @param value The element to be pushed into the channel.
-     *
      * @return true If an element was successfully pushed into the channel.
      * @return false If the channel is closed.
      */
@@ -114,7 +113,6 @@ class channel {
      * @brief Pops an element from the channel.
      *
      * @param out Reference to the variable where the popped element will be stored.
-     *
      * @return true If an element was successfully read from the channel.
      * @return false If the channel is closed and empty.
      */
@@ -210,9 +208,6 @@ class channel {
      */
     iterator end() noexcept { return blocking_iterator<channel<T>>{*this, true}; }
 
-    /**
-     * Channel cannot be copied or moved.
-     */
     channel(const channel&) = delete;
     channel& operator=(const channel&) = delete;
     channel(channel&&) = delete;

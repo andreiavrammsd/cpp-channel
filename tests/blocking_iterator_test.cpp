@@ -70,7 +70,7 @@ TEST(BlockingWriterIteratorTest, WriteToChannelUsingBackInserter)
         *out = 20;
         *out = 30;
         channel.close();
-        *out = 40;  // ignored because channel is closed
+        *out = 40;  // Ignored because the channel is closed
     });
 
     std::vector<int> results;

@@ -16,9 +16,10 @@ namespace msd {
 /**
  * @brief Thread-safe container for sharing data between threads.
  *
- * Allocates elements on the stack.
- * Does not throw exceptions.
- * Implements a blocking input iterator.
+ * - Allocates elements on the stack.
+ * - Does not throw exceptions.
+ * - Not movable, not copyable.
+ * - Includes a blocking input iterator.
  *
  * @tparam T The type of the elements.
  * @tparam Capacity The maximum number of elements the channel can hold before blocking.
@@ -52,9 +53,7 @@ class static_channel {
      * @brief Pushes an element into the channel.
      *
      * @tparam Type The type of the elements.
-     *
      * @param value The element to be pushed into the channel.
-     *
      * @return true If an element was successfully pushed into the channel.
      * @return false If the channel is closed.
      */
@@ -82,7 +81,6 @@ class static_channel {
      * @brief Pops an element from the channel.
      *
      * @param out Reference to the variable where the popped element will be stored.
-     *
      * @return true If an element was successfully read from the channel.
      * @return false If the channel is closed and empty.
      */
@@ -179,9 +177,6 @@ class static_channel {
      */
     iterator end() noexcept { return blocking_iterator<static_channel<T, Capacity>>{*this, true}; }
 
-    /**
-     * Channel cannot be copied or moved.
-     */
     static_channel(const static_channel&) = delete;
     static_channel& operator=(const static_channel&) = delete;
     static_channel(static_channel&&) = delete;
