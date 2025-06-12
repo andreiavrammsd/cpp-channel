@@ -8,6 +8,8 @@
 #include <queue>
 #include <vector>
 
+#include "nodiscard.hpp"
+
 /** @file */
 
 namespace msd {
@@ -56,14 +58,14 @@ class queue_storage {
      *
      * @return Current size.
      */
-    std::size_t size() const noexcept { return queue_.size(); }
+    NODISCARD std::size_t size() const noexcept { return queue_.size(); }
 
     /**
      * @brief Returns the maximum capacity of the storage.
      *
      * @return Maximum size.
      */
-    std::size_t max_size() const noexcept { return capacity_; }
+    NODISCARD std::size_t max_size() const noexcept { return capacity_; }
 
    private:
     std::queue<T> queue_;
@@ -115,14 +117,14 @@ class vector_storage {
      *
      * @return Current size.
      */
-    std::size_t size() const noexcept { return vector_.size(); }
+    NODISCARD std::size_t size() const noexcept { return vector_.size(); }
 
     /**
      * @brief Returns the maximum capacity of the storage.
      *
      * @return Maximum size.
      */
-    std::size_t max_size() const noexcept { return capacity_; }
+    NODISCARD std::size_t max_size() const noexcept { return capacity_; }
 
    private:
     std::vector<T> vector_;
@@ -183,14 +185,14 @@ class array_storage {
      *
      * @return Current size.
      */
-    std::size_t size() const noexcept { return size_; }
+    NODISCARD std::size_t size() const noexcept { return size_; }
 
     /**
      * @brief Returns the maximum capacity of the storage.
      *
      * @return Maximum size.
      */
-    std::size_t max_size() const noexcept { return N; }
+    NODISCARD std::size_t max_size() const noexcept { return N; }
 
    private:
     std::array<T, N> array_{};
