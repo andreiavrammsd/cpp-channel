@@ -9,7 +9,7 @@ class StorageTest : public ::testing::Test {};
 
 using StorageTypes = ::testing::Types<msd::queue_storage<int>, msd::vector_storage<int>, msd::array_storage<int, 10>>;
 
-TYPED_TEST_SUITE(StorageTest, StorageTypes);
+TYPED_TEST_SUITE(StorageTest, StorageTypes, );
 
 TYPED_TEST(StorageTest, PushAndPop)
 {
@@ -37,7 +37,7 @@ using StorageWithMovableOnlyTypeTypes =
     ::testing::Types<msd::queue_storage<std::unique_ptr<int>>, msd::vector_storage<std::unique_ptr<int>>,
                      msd::array_storage<std::unique_ptr<int>, 10>>;
 
-TYPED_TEST_SUITE(StorageWithMovableOnlyTypeTest, StorageWithMovableOnlyTypeTypes);
+TYPED_TEST_SUITE(StorageWithMovableOnlyTypeTest, StorageWithMovableOnlyTypeTypes, );
 
 TYPED_TEST(StorageWithMovableOnlyTypeTest, PushAndPop)
 {
