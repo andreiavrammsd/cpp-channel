@@ -20,7 +20,7 @@ archive_override(
         "echo '" + msd_channel_module + "' > MODULE.bazel",
         "echo '" + msd_channel_build + "' > BUILD.bazel",
     ],
-    urls = ["https://github.com/andreiavrammsd/cpp-channel/archive/refs/tags/v1.0.0.zip"],
-    strip_prefix = "cpp-channel-1.0.0",
-    integrity = "sha256-oPKZnQYPv0emOcjIcYMeZ6q9tUyOxuAARY+xvbYKHHw=",
+    urls = ["https://github.com/andreiavrammsd/cpp-channel/archive/refs/tags/v1.2.1.zip"],
+    strip_prefix = "cpp-channel-1.2.1",
+    integrity = "sha256-fGew8OKF/gWyjkupXFiu+nPxTHgOfI2Ixs8wSxv9+gA=",
 )
