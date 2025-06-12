@@ -7,14 +7,13 @@
 
 ## What and how
 
-`channel` is:
+`msd::channel`
 * A synchronized queue that can be easily and safely shared between multiple threads.
 * Tested with GCC, Clang, and MSVC.
-* Using [std::mutex](https://en.cppreference.com/w/cpp/thread/mutex.html) for synchronization.
-* Using a customizable `storage` to store elements.
+* Uses [std::mutex](https://en.cppreference.com/w/cpp/thread/mutex.html) for synchronization.
+* Uses a customizable `storage` to store elements.
 
 It's a class that can be constructed in several ways:
-
 * Buffered:
     * The channel accepts a specified number of elements, after which it blocks the writer threads and waits for a reader thread to read an element.
     * It blocks the reader threads when channel is empty until a writer thread writes elements.
@@ -29,7 +28,7 @@ It's a class that can be constructed in several ways:
         * `msd::channel<int, msd::vector_storage<int>> chan{2};`
     * `msd::array_storage` (always buffered): uses [std::array](https://en.cppreference.com/w/cpp/container/array.html) (if you want stack allocation)
         * `msd::channel<int, msd::array_storage<int, 10>> chan{};`
-        * `msd::channel<int, msd::array_storage<int, 10>> chan{999}; // does not compile because capacity is already passed at compile-time`
+        * `msd::channel<int, msd::array_storage<int, 10>> chan{10}; // does not compile because capacity is already passed as template argument`
         * aka `msd::static_channel<int, 10>`
 
 A `storage` is:
