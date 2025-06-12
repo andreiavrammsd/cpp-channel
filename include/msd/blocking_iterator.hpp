@@ -9,9 +9,9 @@
 namespace msd {
 
 /**
- * @brief An iterator that block the current thread, waiting to fetch elements from the channel.
+ * @brief An iterator that blocks the current thread, waiting to fetch elements from the channel.
  *
- * Used to implement channel range-based for loop.
+ * @details Used to implement channel range-based for loop.
  *
  * @tparam Channel Type of channel being iterated.
  */
@@ -61,7 +61,7 @@ class blocking_iterator {
      *
      * @return The iterator itself.
      */
-    blocking_iterator<Channel> operator++() noexcept
+    blocking_iterator<Channel>& operator++() noexcept
     {
         if (!chan_->read(value_)) {
             is_end_ = true;
@@ -80,7 +80,6 @@ class blocking_iterator {
      * @brief Makes iteration continue until the channel is closed and empty.
      *
      * @param other Another blocking_iterator to compare with.
-     *
      * @return true if the channel is not closed or not empty (continue iterating).
      * @return false if the channel is closed and empty (stop iterating).
      */
@@ -95,7 +94,7 @@ class blocking_iterator {
 /**
  * @brief An output iterator pushes elements into a channel. Blocking until the channel is not full.
  *
- * Used to integrate with standard algorithms that require an output iterator.
+ * @details Used to integrate with standard algorithms that require an output iterator.
  *
  * @tparam Channel Type of channel being iterated.
  */
@@ -137,13 +136,13 @@ class blocking_writer_iterator {
     /**
      * @brief Writes an element into the channel, blocking until space is available.
      *
-     * @param val The value to be written into the channel.
-     *
+     * @param value The value to be written into the channel.
      * @return The iterator itself.
+     * @note There is no effect if the channel is closed.
      */
-    blocking_writer_iterator& operator=(const value_type& val)
+    blocking_writer_iterator& operator=(reference value)
     {
-        chan_->write(val);
+        chan_->write(value);
         return *this;
     }
 
@@ -151,6 +150,11 @@ class blocking_writer_iterator {
      * @brief Not applicable (handled by operator=).
      *
      * @return The iterator itself.
+     *
+     * @note It's uncommon to return a reference to an iterator, but I don't want to return a value from the channel.
+     * This iterator is supposed to be used only to write values.
+     * I don't know if it's a terrible idea or not, but it looks related to the issue with MSVC
+     * in the Transform test in tests/channel_test.cpp.
      */
     blocking_writer_iterator& operator*() { return *this; }
 
@@ -176,9 +180,7 @@ class blocking_writer_iterator {
  * @brief Creates a blocking iterator for the given channel.
  *
  * @tparam Channel Type of channel being iterated.
- *
  * @param chan Reference to the channel this iterator will iterate over.
- *
  * @return A blocking iterator for the specified channel.
  */
 template <typename Channel>

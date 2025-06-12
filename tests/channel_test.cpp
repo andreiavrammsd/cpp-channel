@@ -6,6 +6,7 @@
 #include <atomic>
 #include <cstdint>
 #include <future>
+#include <numeric>
 #include <string>
 #include <thread>
 #include <type_traits>
@@ -323,47 +324,165 @@ TEST(ChannelTest, ReadWriteClose)
     EXPECT_EQ(nums, numbers);
 }
 
-TEST(ChannelTest, MergeChannels)
+class movable_only {
+   public:
+    explicit movable_only(int value) : value_{value} {}
+
+    movable_only() = default;
+
+    movable_only(const movable_only&)
+    {
+        std::cout << "Copy constructor should not be called";
+        std::abort();
+    }
+
+    movable_only(movable_only&& other) noexcept : value_{std::move(other.value_)} { other.value_ = 0; }
+
+    movable_only& operator=(const movable_only&)
+    {
+        std::cout << "Copy assignment should not be called";
+        std::abort();
+    }
+
+    movable_only& operator=(movable_only&& other) noexcept
+    {
+        if (this != &other) {
+            value_ = other.value_;
+            other.value_ = 0;
+        }
+
+        return *this;
+    }
+
+    int getValue() const { return value_; }
+
+    virtual ~movable_only() = default;
+
+   private:
+    int value_{0};
+};
+
+TEST(ChannelTest, Transform)
 {
     const int numbers = 100;
-    const std::int64_t expected_sum = 5050 * 2;
-    std::atomic<std::int64_t> sum{0};
-    std::atomic<std::int64_t> nums{0};
+    const int expected_sum = 5050 * 2;
+    std::atomic<int> sum{0};
+    std::atomic<int> nums{0};
 
-    msd::channel<int> input_chan{30};
+    msd::channel<movable_only> input_chan{30};
     msd::channel<int> output_chan{10};
 
-    // Send to channel
+    // Send to input channel
     const auto writer = [&input_chan]() {
         for (int i = 1; i <= numbers; ++i) {
-            input_chan.write(i);
+            input_chan.write(movable_only{i});
         }
         input_chan.close();
     };
 
+    // Transform input channel values from movable_only to int by multiplying by 2 and write to output channel
+    const auto double_transformer = [&input_chan, &output_chan]() {
+        const auto double_value = [](auto&& value) { return value.getValue() * 2; };
+#ifdef _MSC_VER
+        for (auto&& value : input_chan) {
+            output_chan.write(double_value(value));
+        }
+
+        // Does not work with std::transform
+        // -- Building for: Visual Studio 17 2022
+        // -- The C compiler identification is MSVC 19.43.34808.0
+        // -- The CXX compiler identification is MSVC 19.43.34808.0
+        //
+        // Release: does not compile - warning C4702: unreachable code
+        // Debug: compiles, but copies the movable_only object instead of moving it
+        //
+        // Posibilities:
+        // - I am doing something very wrong (see operator* in blocking_writer_iterator)
+        // - MSVC has a bug
+        //  - https://github.com/ericniebler/range-v3/issues/1814
+        //  - https://github.com/ericniebler/range-v3/issues/1762
+        // - Other compilers are more permissive
+#else
+        std::transform(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan), double_value);
+#endif  // _MSC_VER
+
+        output_chan.close();
+    };
+
+    // Read from output channel
     const auto reader = [&output_chan, &sum, &nums]() {
-        for (const auto out : output_chan) {  // blocking until channel is drained (closed and empty)
+        for (auto&& out : output_chan) {  // blocking until channel is drained (closed and empty)
             sum += out;
             ++nums;
         }
     };
 
-    const auto double_transformer = [&input_chan, &output_chan]() {
-        std::transform(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan),
-                       [](int value) { return value * 2; });
-        output_chan.close();
-    };
-
-    const auto reader_1 = std::async(std::launch::async, reader);
-    const auto reader_2 = std::async(std::launch::async, reader);
+    // Create async tasks for reading, transforming, and writing
+    const auto reader_task_1 = std::async(std::launch::async, reader);
+    const auto reader_task_2 = std::async(std::launch::async, reader);
     const auto writer_task = std::async(std::launch::async, writer);
     const auto transformer_task = std::async(std::launch::async, double_transformer);
 
-    reader_1.wait();
-    reader_2.wait();
     writer_task.wait();
     transformer_task.wait();
+    reader_task_1.wait();
+    reader_task_2.wait();
 
     EXPECT_EQ(sum, expected_sum);
     EXPECT_EQ(nums, numbers);
+}
+
+TEST(ChannelTest, FilterAndAccumulate)
+{
+    msd::channel<int> input_chan{10};
+    msd::channel<int> output_chan{10};
+
+    // Producer: send numbers on input channel
+    const auto producer = [&input_chan]() {
+        for (int i = 1; i <= 101; ++i) {
+            input_chan.write(i);
+        }
+        input_chan.close();
+    };
+
+    // Filter: take even numbers from input channel and write them to output channel
+    const auto filter = [&input_chan, &output_chan]() {
+        std::copy_if(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan),
+                     [](int value) { return value % 2 == 0; });
+        output_chan.close();
+    };
+
+    const auto producer_task = std::async(std::launch::async, producer);
+    const auto filter_task = std::async(std::launch::async, filter);
+
+    // Consumer: accumulate output channel values
+    const int sum = std::accumulate(output_chan.begin(), output_chan.end(), 0);
+
+    producer_task.wait();
+    filter_task.wait();
+
+    EXPECT_EQ(sum, 2550);
+}
+
+TEST(ChannelTest, CopyToVector)
+{
+    msd::channel<int> chan{10};
+    std::vector<int> results;
+
+    // Producer: write 1..4 into channel and close
+    const auto producer = [&]() {
+        std::fill_n(msd::back_inserter(chan), 4, 0);
+
+        for (int i = 1; i <= 4; ++i) {
+            chan.write(i);
+        }
+        chan.close();
+    };
+
+    producer();
+
+    // Copy from channel to vector
+    std::copy(chan.begin(), chan.end(), std::back_inserter(results));
+
+    EXPECT_EQ(results, std::vector<int>({0, 0, 0, 0, 1, 2, 3, 4}));
 }

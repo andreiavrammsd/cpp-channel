@@ -31,7 +31,8 @@ class closed_channel : public std::runtime_error {
 /**
  * @brief Thread-safe container for sharing data between threads.
  *
- * Implements a blocking input iterator.
+ * - Not movable, not copyable.
+ * - Includes a blocking input iterator.
  *
  * @tparam T The type of the elements.
  */
@@ -85,9 +86,7 @@ class channel {
      * @brief Pushes an element into the channel.
      *
      * @tparam Type The type of the elements.
-     *
      * @param value The element to be pushed into the channel.
-     *
      * @return true If an element was successfully pushed into the channel.
      * @return false If the channel is closed.
      */
@@ -103,7 +102,6 @@ class channel {
             }
 
             queue_.push(std::forward<Type>(value));
-            ++size_;
         }
 
         cnd_.notify_one();
@@ -115,7 +113,6 @@ class channel {
      * @brief Pops an element from the channel.
      *
      * @param out Reference to the variable where the popped element will be stored.
-     *
      * @return true If an element was successfully read from the channel.
      * @return false If the channel is closed and empty.
      */
@@ -125,13 +122,12 @@ class channel {
             std::unique_lock<std::mutex> lock{mtx_};
             waitBeforeRead(lock);
 
-            if (is_closed_ && size_ == 0) {
+            if (is_closed_ && queue_.empty()) {
                 return false;
             }
 
             out = std::move(queue_.front());
             queue_.pop();
-            --size_;
         }
 
         cnd_.notify_one();
@@ -147,7 +143,7 @@ class channel {
     NODISCARD size_type size() const noexcept
     {
         std::unique_lock<std::mutex> lock{mtx_};
-        return size_;
+        return queue_.size();
     }
 
     /**
@@ -159,7 +155,7 @@ class channel {
     NODISCARD bool empty() const noexcept
     {
         std::unique_lock<std::mutex> lock{mtx_};
-        return size_ == 0;
+        return queue_.empty();
     }
 
     /**
@@ -195,7 +191,7 @@ class channel {
     NODISCARD bool drained() noexcept
     {
         std::unique_lock<std::mutex> lock{mtx_};
-        return size_ == 0 && is_closed_;
+        return queue_.empty() && is_closed_;
     }
 
     /**
@@ -212,9 +208,6 @@ class channel {
      */
     iterator end() noexcept { return blocking_iterator<channel<T>>{*this, true}; }
 
-    /**
-     * Channel cannot be copied or moved.
-     */
     channel(const channel&) = delete;
     channel& operator=(const channel&) = delete;
     channel(channel&&) = delete;
@@ -223,7 +216,6 @@ class channel {
 
    private:
     std::queue<T> queue_;
-    std::size_t size_{0};
     const size_type cap_{0};
     mutable std::mutex mtx_;
     std::condition_variable cnd_;
@@ -231,13 +223,13 @@ class channel {
 
     void waitBeforeRead(std::unique_lock<std::mutex>& lock)
     {
-        cnd_.wait(lock, [this]() { return size_ > 0 || is_closed_; });
+        cnd_.wait(lock, [this]() { return !queue_.empty() || is_closed_; });
     };
 
     void waitBeforeWrite(std::unique_lock<std::mutex>& lock)
     {
-        if (cap_ > 0 && size_ == cap_) {
-            cnd_.wait(lock, [this]() { return size_ < cap_; });
+        if (cap_ > 0 && queue_.size() == cap_) {
+            cnd_.wait(lock, [this]() { return queue_.size() < cap_; });
         }
     }
 };

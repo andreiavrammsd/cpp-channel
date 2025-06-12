@@ -1,6 +1,7 @@
 #include <cstdint>
 #include <cstdlib>
 #include <iostream>
+#include <sstream>
 #include <thread>
 #include <utility>
 
@@ -15,7 +16,9 @@ int main()
     // Read
     const auto out = [](msd::channel<std::int64_t>& ch, std::size_t i) {
         for (auto number : ch) {
-            std::cout << number << " from thread: " << i << '\n';
+            std::stringstream stream;
+            stream << number << " from thread: " << i << '\n';
+            std::cout << stream.str();
             std::this_thread::sleep_for(std::chrono::milliseconds(500));
         }
     };
