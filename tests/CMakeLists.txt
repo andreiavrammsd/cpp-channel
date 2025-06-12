@@ -16,6 +16,7 @@ if (NOT googletest_POPULATED)
     FetchContent_MakeAvailable(googletest)
     set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
     set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
+    set(BUILD_GTEST_TESTS OFF CACHE BOOL "" FORCE)
 endif ()
 
 # Test macro
