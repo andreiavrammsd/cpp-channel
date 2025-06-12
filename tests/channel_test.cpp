@@ -422,7 +422,7 @@ TEST(ChannelTest, Transform)
     EXPECT_EQ(nums, numbers);
 }
 
-TEST(ChannelTest, TransformAndAccumulate)
+TEST(ChannelTest, FilterAndAccumulate)
 {
     msd::channel<int> input_chan{10};
     msd::channel<int> output_chan{10};
