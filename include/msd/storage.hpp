@@ -143,7 +143,7 @@ class array_storage {
     /**
      * @brief The storage capacity.
      *
-     * @note Required for static storages.
+     * @note Required for static storage.
      */
     static constexpr std::size_t capacity = N;
 

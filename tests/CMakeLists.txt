@@ -52,7 +52,7 @@ add_custom_target(channel_tests)
 package_add_test(channel_test channel_test.cpp)
 package_add_test(static_channel_test static_channel_test.cpp)
 package_add_test(blocking_iterator_test blocking_iterator_test.cpp)
-package_add_test(storages_test storages_test.cpp)
+package_add_test(storage_test storage_test.cpp)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
     # Disable warnings about C++17 extensions

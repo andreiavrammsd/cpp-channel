@@ -1,4 +1,4 @@
-#include "msd/storages.hpp"
+#include "msd/storage.hpp"
 
 #include <gtest/gtest.h>
 

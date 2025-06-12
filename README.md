@@ -23,7 +23,7 @@ It's a class that can be constructed in several ways.
     * Never blocks writes.
     * It blocks the reader threads when it's empty, until a writer thread writes elements.
     * `msd::channel<int> chan{};`
-* Heap or stack allocated: you can pass a custom storage or you can choose one of the [built-in storages](https://github.com/andreiavrammsd/cpp-channel/blob/master/include/msd/storages.hpp):
+* Heap or stack allocated: you can pass a custom storage or you can choose one of the [built-in storages](https://github.com/andreiavrammsd/cpp-channel/blob/master/include/msd/storage.hpp):
     * `msd::queue_storage` (default): uses [std::queue](https://en.cppreference.com/w/cpp/container/queue.html)
     * `msd::vector_storage`: uses [std::vector](https://en.cppreference.com/w/cpp/container/vector.html) (if cache locality is important to you)
         * `msd::channel<int, msd::vector_storage<int>> chan{2};`
@@ -35,7 +35,7 @@ It's a class that can be constructed in several ways.
 A `storage` is:
 * A class with a specific interface that stores elements.
 * Must implement [FIFO](https://en.wikipedia.org/wiki/FIFO) logic.
-* See [built-in storages](https://github.com/andreiavrammsd/cpp-channel/blob/master/include/msd/storages.hpp).
+* See [built-in storages](https://github.com/andreiavrammsd/cpp-channel/blob/master/include/msd/storage.hpp).
 
 ## Features
 

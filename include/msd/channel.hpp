@@ -11,7 +11,7 @@
 
 #include "blocking_iterator.hpp"
 #include "nodiscard.hpp"
-#include "storages.hpp"
+#include "storage.hpp"
 
 /** @file */
 
@@ -94,7 +94,7 @@ class channel {
      * @param capacity Number of elements the channel can store before blocking.
      *
      * @note This constructor is available only if the **Storage** is not static (does not have static **capacity**
-     * member). Static storages are always buffered.
+     * member). A static storage is always buffered.
      */
     template <typename S = Storage, typename std::enable_if<!has_static_capacity<S>::value, int>::type = 0>
     explicit constexpr channel(const size_type capacity) : storage_{capacity}
