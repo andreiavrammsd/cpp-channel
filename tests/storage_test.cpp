@@ -44,7 +44,7 @@ TYPED_TEST(StorageWithMovableOnlyTypeTest, PushAndPop)
     TypeParam storage{10};
 
     storage.push_back(std::make_unique<int>(123));
-    EXPECT_EQ(storage.size(), 1u);
+    EXPECT_EQ(storage.size(), 1);
 
     std::unique_ptr<int> out;
     storage.pop_front(out);

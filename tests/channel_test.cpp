@@ -12,6 +12,8 @@
 #include <type_traits>
 #include <vector>
 
+#include "msd/static_channel.hpp"
+
 TEST(ChannelTest, Traits)
 {
     using type = int;
@@ -22,6 +24,12 @@ TEST(ChannelTest, Traits)
     EXPECT_TRUE((std::is_same<channel::iterator, iterator>::value));
 
     EXPECT_TRUE((std::is_same<channel::size_type, std::size_t>::value));
+}
+
+TEST(ChannelTest, ConstructStaticChannel)
+{
+    msd::static_channel<int, 10> channel;
+    EXPECT_EQ(channel.size(), 0);
 }
 
 TEST(ChannelTest, PushAndFetch)
