@@ -150,6 +150,11 @@ class blocking_writer_iterator {
     /**
      * @brief Not applicable (handled by operator=).
      *
+     * @note It's uncommon to return a reference to an iterator, but I don't want to return a value from the channel.
+     * This iterator is supposed to be used only to write values.
+     * I don't know if it's a terrible idea or not, but it looks related to the issue with MSVC
+     * in the Transform test in tests/channel_test.cpp.
+     *
      * @return The iterator itself.
      */
     blocking_writer_iterator& operator*() { return *this; }

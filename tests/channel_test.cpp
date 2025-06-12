@@ -388,10 +388,18 @@ TEST(ChannelTest, Transform)
             output_chan.write(double_value(value));
         }
 
-        // Does not work with std::transform: warning C4702: unreachable code
+        // Does not work with std::transform
         // -- Building for: Visual Studio 17 2022
         // -- The C compiler identification is MSVC 19.43.34808.0
         // -- The CXX compiler identification is MSVC 19.43.34808.0
+        //
+        // Release: does not compile - warning C4702: unreachable code
+        // Debug: compiles, but copies the movable_only object instead of moving it
+        //
+        // Posibilities:
+        // - I am doing something very wrong (see operator* in blocking_writer_iterator)
+        // - MSVC has a bug
+        // - Other compilers are more permissive
 #else
         std::transform(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan), double_value);
 #endif  // _MSC_VER
