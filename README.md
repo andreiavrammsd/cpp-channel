@@ -52,9 +52,9 @@ Exceptions:
 * Range-based for loop supported.
 * Close to prevent pushing and stop waiting to fetch.
 * Integrates with some of the STL algorithms. Eg:
-    * `std::move(ch.begin(), ch.end(), ...)`
-    * `std::transform(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan))`.
-    * `std::copy_if(chan.begin(), chan.end(), ...);`
+  * `std::move(ch.begin(), ch.end(), ...)`
+  * `std::transform(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan))`.
+  * `std::copy_if(chan.begin(), chan.end(), ...);`
 
 ## Installation
 
@@ -63,6 +63,7 @@ Choose one of the methods:
 * Copy the [include](https://github.com/andreiavrammsd/cpp-channel/tree/master/include) directory into your project and add it to your include path.
 * [CMake FetchContent](https://github.com/andreiavrammsd/cpp-channel/tree/master/examples/cmake-project)
 * [CMake install](https://cmake.org/cmake/help/latest/command/install.html) - choose a [version](https://github.com/andreiavrammsd/cpp-channel/releases), then run:
+
 ```shell
 VERSION=X.Y.Z \
     && wget https://github.com/andreiavrammsd/cpp-channel/archive/refs/tags/v$VERSION.zip \
@@ -72,6 +73,7 @@ VERSION=X.Y.Z \
     && cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local \
     && sudo cmake --install .
 ```
+
 * [Bazel](https://github.com/andreiavrammsd/cpp-channel/tree/master/examples/bazel-project)
 
 ## Usage
@@ -84,16 +86,17 @@ VERSION=X.Y.Z \
 int main() {
     msd::channel<int> chan; // Unbuffered
 
-    int in = 1;
-    int out = 0;
-
     // Send to channel
-    chan << in;
+    chan << 1 << 2;
 
     // Read from channel
-    chan >> out;
+    int first{};
+    int second{};
 
-    assert(out == 1);
+    chan >> first >> second;
+
+    assert(first == 1);
+    assert(second == 2);
 }
 ```
 
@@ -178,6 +181,6 @@ See [examples](https://github.com/andreiavrammsd/cpp-channel/tree/master/example
 
 * In some cases, the integration with some STL algorithms does not compile with MSVC. See the [Transform test](https://github.com/andreiavrammsd/cpp-channel/blob/master/tests/channel_test.cpp).
 
-<br>
+---  
 
 Developed with [CLion](https://www.jetbrains.com/?from=serializer) and [Visual Studio Code](https://code.visualstudio.com/).

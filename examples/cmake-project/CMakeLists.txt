@@ -11,7 +11,7 @@ add_executable(cmake_project src/main.cpp)
 
 include(FetchContent)
 if (NOT channel_POPULATED)
-    FetchContent_Declare(channel URL https://github.com/andreiavrammsd/cpp-channel/archive/v1.2.1.zip DOWNLOAD_EXTRACT_TIMESTAMP TRUE)
+    FetchContent_Declare(channel URL https://github.com/andreiavrammsd/cpp-channel/archive/v1.3.0.zip DOWNLOAD_EXTRACT_TIMESTAMP TRUE)
     FetchContent_Populate(channel)
     include_directories(${channel_SOURCE_DIR}/include)
     # OR

@@ -36,6 +36,12 @@ function(package_add_test TESTNAME)
     if (CPP_CHANNEL_SANITIZERS)
         target_link_libraries(${TESTNAME} -lubsan)
         target_compile_options(${TESTNAME} PRIVATE -fsanitize=undefined)
+
+        if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+            set(COVERAGE_FLAGS -fprofile-instr-generate -fcoverage-mapping)
+            target_link_libraries(${TESTNAME} ${COVERAGE_FLAGS})
+            target_compile_options(${TESTNAME} PRIVATE ${COVERAGE_FLAGS})
+        endif()
     endif ()
 
     if (CPP_CHANNEL_SANITIZE_THREADS)

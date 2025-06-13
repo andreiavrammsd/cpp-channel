@@ -1,38 +1,37 @@
 #include <chrono>
 #include <iostream>
+#include <msd/channel.hpp>
 #include <thread>
-
-#include "msd/channel.hpp"
 
 using chan = msd::channel<int>;
 
 // Continuously write input data on the incoming channel
-[[noreturn]] void GetIncoming(chan& incoming)
+[[noreturn]] void get_incoming(chan& incoming)
 {
     while (true) {
-        static int i = 0;
-        incoming << ++i;
+        static int inc = 0;
+        incoming << ++inc;
     }
 }
 
 // Time-consuming operation for each input value
-int Add(int in, int value)
+int add(int input, int value)
 {
     std::this_thread::sleep_for(std::chrono::milliseconds{500});
-    return in + value;
+    return input + value;
 }
 
 // Read data from the incoming channel, process it, then send it on the outgoing channel
-void Transform(chan& incoming, chan& outgoing)
+void transform(chan& incoming, chan& outgoing)
 {
-    for (auto in : incoming) {
-        auto result = Add(in, 2);
+    for (auto input : incoming) {
+        auto result = add(input, 2);
         outgoing << result;
     }
 }
 
 // Read result of processing from the outgoing channel and save it
-void WriteOutgoing(chan& outgoing)
+void write_outgoing(chan& outgoing)
 {
     for (auto out : outgoing) {
         std::cout << out << '\n';
@@ -51,15 +50,15 @@ int main()
     chan outgoing;
 
     // One thread for incoming data
-    auto incoming_thread = std::thread{GetIncoming, std::ref(incoming)};
+    auto incoming_thread = std::thread{get_incoming, std::ref(incoming)};
 
     // One thread for outgoing data
-    auto outgoing_thread = std::thread{WriteOutgoing, std::ref(outgoing)};
+    auto outgoing_thread = std::thread{write_outgoing, std::ref(outgoing)};
 
     // Multiple threads to process incoming data and send to outgoing
     std::vector<std::thread> process_threads;
     for (std::size_t i = 0U; i < threads; ++i) {
-        process_threads.emplace_back(Transform, std::ref(incoming), std::ref(outgoing));
+        process_threads.emplace_back(transform, std::ref(incoming), std::ref(outgoing));
     }
 
     // Join all threads
@@ -67,7 +66,7 @@ int main()
 
     outgoing_thread.join();
 
-    for (auto& th : process_threads) {
-        th.join();
+    for (auto& thread : process_threads) {
+        thread.join();
     }
 }

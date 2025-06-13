@@ -1,8 +1,8 @@
+#include "msd/channel.hpp"
+
 #include <benchmark/benchmark.h>
 
 #include <string>
-
-#include "msd/channel.hpp"
 
 /**
     Results on release build with CPU scaling disabled
@@ -17,20 +17,20 @@
     L2 Unified 256 KiB (x4)
     L3 Unified 8192 KiB (x1)
     Load Average: 2.65, 1.61, 1.50
-    ----------------------------------------------------------------------
-    Benchmark                            Time             CPU   Iterations
-    ----------------------------------------------------------------------
-    BM_ChannelWithQueueStorage       42602 ns        42598 ns        16407
-    BM_ChannelWithVectorStorage      42724 ns        42723 ns        16288
-    BM_ChannelWithArrayStorage       51332 ns        51328 ns        11776
+    ------------------------------------------------------------------------------
+    Benchmark                           Time            CPU             Iterations
+    ------------------------------------------------------------------------------
+    bm_channel_with_queue_storage       42602 ns        42598 ns        16407
+    bm_channel_with_vector_storage      42724 ns        42723 ns        16288
+    bm_channel_with_vector_storage      51332 ns        51328 ns        11776
  */
 
-static void BM_ChannelWithQueueStorage(benchmark::State& state)
+static void bm_channel_with_queue_storage(benchmark::State& state)
 {
     msd::channel<std::string, msd::queue_storage<std::string>> channel{10};
 
     std::string input(1000000, 'x');
-    std::string out = "";
+    std::string out{};
     out.resize(input.size());
 
     for (auto _ : state) {
@@ -39,9 +39,9 @@ static void BM_ChannelWithQueueStorage(benchmark::State& state)
     }
 }
 
-BENCHMARK(BM_ChannelWithQueueStorage);
+BENCHMARK(bm_channel_with_queue_storage);
 
-static void BM_ChannelWithVectorStorage(benchmark::State& state)
+static void bm_channel_with_vector_storage(benchmark::State& state)
 {
     msd::channel<std::string, msd::vector_storage<std::string>> channel{10};
 
@@ -55,14 +55,14 @@ static void BM_ChannelWithVectorStorage(benchmark::State& state)
     }
 }
 
-BENCHMARK(BM_ChannelWithVectorStorage);
+BENCHMARK(bm_channel_with_vector_storage);
 
-static void BM_ChannelWithArrayStorage(benchmark::State& state)
+static void bm_channel_with_array_storage(benchmark::State& state)
 {
     msd::channel<std::string, msd::array_storage<std::string, 10>> channel{};
 
     std::string input(1000000, 'x');
-    std::string out = "";
+    std::string out{};
     out.resize(input.size());
 
     for (auto _ : state) {
@@ -71,6 +71,6 @@ static void BM_ChannelWithArrayStorage(benchmark::State& state)
     }
 }
 
-BENCHMARK(BM_ChannelWithArrayStorage);
+BENCHMARK(bm_channel_with_array_storage);
 
 BENCHMARK_MAIN();

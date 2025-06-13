@@ -1,0 +1,25 @@
+{
+    "name": "C++ Channel",
+    "dockerFile": "Dockerfile",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode.cmake-tools",
+                "streetsidesoftware.code-spell-checker",
+                "DavidAnson.vscode-markdownlint",
+                "xaver.clang-format",
+                "twxs.cmake",
+                "fredericbonnet.cmake-test-adapter",
+                "llvm-vs-code-extensions.vscode-clangd",
+                "vadimcn.vscode-lldb"
+            ]
+        }
+    },
+    "mounts": [
+        "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+        "source=${env:HOME}/.ssh,target=/home/ubuntu/.ssh,type=bind,consistency=cached",
+        "source=cache,target=/home/ubuntu/.cache,type=volume"
+    ],
+    "workspaceFolder": "/workspace",
+    "remoteUser": "ubuntu"
+}

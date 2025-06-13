@@ -1,6 +1,31 @@
+Standard: c++11
 BasedOnStyle: Google
 IndentWidth: 4
 Language: Cpp
 PointerAlignment: Left
 BreakBeforeBraces: Stroustrup
 ColumnLimit: 120
+IncludeCategories:
+  # Header file associated with cpp file (default)
+
+  # gtest/gmock headers
+  - Regex: "^<gtest/.*>"
+    Priority: 1
+  - Regex: "^<gmock/.*>"
+    Priority: 1
+
+  # Local/private headers included with ""
+  - Regex: '^"([^/]+/)*[^/]+\.hpp"$'
+    Priority: 2
+  - Regex: '^"([^/]+/)*[^/]+\.h"$'
+    Priority: 2
+
+  # External headers included with <>
+  - Regex: '^<.*\.hpp>$'
+    Priority: 3
+  - Regex: '^<.*\.h>$'
+    Priority: 3
+
+  # Standard library headers
+  - Regex: "^<.*>$"
+    Priority: 4

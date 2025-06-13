@@ -2,6 +2,8 @@
 
 #include <gtest/gtest.h>
 
+#include "msd/static_channel.hpp"
+
 #include <algorithm>
 #include <atomic>
 #include <cstdint>
@@ -11,8 +13,6 @@
 #include <thread>
 #include <type_traits>
 #include <vector>
-
-#include "msd/static_channel.hpp"
 
 TEST(ChannelTest, Traits)
 {
@@ -118,31 +118,31 @@ TEST(ChannelTest, PushAndFetchWithBufferedChannel)
 
 TEST(ChannelTest, PushAndFetchMultiple)
 {
-    msd::channel<int> channel;
+    msd::channel<std::string> channel;
 
-    int a = 1;
-    const int b = 3;
-    channel << a << 2 << b << std::move(a);
+    std::string non_const_value{"1"};
+    const std::string const_value{"3"};
+    channel << non_const_value << std::string{"2"} << const_value << std::move(non_const_value);
 
-    int out = 0;
-    int out2 = 0;
-
-    channel >> out;
-    EXPECT_EQ(1, out);
+    std::string out{};
+    std::string out2{};
 
     channel >> out;
-    EXPECT_EQ(2, out);
+    EXPECT_EQ("1", out);
+
+    channel >> out;
+    EXPECT_EQ("2", out);
 
     channel >> out >> out2;
-    EXPECT_EQ(3, out);
-    EXPECT_EQ(1, out2);
+    EXPECT_EQ("3", out);
+    EXPECT_EQ("1", out2);
 }
 
 TEST(ChannelTest, PushByMoveAndFetch)
 {
     msd::channel<std::string> channel;
 
-    std::string in = "abc";
+    std::string in{"abc"};
     channel << std::move(in);
 
     channel << std::string{"def"};
@@ -183,18 +183,18 @@ TEST(ChannelTest, empty)
 
 TEST(ChannelTest, close)
 {
-    msd::channel<int> channel;
+    msd::channel<std::string> channel;
     EXPECT_FALSE(channel.closed());
 
-    int in = 1;
+    std::string in{"1"};
     channel << in;
 
     channel.close();
     EXPECT_TRUE(channel.closed());
 
-    int out = 0;
+    std::string out{};
     channel >> out;
-    EXPECT_EQ(1, out);
+    EXPECT_EQ("1", out);
     EXPECT_NO_THROW(channel >> out);
 
     EXPECT_THROW(channel << in, msd::closed_channel);
@@ -234,7 +234,7 @@ TEST(ChannelTest, Multithreading)
 {
     const int numbers = 10000;
     const std::int64_t expected = 50005000;
-    constexpr std::size_t kThreadsToReadFrom = 100;
+    constexpr std::size_t threads_to_read_from = 100;
 
     msd::channel<int> channel{10};
 
@@ -246,7 +246,7 @@ TEST(ChannelTest, Multithreading)
 
     std::mutex mtx_wait{};
     std::condition_variable cond_wait{};
-    std::atomic<std::size_t> wait_counter{kThreadsToReadFrom};
+    std::atomic<std::size_t> wait_counter{threads_to_read_from};
 
     auto worker = [&] {
         // Wait until there is data on the channel
@@ -266,7 +266,7 @@ TEST(ChannelTest, Multithreading)
     };
 
     std::vector<std::thread> threads{};
-    for (std::size_t i = 0U; i < kThreadsToReadFrom; ++i) {
+    for (std::size_t i = 0U; i < threads_to_read_from; ++i) {
         threads.emplace_back(worker);
     }
 
@@ -294,9 +294,9 @@ TEST(ChannelTest, ReadWriteClose)
 {
     const int numbers = 10000;
     const std::int64_t expected_sum = 50005000;
-    constexpr std::size_t kThreadsToReadFrom = 20;
+    constexpr std::size_t threads_to_read_from = 20;
 
-    msd::channel<int> channel{kThreadsToReadFrom};
+    msd::channel<int> channel{threads_to_read_from};
     std::atomic<std::int64_t> sum{0};
     std::atomic<std::int64_t> nums{0};
 
@@ -308,7 +308,7 @@ TEST(ChannelTest, ReadWriteClose)
     });
 
     std::vector<std::thread> readers;
-    for (std::size_t i = 0; i < kThreadsToReadFrom; ++i) {
+    for (std::size_t i = 0; i < threads_to_read_from; ++i) {
         readers.emplace_back([&channel, &sum, &nums]() {
             while (true) {
                 int value = 0;
@@ -332,27 +332,30 @@ TEST(ChannelTest, ReadWriteClose)
     EXPECT_EQ(nums, numbers);
 }
 
-class movable_only {
+class MovableOnly {
    public:
-    explicit movable_only(int value) : value_{value} {}
+    explicit MovableOnly(int value) : value_{value} {}
 
-    movable_only() = default;
+    MovableOnly() = default;
 
-    movable_only(const movable_only&)
+    MovableOnly(const MovableOnly&)
     {
         std::cout << "Copy constructor should not be called";
         std::abort();
     }
 
-    movable_only(movable_only&& other) noexcept : value_{std::move(other.value_)} { other.value_ = 0; }
+    MovableOnly(MovableOnly&& other) noexcept : value_{other.value_} { other.value_ = 0; }
 
-    movable_only& operator=(const movable_only&)
+    MovableOnly& operator=(const MovableOnly& other)
     {
+        if (this == &other) {
+            return *this;
+        }
         std::cout << "Copy assignment should not be called";
         std::abort();
     }
 
-    movable_only& operator=(movable_only&& other) noexcept
+    MovableOnly& operator=(MovableOnly&& other) noexcept
     {
         if (this != &other) {
             value_ = other.value_;
@@ -362,9 +365,9 @@ class movable_only {
         return *this;
     }
 
-    int getValue() const { return value_; }
+    int get_value() const { return value_; }
 
-    virtual ~movable_only() = default;
+    virtual ~MovableOnly() = default;
 
    private:
     int value_{0};
@@ -377,20 +380,20 @@ TEST(ChannelTest, Transform)
     std::atomic<int> sum{0};
     std::atomic<int> nums{0};
 
-    msd::channel<movable_only> input_chan{30};
+    msd::channel<MovableOnly> input_chan{30};
     msd::channel<int> output_chan{10};
 
     // Send to input channel
     const auto writer = [&input_chan]() {
         for (int i = 1; i <= numbers; ++i) {
-            input_chan.write(movable_only{i});
+            input_chan.write(MovableOnly{i});
         }
         input_chan.close();
     };
 
     // Transform input channel values from movable_only to int by multiplying by 2 and write to output channel
     const auto double_transformer = [&input_chan, &output_chan]() {
-        const auto double_value = [](const movable_only& value) { return value.getValue() * 2; };
+        const auto double_value = [](const MovableOnly& value) { return value.get_value() * 2; };
 #ifdef _MSC_VER
         for (auto&& value : input_chan) {
             output_chan.write(double_value(value));
@@ -404,7 +407,7 @@ TEST(ChannelTest, Transform)
         // Release: does not compile - warning C4702: unreachable code
         // Debug: compiles, but copies the movable_only object instead of moving it
         //
-        // Posibilities:
+        // Possibilities:
         // - I am doing something very wrong (see operator* in blocking_writer_iterator)
         // - MSVC has a bug
         //  - https://github.com/ericniebler/range-v3/issues/1814

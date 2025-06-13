@@ -1,11 +1,11 @@
+#include <msd/channel.hpp>
+
 #include <algorithm>
 #include <chrono>
 #include <future>
 #include <iostream>
 #include <sstream>
 #include <thread>
-
-#include "msd/channel.hpp"
 
 int main()
 {

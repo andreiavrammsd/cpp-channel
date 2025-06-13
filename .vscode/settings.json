@@ -6,14 +6,20 @@
         "-DCPP_CHANNEL_SANITIZERS=ON",
         "-DCPP_CHANNEL_SANITIZE_THREADS=OFF",
         "-DCMAKE_CXX_STANDARD=11",
-        "-DCMAKE_INSTALL_PREFIX=${workspaceFolder}/install",
+        "-DCMAKE_INSTALL_PREFIX=${workspaceFolder}/install"
     ],
-    "clang-tidy.fixOnSave": false,
-    "clang-tidy.lintOnSave": false,
     "editor.formatOnSave": true,
     "clang-format.executable": "clang-format",
     "clang-format.style": "file",
     "editor.defaultFormatter": "xaver.clang-format",
     "files.insertFinalNewline": true,
-    "files.trimFinalNewlines": true
+    "files.trimFinalNewlines": true,
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "clangd.arguments": [
+        "--compile-commands-dir=${workspaceFolder}/build",
+        "--background-index",
+        "--clang-tidy"
+    ]
 }
