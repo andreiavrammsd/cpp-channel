@@ -1,5 +1,6 @@
+#include "msd/channel.hpp"
+
 #include <benchmark/benchmark.h>
-#include <msd/channel.hpp>
 
 #include <string>
 
@@ -61,7 +62,7 @@ static void bm_channel_with_array_storage(benchmark::State& state)
     msd::channel<std::string, msd::array_storage<std::string, 10>> channel{};
 
     std::string input(1000000, 'x');
-    std::string out;
+    std::string out{};
     out.resize(input.size());
 
     for (auto _ : state) {

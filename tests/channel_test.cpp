@@ -1,7 +1,8 @@
+#include "msd/channel.hpp"
+
 #include <gtest/gtest.h>
 
-#include <msd/channel.hpp>
-#include <msd/static_channel.hpp>
+#include "msd/static_channel.hpp"
 
 #include <algorithm>
 #include <atomic>
@@ -406,7 +407,7 @@ TEST(ChannelTest, Transform)
         // Release: does not compile - warning C4702: unreachable code
         // Debug: compiles, but copies the movable_only object instead of moving it
         //
-        // Posibilities:
+        // Possibilities:
         // - I am doing something very wrong (see operator* in blocking_writer_iterator)
         // - MSVC has a bug
         //  - https://github.com/ericniebler/range-v3/issues/1814

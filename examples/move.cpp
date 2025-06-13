@@ -38,20 +38,20 @@ class Data final {
 
 int main()
 {
-    msd::channel<Data> ch{10};
+    msd::channel<Data> chan{10};
 
     auto in1 = Data{1};
-    ch << in1;
+    chan << in1;
 
-    ch << Data{2};
+    chan << Data{2};
 
     auto in3 = Data{3};
-    ch << std::move(in3);
+    chan << std::move(in3);
 
-    for (auto out : ch) {
+    for (const auto& out : chan) {
         std::cout << out.getI() << '\n';
 
-        if (ch.empty()) {
+        if (chan.empty()) {
             break;
         }
     }

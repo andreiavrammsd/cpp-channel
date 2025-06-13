@@ -15,16 +15,16 @@ int main()
     messages channel{threads};
 
     // Continuously get some data on multiple threads and send it all to a channel
-    const auto in = [](messages& ch, std::size_t thread, std::chrono::milliseconds pause) {
-        thread_local static std::size_t i = 0U;
+    const auto input = [](messages& chan, std::size_t thread, std::chrono::milliseconds pause) {
+        thread_local static std::size_t inc = 0U;
 
         while (true) {
-            if (ch.closed()) {
+            if (chan.closed()) {
                 return;
             }
 
-            ++i;
-            ch << std::string{std::to_string(i) + " from: " + std::to_string(thread)};
+            ++inc;
+            chan << std::string{std::to_string(inc) + " from: " + std::to_string(thread)};
 
             std::this_thread::sleep_for(pause);
         }
@@ -32,19 +32,19 @@ int main()
 
     std::vector<std::future<void>> in_futures;
     for (std::size_t i = 0U; i < threads; ++i) {
-        in_futures.push_back(std::async(in, std::ref(channel), i, std::chrono::milliseconds{500U}));
+        in_futures.push_back(std::async(input, std::ref(channel), i, std::chrono::milliseconds{500}));
     }
 
     // Stream incoming data to a destination
-    const auto out = [](messages& ch, std::ostream& stream, const std::string& separator) {
-        std::move(ch.begin(), ch.end(), std::ostream_iterator<std::string>(stream, separator.c_str()));
+    const auto out = [](messages& chan, std::ostream& stream, const std::string& separator) {
+        std::move(chan.begin(), chan.end(), std::ostream_iterator<std::string>(stream, separator.c_str()));
     };
     const auto out_future = std::async(out, std::ref(channel), std::ref(std::cout), "\n");
 
     // Close the channel after some time
-    const auto timeout = [](messages& ch, std::chrono::milliseconds after) {
+    const auto timeout = [](messages& chan, std::chrono::milliseconds after) {
         std::this_thread::sleep_for(after);
-        ch.close();
+        chan.close();
     };
     const auto timeout_future = std::async(timeout, std::ref(channel), std::chrono::milliseconds{3000U});
 

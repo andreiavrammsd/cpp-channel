@@ -1,8 +1,9 @@
 # Bazel project
 
-Example of using C++ Channel in a project with Bazel. 
+Example of using C++ Channel in a project with Bazel.
 
 ## Requirements
+
 * C++11 compiler
 * Bazel
 

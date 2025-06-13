@@ -13,10 +13,10 @@ int main()
     msd::channel<std::int64_t> channel{threads};
 
     // Read
-    const auto out = [](msd::channel<std::int64_t>& ch, std::size_t i) {
-        for (auto number : ch) {
+    const auto out = [](msd::channel<std::int64_t>& chan, const std::size_t value) {
+        for (auto number : chan) {
             std::stringstream stream;
-            stream << number << " from thread: " << i << '\n';
+            stream << number << " from thread: " << value << '\n';
             std::cout << stream.str();
             std::this_thread::sleep_for(std::chrono::milliseconds(500));
         }
@@ -28,14 +28,14 @@ int main()
     }
 
     // Write
-    const auto in = [](msd::channel<std::int64_t>& ch) {
+    const auto input = [](msd::channel<std::int64_t>& chan) {
         while (true) {
-            static std::int64_t i = 0;
-            ch << ++i;
+            static std::int64_t value = 0;
+            chan << ++value;
         }
     };
 
-    auto write = std::thread{in, std::ref(channel)};
+    auto write = std::thread{input, std::ref(channel)};
 
     // Join all threads
     for (std::size_t i = 0U; i < threads; ++i) {
