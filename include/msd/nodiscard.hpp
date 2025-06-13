@@ -1,7 +1,9 @@
 // Copyright (C) 2020-2025 Andrei Avram
 
-#ifndef MSD_NODISCARD_HPP_
-#define MSD_NODISCARD_HPP_
+#ifndef MSD_CHANNEL_NODISCARD_HPP_
+#define MSD_CHANNEL_NODISCARD_HPP_
+
+/** @file */
 
 namespace msd {
 
@@ -13,4 +15,4 @@ namespace msd {
 
 }  // namespace msd
 
-#endif  // MSD_NODISCARD_HPP_
+#endif  // MSD_CHANNEL_NODISCARD_HPP_

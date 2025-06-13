@@ -2,6 +2,7 @@
 
 #include <gtest/gtest.h>
 
+#include <iterator>
 #include <thread>
 #include <vector>
 
@@ -26,8 +27,8 @@ TEST(BlockingIteratorTest, ReadFromChannelInOrder)
     channel.write(3);
     channel.close();
 
-    msd::blocking_iterator it{channel};
-    msd::blocking_iterator end{channel, true};
+    msd::blocking_iterator<msd::channel<int>> it{channel};
+    msd::blocking_iterator<msd::channel<int>> end{channel, true};
 
     std::vector<int> results;
     while (it != end) {
@@ -43,8 +44,8 @@ TEST(BlockingIteratorTest, EmptyChannelClosesGracefully)
     msd::channel<int> channel;
     channel.close();
 
-    msd::blocking_iterator it{channel};
-    msd::blocking_iterator end{channel, true};
+    msd::blocking_iterator<msd::channel<int>> it{channel};
+    msd::blocking_iterator<msd::channel<int>> end{channel, true};
 
     EXPECT_FALSE(it != end);
 }
@@ -74,8 +75,8 @@ TEST(BlockingWriterIteratorTest, WriteToChannelUsingBackInserter)
     });
 
     std::vector<int> results;
-    msd::blocking_iterator it{channel};
-    msd::blocking_iterator end{channel, true};
+    msd::blocking_iterator<msd::channel<int>> it{channel};
+    msd::blocking_iterator<msd::channel<int>> end{channel, true};
 
     while (it != end) {
         results.push_back(*it);

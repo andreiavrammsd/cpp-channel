@@ -12,6 +12,8 @@
 #include <type_traits>
 #include <vector>
 
+#include "msd/static_channel.hpp"
+
 TEST(ChannelTest, Traits)
 {
     using type = int;
@@ -22,6 +24,12 @@ TEST(ChannelTest, Traits)
     EXPECT_TRUE((std::is_same<channel::iterator, iterator>::value));
 
     EXPECT_TRUE((std::is_same<channel::size_type, std::size_t>::value));
+}
+
+TEST(ChannelTest, ConstructStaticChannel)
+{
+    msd::static_channel<int, 10> channel;
+    EXPECT_EQ(channel.size(), 0);
 }
 
 TEST(ChannelTest, PushAndFetch)
@@ -382,7 +390,7 @@ TEST(ChannelTest, Transform)
 
     // Transform input channel values from movable_only to int by multiplying by 2 and write to output channel
     const auto double_transformer = [&input_chan, &output_chan]() {
-        const auto double_value = [](auto&& value) { return value.getValue() * 2; };
+        const auto double_value = [](const movable_only& value) { return value.getValue() * 2; };
 #ifdef _MSC_VER
         for (auto&& value : input_chan) {
             output_chan.write(double_value(value));
