@@ -82,7 +82,7 @@ VERSION=X.Y.Z \
 #include <msd/channel.hpp>
 
 int main() {
-    msd::channel<int> chan; // unbuffered
+    msd::channel<int> chan; // Unbuffered
 
     int in = 1;
     int out = 0;
@@ -98,15 +98,17 @@ int main() {
 ```
 
 ```c++
+#include <cassert>
+
 #include <msd/channel.hpp>
 
 int main() {
-    msd::channel<int, msd::vector_storage<int>> chan{2}; // buffered
+    msd::channel<int, msd::vector_storage<int>> chan{2}; // Buffered with vector storage
 
     // Send to channel
-    chan << 1;
-    chan << 2;
-    chan << 3; // blocks because capacity is 2 (and no one reads from channel)
+    chan << 1; // Throws if the channel is closed (after chan.close())
+    assert(chan.write(2)); // Returns false if the channel is closed (after chan.close())
+    chan << 3; // Blocks because the capacity is 2 (and no one reads from channel)
 }
 ```
 
@@ -114,7 +116,7 @@ int main() {
 #include <msd/channel.hpp>
 
 int main() {
-    msd::channel<int> chan{2}; // buffered
+    msd::channel<int> chan{2}; // Buffered
 
     int in = 1;
     int out = 0;
@@ -124,9 +126,9 @@ int main() {
     chan << in;
 
     // Read from channel
+    chan.read(out);
     chan >> out;
-    chan >> out;
-    chan >> out; // blocks because channel is empty (and no one writes on it)
+    chan >> out; // Blocks because the channel is empty (and no one writes on it)
 }
 ```
 
@@ -136,14 +138,14 @@ int main() {
 #include <msd/channel.hpp>
 
 int main() {
-    msd::channel<int> chan;
+    msd::channel<int, msd::vector_storage<int>> chan;
 
     int in1 = 1;
     int in2 = 2;
 
     chan << in1 << in2;
 
-    for (const auto out : chan) { // blocks: waits forever for channel items
+    for (const auto out : chan) { // Blocks: waits forever for channel items
         std::cout << out << '\n';
     }
 }
@@ -153,7 +155,8 @@ int main() {
 #include <msd/static_channel.hpp>
 
 int main() {
-    msd::static_channel<int, 2> chan{}; // always buffered
+    msd::static_channel<int, 2> chan{}; // Always buffered
+    // Same as msd::channel<int, msd::array_storage<int, 2>>
 
     int in = 1;
     int out = 0;
@@ -165,7 +168,7 @@ int main() {
     // Read from channel
     chan.read(out);
     chan.read(out);
-    chan.read(out); // blocks because channel is empty (and no one writes on it)
+    chan.read(out); // Blocks because the channel is empty (and no one writes on it)
 }
 ```
 
