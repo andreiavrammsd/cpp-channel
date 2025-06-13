@@ -1,12 +1,12 @@
+#include <msd/channel.hpp>
+
 #include <cstddef>
 #include <iostream>
 
-#include "msd/channel.hpp"
-
 int main()
 {
-    constexpr std::size_t kChannelSize = 10;
-    msd::channel<int> chan{kChannelSize};
+    constexpr std::size_t channel_size = 10;
+    msd::channel<int> chan{channel_size};
 
     int input{};
 

@@ -1,6 +1,6 @@
-#include <iostream>
+#include <msd/channel.hpp>
 
-#include "msd/channel.hpp"
+#include <iostream>
 
 class Data final {
     int i_{};

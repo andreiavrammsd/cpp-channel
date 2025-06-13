@@ -3,10 +3,10 @@
 #ifndef MSD_CHANNEL_STATIC_CHANNEL_HPP_
 #define MSD_CHANNEL_STATIC_CHANNEL_HPP_
 
-#include <cstdlib>
-
 #include "channel.hpp"
 #include "storage.hpp"
+
+#include <cstdlib>
 
 /** @file */
 

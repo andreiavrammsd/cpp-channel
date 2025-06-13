@@ -3,12 +3,12 @@
 #ifndef MSD_CHANNEL_STORAGE_HPP_
 #define MSD_CHANNEL_STORAGE_HPP_
 
+#include "nodiscard.hpp"
+
 #include <array>
 #include <cstdlib>
 #include <queue>
 #include <vector>
-
-#include "nodiscard.hpp"
 
 /** @file */
 

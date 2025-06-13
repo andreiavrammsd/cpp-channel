@@ -1,10 +1,10 @@
+#include <msd/static_channel.hpp>
+
 #include <chrono>
 #include <future>
 #include <iostream>
 #include <sstream>
 #include <thread>
-
-#include "msd/static_channel.hpp"
 
 int main()
 {

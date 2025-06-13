@@ -1,26 +1,20 @@
-#include <iostream>
+#include <msd/channel.hpp>
 
-#include "msd/channel.hpp"
+#include <iostream>
 
 int main()
 {
-    msd::channel<int> ch{10};
+    constexpr std::size_t capacity = 10;
+    msd::channel<int> channel{capacity};
 
-    int in{};
+    channel << 1;
 
-    in = 1;
-    ch << in;
+    channel << 2 << 3;
 
-    in = 2;
-    ch << in;
-
-    in = 3;
-    ch << in;
-
-    for (auto out : ch) {
+    for (auto out : channel) {
         std::cout << out << '\n';
 
-        if (ch.empty()) {
+        if (channel.empty()) {
             break;
         }
     }

@@ -1,8 +1,7 @@
 #include <benchmark/benchmark.h>
+#include <msd/channel.hpp>
 
 #include <string>
-
-#include "msd/channel.hpp"
 
 /**
     Results on release build with CPU scaling disabled

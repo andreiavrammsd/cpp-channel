@@ -3,15 +3,15 @@
 #ifndef MSD_CHANNEL_CHANNEL_HPP_
 #define MSD_CHANNEL_CHANNEL_HPP_
 
+#include "blocking_iterator.hpp"
+#include "nodiscard.hpp"
+#include "storage.hpp"
+
 #include <condition_variable>
 #include <cstdlib>
 #include <mutex>
 #include <stdexcept>
 #include <type_traits>
-
-#include "blocking_iterator.hpp"
-#include "nodiscard.hpp"
-#include "storage.hpp"
 
 /** @file */
 

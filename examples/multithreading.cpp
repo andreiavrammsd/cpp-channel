@@ -1,11 +1,10 @@
+#include <msd/channel.hpp>
+
 #include <cstdint>
 #include <cstdlib>
 #include <iostream>
 #include <sstream>
 #include <thread>
-#include <utility>
-
-#include "msd/channel.hpp"
 
 int main()
 {

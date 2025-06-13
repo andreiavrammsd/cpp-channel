@@ -133,7 +133,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Run Clang Format
-        run: clang-format --dry-run --Werror $(find include -type f)
+        run: clang-format --dry-run --Werror $(find include tests examples -type f -name *.*pp)
 
   clang-tidy:
     name: Clang Tidy

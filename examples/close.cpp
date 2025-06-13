@@ -1,8 +1,8 @@
+#include <msd/channel.hpp>
+
 #include <future>
 #include <iostream>
 #include <thread>
-
-#include "msd/channel.hpp"
 
 int main()
 {

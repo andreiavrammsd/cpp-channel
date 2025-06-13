@@ -2,11 +2,11 @@
 
 #include <gtest/gtest.h>
 
+#include <msd/channel.hpp>
+
 #include <iterator>
 #include <thread>
 #include <vector>
-
-#include "msd/channel.hpp"
 
 TEST(BlockingIteratorTest, Traits)
 {
