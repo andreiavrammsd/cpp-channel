@@ -390,7 +390,7 @@ TEST(ChannelTest, Transform)
 
     // Transform input channel values from movable_only to int by multiplying by 2 and write to output channel
     const auto double_transformer = [&input_chan, &output_chan]() {
-        const auto double_value = [](auto&& value) { return value.getValue() * 2; };
+        const auto double_value = [](const movable_only& value) { return value.getValue() * 2; };
 #ifdef _MSC_VER
         for (auto&& value : input_chan) {
             output_chan.write(double_value(value));
