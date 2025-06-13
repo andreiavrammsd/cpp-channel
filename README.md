@@ -5,7 +5,7 @@
 
 ### Thread-safe container for sharing data between threads (synchronized queue). Header-only. Compatible with C++11 and newer.
 
-## What and how
+## About
 
 `msd::channel`
 * A synchronized queue that can be easily and safely shared between multiple threads.
