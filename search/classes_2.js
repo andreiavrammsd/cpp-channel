@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['static_5fchannel_0',['static_channel',['../classmsd_1_1static__channel.html',1,'msd']]]
+  ['channel_0',['channel',['../classmsd_1_1channel.html',1,'msd']]],
+  ['closed_5fchannel_1',['closed_channel',['../classmsd_1_1closed__channel.html',1,'msd']]]
 ];

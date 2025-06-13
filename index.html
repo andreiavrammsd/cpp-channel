@@ -74,7 +74,57 @@ $(function() {
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md_README"></a> <a href="https://github.com/andreiavrammsd/cpp-channel/actions"><img src="https://github.com/andreiavrammsd/cpp-channel/actions/workflows/cmake.yml/badge.svg" alt="build" style="pointer-events: none;" class="inline"/></a> <a href="https://codecov.io/github/andreiavrammsd/cpp-channel"><img src="https://codecov.io/github/andreiavrammsd/cpp-channel/graph/badge.svg?token=CKQ0TVW62Z" alt="codecov" style="pointer-events: none;" class="inline"/></a> <a href="https://andreiavrammsd.github.io/cpp-channel/"><img src="https://github.com/andreiavrammsd/cpp-channel/actions/workflows/doc.yml/badge.svg" alt="documentation" style="pointer-events: none;" class="inline"/></a></p>
 <h2><a class="anchor" id="autotoc_md1"></a>
-Thread-safe container for sharing data between threads (synchronized queue). Header-only. Compatible with C++11.</h2>
+Thread-safe container for sharing data between threads (synchronized queue). Header-only. Compatible with C++11 and newer.</h2>
+<h1><a class="anchor" id="autotoc_md2"></a>
+About</h1>
+<p><code><a class="el" href="classmsd_1_1channel.html" title="Thread-safe container for sharing data between threads.">msd::channel</a></code></p><ul>
+<li>A synchronized queue that can be easily and safely shared between multiple threads.</li>
+<li>Tested with GCC, Clang, and MSVC.</li>
+<li>Uses <a href="https://en.cppreference.com/w/cpp/thread/mutex.html">std::mutex</a> for synchronization.</li>
+<li>Uses a customizable <code>storage</code> to store elements.</li>
+</ul>
+<p>It's a class that can be constructed in several ways:</p><ul>
+<li>Buffered:<ul>
+<li>The channel accepts a specified number of elements, after which it blocks the writer threads and waits for a reader thread to read an element.</li>
+<li>It blocks the reader threads when channel is empty until a writer thread writes elements.</li>
+<li><code><a class="el" href="classmsd_1_1channel.html" title="Thread-safe container for sharing data between threads.">msd::channel</a>&lt;int&gt; chan{2};</code></li>
+</ul>
+</li>
+<li>Unbuffered:<ul>
+<li>Never blocks writes.</li>
+<li>It blocks the reader threads when channel is empty until a writer thread writes elements.</li>
+<li><code><a class="el" href="classmsd_1_1channel.html" title="Thread-safe container for sharing data between threads.">msd::channel</a>&lt;int&gt; chan{};</code></li>
+</ul>
+</li>
+<li>Heap- or stack-allocated: pass a custom storage or choose a <a href="https://github.com/andreiavrammsd/cpp-channel/blob/master/include/msd/storage.hpp">built-in storage</a>:<ul>
+<li><code><a class="el" href="classmsd_1_1queue__storage.html" title="A FIFO queue storage using std::queue.">msd::queue_storage</a></code> (default): uses <a href="https://en.cppreference.com/w/cpp/container/queue.html">std::queue</a></li>
+<li><code><a class="el" href="classmsd_1_1vector__storage.html" title="A FIFO queue storage using std::vector.">msd::vector_storage</a></code>: uses <a href="https://en.cppreference.com/w/cpp/container/vector.html">std::vector</a> (if cache locality is important)<ul>
+<li><code><a class="el" href="classmsd_1_1channel.html" title="Thread-safe container for sharing data between threads.">msd::channel</a>&lt;int, <a class="el" href="classmsd_1_1vector__storage.html" title="A FIFO queue storage using std::vector.">msd::vector_storage</a>&lt;int&gt;&gt; chan{2};</code></li>
+</ul>
+</li>
+<li><code><a class="el" href="classmsd_1_1array__storage.html" title="A fixed-size circular buffer using std::array.">msd::array_storage</a></code> (always buffered): uses <a href="https://en.cppreference.com/w/cpp/container/array.html">std::array</a> (if you want stack allocation)<ul>
+<li><code><a class="el" href="classmsd_1_1channel.html" title="Thread-safe container for sharing data between threads.">msd::channel</a>&lt;int, <a class="el" href="classmsd_1_1array__storage.html" title="A fixed-size circular buffer using std::array.">msd::array_storage</a>&lt;int, 10&gt;&gt; chan{};</code></li>
+<li><code><a class="el" href="classmsd_1_1channel.html" title="Thread-safe container for sharing data between threads.">msd::channel</a>&lt;int, <a class="el" href="classmsd_1_1array__storage.html" title="A fixed-size circular buffer using std::array.">msd::array_storage</a>&lt;int, 10&gt;&gt; chan{10}; // does not compile because capacity is already passed as template argument</code></li>
+<li>aka <code><a class="el" href="static__channel_8hpp.html#abce5a839f3739ea502d2ad2c90331f4f" title="Thread-safe container for sharing data between threads.">msd::static_channel</a>&lt;int, 10&gt;</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>A <code>storage</code> is:</p><ul>
+<li>A class with a specific interface for storing elements.</li>
+<li>Must implement <a href="https://en.wikipedia.org/wiki/FIFO">FIFO</a> logic.</li>
+<li>See <a href="https://github.com/andreiavrammsd/cpp-channel/blob/master/include/msd/storage.hpp">built-in storages</a>.</li>
+</ul>
+<p>Exceptions:</p><ul>
+<li><a class="el" href="channel_8hpp.html#a0a8a2c717b238843b99723fa583a78a7" title="Pushes an element into the channel.">msd::operator&lt;&lt;</a> throws <code><a class="el" href="classmsd_1_1closed__channel.html" title="Exception thrown if trying to write on closed channel.">msd::closed_channel</a></code> if channel is closed.</li>
+<li><code><a class="el" href="classmsd_1_1channel.html#a70420f278973ae1f2e5a617fcdbca5a9" title="Pushes an element into the channel.">msd::channel::write</a></code> returns <code>bool</code> status instead of throwing.</li>
+<li>Heap-allocated storages could throw.</li>
+<li>Static-allocated storage does not throw.</li>
+<li>Throws if stored elements throw.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md3"></a>
+Features</h1>
 <ul>
 <li>Thread-safe push and fetch.</li>
 <li>Use stream operators to push (&lt;&lt;) and fetch (&gt;&gt;) items.</li>
@@ -82,27 +132,20 @@ Thread-safe container for sharing data between threads (synchronized queue). Hea
 <li>Blocking (forever waiting to fetch).</li>
 <li>Range-based for loop supported.</li>
 <li>Close to prevent pushing and stop waiting to fetch.</li>
-<li>Integrates with some of the STD algorithms. Eg:<ul>
+<li>Integrates with some of the STL algorithms. Eg:<ul>
 <li><code>std::move(ch.begin(), ch.end(), ...)</code></li>
 <li><code>std::transform(input_chan.begin(), input_chan.end(), msd::back_inserter(output_chan))</code>.</li>
 <li><code>std::copy_if(chan.begin(), chan.end(), ...);</code></li>
 </ul>
 </li>
-<li>Tested with GCC, Clang, and MSVC.</li>
-<li>Includes stack-based, exception-free alternative (static channel).</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md2"></a>
-Requirements</h1>
-<ul>
-<li>C++11 or newer</li>
-</ul>
-<h1><a class="anchor" id="autotoc_md3"></a>
+<h1><a class="anchor" id="autotoc_md4"></a>
 Installation</h1>
 <p>Choose one of the methods:</p>
 <ul>
 <li>Copy the <a href="https://github.com/andreiavrammsd/cpp-channel/tree/master/include">include</a> directory into your project and add it to your include path.</li>
 <li><a href="https://github.com/andreiavrammsd/cpp-channel/tree/master/examples/cmake-project">CMake FetchContent</a></li>
-<li><a href="https://cmake.org/cmake/help/latest/command/install.html">CMake install</a> - Choose a <a href="https://github.com/andreiavrammsd/cpp-channel/releases">version</a>, then run: <div class="fragment"><div class="line">VERSION=X.Y.Z \</div>
+<li><a href="https://cmake.org/cmake/help/latest/command/install.html">CMake install</a> - choose a <a href="https://github.com/andreiavrammsd/cpp-channel/releases">version</a>, then run: <div class="fragment"><div class="line">VERSION=X.Y.Z \</div>
 <div class="line">    &amp;&amp; wget https://github.com/andreiavrammsd/cpp-channel/archive/refs/tags/v$VERSION.zip \</div>
 <div class="line">    &amp;&amp; unzip v$VERSION.zip \</div>
 <div class="line">    &amp;&amp; cd cpp-channel-$VERSION \</div>
@@ -112,15 +155,15 @@ Installation</h1>
 </div><!-- fragment --></li>
 <li><a href="https://github.com/andreiavrammsd/cpp-channel/tree/master/examples/bazel-project">Bazel</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md4"></a>
+<h1><a class="anchor" id="autotoc_md5"></a>
 Usage</h1>
 <div class="fragment"><div class="line"> ++</div>
 <div class="line"><span class="preprocessor">#include &lt;cassert&gt;</span></div>
 <div class="line"> </div>
-<div class="line"><span class="preprocessor">#include &lt;msd/channel.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="channel_8hpp.html">msd/channel.hpp</a>&gt;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main() {</div>
-<div class="line">    <a class="code hl_class" href="classmsd_1_1blocking__writer__iterator.html">msd::channel&lt;int&gt;</a> chan; <span class="comment">// unbuffered</span></div>
+<div class="line">    <a class="code hl_class" href="classmsd_1_1channel.html">msd::channel&lt;int&gt;</a> chan; <span class="comment">// unbuffered</span></div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordtype">int</span> in = 1;</div>
 <div class="line">    <span class="keywordtype">int</span> out = 0;</div>
@@ -133,23 +176,24 @@ Usage</h1>
 <div class="line"> </div>
 <div class="line">    assert(out == 1);</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassmsd_1_1blocking__writer__iterator_html"><div class="ttname"><a href="classmsd_1_1blocking__writer__iterator.html">msd::blocking_writer_iterator</a></div><div class="ttdoc">An output iterator pushes elements into a channel. Blocking until the channel is not full.</div><div class="ttdef"><b>Definition</b> blocking_iterator.hpp:102</div></div>
+<div class="ttc" id="achannel_8hpp_html"><div class="ttname"><a href="channel_8hpp.html">channel.hpp</a></div></div>
+<div class="ttc" id="aclassmsd_1_1channel_html"><div class="ttname"><a href="classmsd_1_1channel.html">msd::channel</a></div><div class="ttdoc">Thread-safe container for sharing data between threads.</div><div class="ttdef"><b>Definition</b> channel.hpp:66</div></div>
 </div><!-- fragment --><div class="fragment"><div class="line"> ++</div>
-<div class="line"><span class="preprocessor">#include &lt;msd/channel.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="channel_8hpp.html">msd/channel.hpp</a>&gt;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main() {</div>
-<div class="line">    <a class="code hl_class" href="classmsd_1_1blocking__writer__iterator.html">msd::channel&lt;int&gt;</a> chan{2}; <span class="comment">// buffered</span></div>
+<div class="line">    <a class="code hl_class" href="classmsd_1_1channel.html">msd::channel&lt;int, msd::vector_storage&lt;int&gt;</a>&gt; chan{2}; <span class="comment">// buffered</span></div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Send to channel</span></div>
 <div class="line">    chan &lt;&lt; 1;</div>
 <div class="line">    chan &lt;&lt; 2;</div>
-<div class="line">    chan &lt;&lt; 3; <span class="comment">// blocking because capacity is 2 (and no one reads from channel)</span></div>
+<div class="line">    chan &lt;&lt; 3; <span class="comment">// blocks because capacity is 2 (and no one reads from channel)</span></div>
 <div class="line">}</div>
 </div><!-- fragment --><div class="fragment"><div class="line"> ++</div>
-<div class="line"><span class="preprocessor">#include &lt;msd/channel.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="channel_8hpp.html">msd/channel.hpp</a>&gt;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main() {</div>
-<div class="line">    <a class="code hl_class" href="classmsd_1_1blocking__writer__iterator.html">msd::channel&lt;int&gt;</a> chan{2}; <span class="comment">// buffered</span></div>
+<div class="line">    <a class="code hl_class" href="classmsd_1_1channel.html">msd::channel&lt;int&gt;</a> chan{2}; <span class="comment">// buffered</span></div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordtype">int</span> in = 1;</div>
 <div class="line">    <span class="keywordtype">int</span> out = 0;</div>
@@ -161,48 +205,51 @@ Usage</h1>
 <div class="line">    <span class="comment">// Read from channel</span></div>
 <div class="line">    chan &gt;&gt; out;</div>
 <div class="line">    chan &gt;&gt; out;</div>
-<div class="line">    chan &gt;&gt; out; <span class="comment">// blocking because channel is empty (and no one writes on it)</span></div>
+<div class="line">    chan &gt;&gt; out; <span class="comment">// blocks because channel is empty (and no one writes on it)</span></div>
 <div class="line">}</div>
 </div><!-- fragment --><div class="fragment"><div class="line"> ++</div>
 <div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
 <div class="line"> </div>
-<div class="line"><span class="preprocessor">#include &lt;msd/channel.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="channel_8hpp.html">msd/channel.hpp</a>&gt;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main() {</div>
-<div class="line">    <a class="code hl_class" href="classmsd_1_1blocking__writer__iterator.html">msd::channel&lt;int&gt;</a> chan;</div>
+<div class="line">    <a class="code hl_class" href="classmsd_1_1channel.html">msd::channel&lt;int&gt;</a> chan;</div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordtype">int</span> in1 = 1;</div>
 <div class="line">    <span class="keywordtype">int</span> in2 = 2;</div>
 <div class="line"> </div>
 <div class="line">    chan &lt;&lt; in1 &lt;&lt; in2;</div>
 <div class="line"> </div>
-<div class="line">    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> out : chan) { <span class="comment">// blocking: forever waiting for channel items</span></div>
+<div class="line">    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> out : chan) { <span class="comment">// blocks: waits forever for channel items</span></div>
 <div class="line">        std::cout &lt;&lt; out &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
 <div class="line">    }</div>
 <div class="line">}</div>
 </div><!-- fragment --><div class="fragment"><div class="line"> ++</div>
-<div class="line"><span class="preprocessor">#include &lt;msd/static_channel.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="static__channel_8hpp.html">msd/static_channel.hpp</a>&gt;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main() {</div>
-<div class="line">    <a class="code hl_class" href="classmsd_1_1blocking__writer__iterator.html">msd::static_channel&lt;int, 2&gt;</a> chan{};  <span class="comment">// always buffered</span></div>
+<div class="line">    <a class="code hl_class" href="classmsd_1_1channel.html">msd::static_channel&lt;int, 2&gt;</a> chan{}; <span class="comment">// always buffered</span></div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordtype">int</span> in = 1;</div>
 <div class="line">    <span class="keywordtype">int</span> out = 0;</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Send to channel</span></div>
-<div class="line">    chan.write(in);</div>
-<div class="line">    chan.write(in);</div>
+<div class="line">    chan.<a class="code hl_function" href="classmsd_1_1channel.html#a70420f278973ae1f2e5a617fcdbca5a9">write</a>(in);</div>
+<div class="line">    chan.<a class="code hl_function" href="classmsd_1_1channel.html#a70420f278973ae1f2e5a617fcdbca5a9">write</a>(in);</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Read from channel</span></div>
-<div class="line">    chan.read(out);</div>
-<div class="line">    chan.read(out);</div>
-<div class="line">    chan.read(out);  <span class="comment">// blocking because channel is empty (and no one writes on it)</span></div>
+<div class="line">    chan.<a class="code hl_function" href="classmsd_1_1channel.html#ae9986c84eed35495933d9462608ab32e">read</a>(out);</div>
+<div class="line">    chan.<a class="code hl_function" href="classmsd_1_1channel.html#ae9986c84eed35495933d9462608ab32e">read</a>(out);</div>
+<div class="line">    chan.<a class="code hl_function" href="classmsd_1_1channel.html#ae9986c84eed35495933d9462608ab32e">read</a>(out); <span class="comment">// blocks because channel is empty (and no one writes on it)</span></div>
 <div class="line">}</div>
+<div class="ttc" id="aclassmsd_1_1channel_html_a70420f278973ae1f2e5a617fcdbca5a9"><div class="ttname"><a href="classmsd_1_1channel.html#a70420f278973ae1f2e5a617fcdbca5a9">msd::channel::write</a></div><div class="ttdeci">bool write(Type &amp;&amp;value)</div><div class="ttdoc">Pushes an element into the channel.</div><div class="ttdef"><b>Definition</b> channel.hpp:142</div></div>
+<div class="ttc" id="aclassmsd_1_1channel_html_ae9986c84eed35495933d9462608ab32e"><div class="ttname"><a href="classmsd_1_1channel.html#ae9986c84eed35495933d9462608ab32e">msd::channel::read</a></div><div class="ttdeci">bool read(T &amp;out)</div><div class="ttdoc">Pops an element from the channel.</div><div class="ttdef"><b>Definition</b> channel.hpp:167</div></div>
+<div class="ttc" id="astatic__channel_8hpp_html"><div class="ttname"><a href="static__channel_8hpp.html">static_channel.hpp</a></div></div>
 </div><!-- fragment --><p>See <a href="https://github.com/andreiavrammsd/cpp-channel/tree/master/examples">examples</a> and <a href="https://andreiavrammsd.github.io/cpp-channel/">documentation</a>.</p>
-<h1><a class="anchor" id="autotoc_md5"></a>
+<h1><a class="anchor" id="autotoc_md6"></a>
 Known limitations</h1>
 <ul>
-<li>In some cases, the integration with some STD algorithms does not compile with MSVC. See the <a href="https://github.com/andreiavrammsd/cpp-channel/blob/master/tests/channel_test.cpp">Transform test</a>.</li>
+<li>In some cases, the integration with some STL algorithms does not compile with MSVC. See the <a href="https://github.com/andreiavrammsd/cpp-channel/blob/master/tests/channel_test.cpp">Transform test</a>.</li>
 </ul>
 <p><br  />
 </p>

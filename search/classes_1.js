@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['channel_0',['channel',['../classmsd_1_1channel.html',1,'msd']]],
-  ['closed_5fchannel_1',['closed_channel',['../classmsd_1_1closed__channel.html',1,'msd']]]
+  ['blocking_5fiterator_0',['blocking_iterator',['../classmsd_1_1blocking__iterator.html',1,'msd']]],
+  ['blocking_5fwriter_5fiterator_1',['blocking_writer_iterator',['../classmsd_1_1blocking__writer__iterator.html',1,'msd']]]
 ];

@@ -1,0 +1,13 @@
+<map id="include/msd/storage.hpp" name="include/msd/storage.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="115,5,298,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,61,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="180,33,75,76,73,71,178,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="86,79,151,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="194,33,145,72,142,68,191,29"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="175,79,238,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="209,31,209,65,204,65,204,31"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="262,79,325,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="222,29,270,68,267,72,219,33"/>
+<area shape="rect" id="Node000006" href="$nodiscard_8hpp.html" title=" " alt="" coords="349,79,462,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="239,28,361,71,359,76,238,33"/>
+</map>

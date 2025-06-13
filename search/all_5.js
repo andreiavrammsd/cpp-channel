@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['for_20sharing_20data_20between_20threads_20synchronized_20queue_20header_20only_20compatible_20with_20c_2011_0',['Thread-safe container for sharing data between threads (synchronized queue). Header-only. Compatible with C++11.',['../index.html#autotoc_md1',1,'']]]
+  ['empty_0',['empty',['../classmsd_1_1channel.html#ad31e1563f9a9303d442727c07127eb8a',1,'msd::channel']]],
+  ['end_1',['end',['../classmsd_1_1channel.html#aee2dafef5c18609b3cdb9d48345dbceb',1,'msd::channel']]]
 ];

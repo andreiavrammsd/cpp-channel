@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>C++ Channel: msd::channel&lt; T &gt; Class Template Reference</title>
+<title>C++ Channel: msd::channel&lt; T, Storage &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -78,7 +78,7 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#friends">Friends</a> &#124;
 <a href="classmsd_1_1channel-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">msd::channel&lt; T &gt; Class Template Reference</div></div>
+  <div class="headertitle"><div class="title">msd::channel&lt; T, Storage &gt; Class Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -89,84 +89,90 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a1322025e0fca5f32bf9d1ba19b9bef48" id="r_a1322025e0fca5f32bf9d1ba19b9bef48"><td class="memItemLeft" align="right" valign="top"><a id="a1322025e0fca5f32bf9d1ba19b9bef48" name="a1322025e0fca5f32bf9d1ba19b9bef48"></a>
-<a class="el" href="classmsd_1_1blocking__writer__iterator.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = <a class="el" href="classmsd_1_1blocking__writer__iterator.html">T</a></td></tr>
-<tr class="memdesc:a1322025e0fca5f32bf9d1ba19b9bef48"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type of elements stored in the channel. <br /></td></tr>
-<tr class="separator:a1322025e0fca5f32bf9d1ba19b9bef48"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b06047c030bad429d12bbe7c3f7f377" id="r_a7b06047c030bad429d12bbe7c3f7f377"><td class="memItemLeft" align="right" valign="top"><a id="a7b06047c030bad429d12bbe7c3f7f377" name="a7b06047c030bad429d12bbe7c3f7f377"></a>
-<a class="el" href="classmsd_1_1blocking__writer__iterator.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><b>iterator</b> = <a class="el" href="classmsd_1_1blocking__iterator.html">blocking_iterator</a>&lt; <a class="el" href="classmsd_1_1channel.html">channel</a>&lt; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">T</a> &gt; &gt;</td></tr>
-<tr class="memdesc:a7b06047c030bad429d12bbe7c3f7f377"><td class="mdescLeft">&#160;</td><td class="mdescRight">The iterator type used to traverse the channel. <br /></td></tr>
-<tr class="separator:a7b06047c030bad429d12bbe7c3f7f377"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae458eca85e982f3a11a461c6dd8c264d" id="r_ae458eca85e982f3a11a461c6dd8c264d"><td class="memItemLeft" align="right" valign="top"><a id="ae458eca85e982f3a11a461c6dd8c264d" name="ae458eca85e982f3a11a461c6dd8c264d"></a>
-<a class="el" href="classmsd_1_1blocking__writer__iterator.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><b>size_type</b> = std::size_t</td></tr>
-<tr class="memdesc:ae458eca85e982f3a11a461c6dd8c264d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type used to represent sizes and counts. <br /></td></tr>
-<tr class="separator:ae458eca85e982f3a11a461c6dd8c264d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65e4aaa11f1a0f4ccd1c0b0e4a669c17" id="r_a65e4aaa11f1a0f4ccd1c0b0e4a669c17"><td class="memItemLeft" align="right" valign="top"><a id="a65e4aaa11f1a0f4ccd1c0b0e4a669c17" name="a65e4aaa11f1a0f4ccd1c0b0e4a669c17"></a>
+<a class="el" href="classmsd_1_1channel.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = <a class="el" href="classmsd_1_1channel.html">T</a></td></tr>
+<tr class="memdesc:a65e4aaa11f1a0f4ccd1c0b0e4a669c17"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type of elements stored in the channel. <br /></td></tr>
+<tr class="separator:a65e4aaa11f1a0f4ccd1c0b0e4a669c17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67e886b77387c86d7a71c168d9d5690b" id="r_a67e886b77387c86d7a71c168d9d5690b"><td class="memItemLeft" align="right" valign="top"><a id="a67e886b77387c86d7a71c168d9d5690b" name="a67e886b77387c86d7a71c168d9d5690b"></a>
+<a class="el" href="classmsd_1_1channel.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><b>iterator</b> = <a class="el" href="classmsd_1_1blocking__iterator.html">blocking_iterator</a>&lt; <a class="el" href="classmsd_1_1channel.html">channel</a>&lt; <a class="el" href="classmsd_1_1channel.html">T</a>, <a class="el" href="classmsd_1_1channel.html">Storage</a> &gt; &gt;</td></tr>
+<tr class="memdesc:a67e886b77387c86d7a71c168d9d5690b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The iterator type used to traverse the channel. <br /></td></tr>
+<tr class="separator:a67e886b77387c86d7a71c168d9d5690b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1186e211293bd152f6028054b71247b" id="r_aa1186e211293bd152f6028054b71247b"><td class="memItemLeft" align="right" valign="top"><a id="aa1186e211293bd152f6028054b71247b" name="aa1186e211293bd152f6028054b71247b"></a>
+<a class="el" href="classmsd_1_1channel.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><b>size_type</b> = std::size_t</td></tr>
+<tr class="memdesc:aa1186e211293bd152f6028054b71247b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type used to represent sizes and counts. <br /></td></tr>
+<tr class="separator:aa1186e211293bd152f6028054b71247b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac62b0db0187e2eb5e9e444b8ccf002f9" id="r_ac62b0db0187e2eb5e9e444b8ccf002f9"><td class="memItemLeft" align="right" valign="top"><a id="ac62b0db0187e2eb5e9e444b8ccf002f9" name="ac62b0db0187e2eb5e9e444b8ccf002f9"></a>
-<a class="el" href="classmsd_1_1blocking__writer__iterator.html">constexpr</a>&#160;</td><td class="memItemRight" valign="bottom"><b>channel</b> ()=<a class="el" href="classmsd_1_1blocking__writer__iterator.html">default</a></td></tr>
-<tr class="memdesc:ac62b0db0187e2eb5e9e444b8ccf002f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an unbuffered channel. <br /></td></tr>
-<tr class="separator:ac62b0db0187e2eb5e9e444b8ccf002f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2bb853987d690e5c5815d174013bb7b" id="r_af2bb853987d690e5c5815d174013bb7b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmsd_1_1blocking__writer__iterator.html">constexpr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmsd_1_1channel.html#af2bb853987d690e5c5815d174013bb7b">channel</a> (<a class="el" href="classmsd_1_1blocking__writer__iterator.html">const</a> <a class="el" href="classmsd_1_1channel.html#ae458eca85e982f3a11a461c6dd8c264d">size_type</a> <a class="el" href="classmsd_1_1blocking__writer__iterator.html">capacity</a>)</td></tr>
-<tr class="memdesc:af2bb853987d690e5c5815d174013bb7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a buffered channel.  <br /></td></tr>
-<tr class="separator:af2bb853987d690e5c5815d174013bb7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4176bdfa034424200521e1de12217c84" id="r_a4176bdfa034424200521e1de12217c84"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typename</a> <a class="el" href="classmsd_1_1blocking__writer__iterator.html">Type</a> &gt; </td></tr>
-<tr class="memitem:a4176bdfa034424200521e1de12217c84"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmsd_1_1blocking__writer__iterator.html">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmsd_1_1channel.html#a4176bdfa034424200521e1de12217c84">write</a> (<a class="el" href="classmsd_1_1blocking__writer__iterator.html">Type</a> &amp;&amp;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">value</a>)</td></tr>
-<tr class="memdesc:a4176bdfa034424200521e1de12217c84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pushes an element into the channel.  <br /></td></tr>
-<tr class="separator:a4176bdfa034424200521e1de12217c84"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af10a793b2bf21de063ffc0464b24888f" id="r_af10a793b2bf21de063ffc0464b24888f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmsd_1_1blocking__writer__iterator.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmsd_1_1channel.html#af10a793b2bf21de063ffc0464b24888f">read</a> (<a class="el" href="classmsd_1_1blocking__writer__iterator.html">T</a> &amp;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">out</a>)</td></tr>
-<tr class="memdesc:af10a793b2bf21de063ffc0464b24888f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pops an element from the channel.  <br /></td></tr>
-<tr class="separator:af10a793b2bf21de063ffc0464b24888f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2fd8202931fcc11d073160823bb29a76" id="r_a2fd8202931fcc11d073160823bb29a76"><td class="memItemLeft" align="right" valign="top">NODISCARD <a class="el" href="classmsd_1_1channel.html#ae458eca85e982f3a11a461c6dd8c264d">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmsd_1_1channel.html#a2fd8202931fcc11d073160823bb29a76">size</a> () <a class="el" href="classmsd_1_1blocking__writer__iterator.html">const</a> <a class="el" href="classmsd_1_1blocking__writer__iterator.html">noexcept</a></td></tr>
-<tr class="memdesc:a2fd8202931fcc11d073160823bb29a76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current size of the channel.  <br /></td></tr>
-<tr class="separator:a2fd8202931fcc11d073160823bb29a76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc51c869987c576b0876d3b00e591a1b" id="r_abc51c869987c576b0876d3b00e591a1b"><td class="memItemLeft" align="right" valign="top">NODISCARD <a class="el" href="classmsd_1_1blocking__writer__iterator.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmsd_1_1channel.html#abc51c869987c576b0876d3b00e591a1b">empty</a> () <a class="el" href="classmsd_1_1blocking__writer__iterator.html">const</a> <a class="el" href="classmsd_1_1blocking__writer__iterator.html">noexcept</a></td></tr>
-<tr class="memdesc:abc51c869987c576b0876d3b00e591a1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the channel is empty.  <br /></td></tr>
-<tr class="separator:abc51c869987c576b0876d3b00e591a1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a208e4103d069df54c21fb7470abedcc9" id="r_a208e4103d069df54c21fb7470abedcc9"><td class="memItemLeft" align="right" valign="top"><a id="a208e4103d069df54c21fb7470abedcc9" name="a208e4103d069df54c21fb7470abedcc9"></a>
-<a class="el" href="classmsd_1_1blocking__writer__iterator.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>close</b> () <a class="el" href="classmsd_1_1blocking__writer__iterator.html">noexcept</a></td></tr>
-<tr class="memdesc:a208e4103d069df54c21fb7470abedcc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes the channel, no longer accepting new elements. <br /></td></tr>
-<tr class="separator:a208e4103d069df54c21fb7470abedcc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac761b63ea7435c496be86719aa98ddba" id="r_ac761b63ea7435c496be86719aa98ddba"><td class="memItemLeft" align="right" valign="top">NODISCARD <a class="el" href="classmsd_1_1blocking__writer__iterator.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmsd_1_1channel.html#ac761b63ea7435c496be86719aa98ddba">closed</a> () <a class="el" href="classmsd_1_1blocking__writer__iterator.html">const</a> <a class="el" href="classmsd_1_1blocking__writer__iterator.html">noexcept</a></td></tr>
-<tr class="memdesc:ac761b63ea7435c496be86719aa98ddba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the channel has been closed.  <br /></td></tr>
-<tr class="separator:ac761b63ea7435c496be86719aa98ddba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7fec0dd40ea520dc6908b3d21bb8d9e" id="r_aa7fec0dd40ea520dc6908b3d21bb8d9e"><td class="memItemLeft" align="right" valign="top">NODISCARD <a class="el" href="classmsd_1_1blocking__writer__iterator.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmsd_1_1channel.html#aa7fec0dd40ea520dc6908b3d21bb8d9e">drained</a> () <a class="el" href="classmsd_1_1blocking__writer__iterator.html">noexcept</a></td></tr>
-<tr class="memdesc:aa7fec0dd40ea520dc6908b3d21bb8d9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the channel has been closed and is empty.  <br /></td></tr>
-<tr class="separator:aa7fec0dd40ea520dc6908b3d21bb8d9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f2181ba6724bf0dc0e74023739eb025" id="r_a6f2181ba6724bf0dc0e74023739eb025"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmsd_1_1channel.html#a7b06047c030bad429d12bbe7c3f7f377">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmsd_1_1channel.html#a6f2181ba6724bf0dc0e74023739eb025">begin</a> () <a class="el" href="classmsd_1_1blocking__writer__iterator.html">noexcept</a></td></tr>
-<tr class="memdesc:a6f2181ba6724bf0dc0e74023739eb025"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an iterator to the beginning of the channel.  <br /></td></tr>
-<tr class="separator:a6f2181ba6724bf0dc0e74023739eb025"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b6ec47f4c3ae6ede32d22584fa8e86d" id="r_a3b6ec47f4c3ae6ede32d22584fa8e86d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmsd_1_1channel.html#a7b06047c030bad429d12bbe7c3f7f377">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmsd_1_1channel.html#a3b6ec47f4c3ae6ede32d22584fa8e86d">end</a> () <a class="el" href="classmsd_1_1blocking__writer__iterator.html">noexcept</a></td></tr>
-<tr class="memdesc:a3b6ec47f4c3ae6ede32d22584fa8e86d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an iterator representing the end of the channel.  <br /></td></tr>
-<tr class="separator:a3b6ec47f4c3ae6ede32d22584fa8e86d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add5f179ebfe3e6fe47fd76f7552014ea" id="r_add5f179ebfe3e6fe47fd76f7552014ea"><td class="memItemLeft" align="right" valign="top"><a id="add5f179ebfe3e6fe47fd76f7552014ea" name="add5f179ebfe3e6fe47fd76f7552014ea"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>channel</b> (<a class="el" href="classmsd_1_1blocking__writer__iterator.html">const</a> <a class="el" href="classmsd_1_1channel.html">channel</a> &amp;)=<a class="el" href="classmsd_1_1blocking__writer__iterator.html">delete</a></td></tr>
-<tr class="separator:add5f179ebfe3e6fe47fd76f7552014ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab42db08d0c3e3c4813a9774f7a7b0f72" id="r_ab42db08d0c3e3c4813a9774f7a7b0f72"><td class="memItemLeft" align="right" valign="top"><a id="ab42db08d0c3e3c4813a9774f7a7b0f72" name="ab42db08d0c3e3c4813a9774f7a7b0f72"></a>
-<a class="el" href="classmsd_1_1channel.html">channel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classmsd_1_1blocking__writer__iterator.html">const</a> <a class="el" href="classmsd_1_1channel.html">channel</a> &amp;)=<a class="el" href="classmsd_1_1blocking__writer__iterator.html">delete</a></td></tr>
-<tr class="separator:ab42db08d0c3e3c4813a9774f7a7b0f72"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a270c28933f5beeb06318079f1844f34d" id="r_a270c28933f5beeb06318079f1844f34d"><td class="memItemLeft" align="right" valign="top"><a id="a270c28933f5beeb06318079f1844f34d" name="a270c28933f5beeb06318079f1844f34d"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>channel</b> (<a class="el" href="classmsd_1_1channel.html">channel</a> &amp;&amp;)=<a class="el" href="classmsd_1_1blocking__writer__iterator.html">delete</a></td></tr>
-<tr class="separator:a270c28933f5beeb06318079f1844f34d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94aab7b27712efa093e9bb87dc1facb9" id="r_a94aab7b27712efa093e9bb87dc1facb9"><td class="memItemLeft" align="right" valign="top"><a id="a94aab7b27712efa093e9bb87dc1facb9" name="a94aab7b27712efa093e9bb87dc1facb9"></a>
-<a class="el" href="classmsd_1_1channel.html">channel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classmsd_1_1channel.html">channel</a> &amp;&amp;)=<a class="el" href="classmsd_1_1blocking__writer__iterator.html">delete</a></td></tr>
-<tr class="separator:a94aab7b27712efa093e9bb87dc1facb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5dfded699a019cf41ed610dda7433eaf" id="r_a5dfded699a019cf41ed610dda7433eaf"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">S</a>  = Storage, <a class="el" href="classmsd_1_1channel.html">typename</a> std::enable_if&lt; <a class="el" href="structmsd_1_1is__static__storage.html">is_static_storage</a>&lt; <a class="el" href="classmsd_1_1channel.html">S</a> &gt;::value, <a class="el" href="classmsd_1_1channel.html">int</a> &gt;::type  = 0&gt; </td></tr>
+<tr class="memitem:a5dfded699a019cf41ed610dda7433eaf"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmsd_1_1channel.html">constexpr</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmsd_1_1channel.html#a5dfded699a019cf41ed610dda7433eaf">channel</a> ()</td></tr>
+<tr class="memdesc:a5dfded699a019cf41ed610dda7433eaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a buffered channel if <b>Storage</b> is static (has static <b>capacity</b> member)  <br /></td></tr>
+<tr class="separator:a5dfded699a019cf41ed610dda7433eaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5dfded699a019cf41ed610dda7433eaf" id="r_a5dfded699a019cf41ed610dda7433eaf"><td class="memTemplParams" colspan="2"><a id="a5dfded699a019cf41ed610dda7433eaf" name="a5dfded699a019cf41ed610dda7433eaf"></a>
+template&lt;<a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">S</a>  = Storage, <a class="el" href="classmsd_1_1channel.html">typename</a> std::enable_if&lt;!<a class="el" href="structmsd_1_1is__static__storage.html">is_static_storage</a>&lt; <a class="el" href="classmsd_1_1channel.html">S</a> &gt;::value, <a class="el" href="classmsd_1_1channel.html">int</a> &gt;::type  = 0&gt; </td></tr>
+<tr class="memitem:a5dfded699a019cf41ed610dda7433eaf"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmsd_1_1channel.html">constexpr</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><b>channel</b> ()</td></tr>
+<tr class="memdesc:a5dfded699a019cf41ed610dda7433eaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an unbuffered channel if <b>Storage</b> is not static (does not have static <b>capacity</b> member). <br /></td></tr>
+<tr class="separator:a5dfded699a019cf41ed610dda7433eaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b5c499065792d9547daf55de7763267" id="r_a4b5c499065792d9547daf55de7763267"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">S</a>  = Storage, <a class="el" href="classmsd_1_1channel.html">typename</a> std::enable_if&lt;!<a class="el" href="structmsd_1_1is__static__storage.html">is_static_storage</a>&lt; <a class="el" href="classmsd_1_1channel.html">S</a> &gt;::value, <a class="el" href="classmsd_1_1channel.html">int</a> &gt;::type  = 0&gt; </td></tr>
+<tr class="memitem:a4b5c499065792d9547daf55de7763267"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmsd_1_1channel.html">constexpr</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmsd_1_1channel.html#a4b5c499065792d9547daf55de7763267">channel</a> (<a class="el" href="classmsd_1_1channel.html">const</a> <a class="el" href="classmsd_1_1channel.html#aa1186e211293bd152f6028054b71247b">size_type</a> capacity)</td></tr>
+<tr class="memdesc:a4b5c499065792d9547daf55de7763267"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a buffered channel if <b>Storage</b> is not static (does not have static <b>capacity</b> member).  <br /></td></tr>
+<tr class="separator:a4b5c499065792d9547daf55de7763267"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70420f278973ae1f2e5a617fcdbca5a9" id="r_a70420f278973ae1f2e5a617fcdbca5a9"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">Type</a> &gt; </td></tr>
+<tr class="memitem:a70420f278973ae1f2e5a617fcdbca5a9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmsd_1_1channel.html">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmsd_1_1channel.html#a70420f278973ae1f2e5a617fcdbca5a9">write</a> (<a class="el" href="classmsd_1_1channel.html">Type</a> &amp;&amp;<a class="el" href="classmsd_1_1channel.html">value</a>)</td></tr>
+<tr class="memdesc:a70420f278973ae1f2e5a617fcdbca5a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pushes an element into the channel.  <br /></td></tr>
+<tr class="separator:a70420f278973ae1f2e5a617fcdbca5a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9986c84eed35495933d9462608ab32e" id="r_ae9986c84eed35495933d9462608ab32e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmsd_1_1channel.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmsd_1_1channel.html#ae9986c84eed35495933d9462608ab32e">read</a> (<a class="el" href="classmsd_1_1channel.html">T</a> &amp;<a class="el" href="classmsd_1_1channel.html">out</a>)</td></tr>
+<tr class="memdesc:ae9986c84eed35495933d9462608ab32e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pops an element from the channel.  <br /></td></tr>
+<tr class="separator:ae9986c84eed35495933d9462608ab32e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeee2d38bcbf67a6a3f07379b192e68bc" id="r_aeee2d38bcbf67a6a3f07379b192e68bc"><td class="memItemLeft" align="right" valign="top">NODISCARD <a class="el" href="classmsd_1_1channel.html#aa1186e211293bd152f6028054b71247b">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmsd_1_1channel.html#aeee2d38bcbf67a6a3f07379b192e68bc">size</a> () <a class="el" href="classmsd_1_1channel.html">const</a> <a class="el" href="classmsd_1_1channel.html">noexcept</a></td></tr>
+<tr class="memdesc:aeee2d38bcbf67a6a3f07379b192e68bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current size of the channel.  <br /></td></tr>
+<tr class="separator:aeee2d38bcbf67a6a3f07379b192e68bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad31e1563f9a9303d442727c07127eb8a" id="r_ad31e1563f9a9303d442727c07127eb8a"><td class="memItemLeft" align="right" valign="top">NODISCARD <a class="el" href="classmsd_1_1channel.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmsd_1_1channel.html#ad31e1563f9a9303d442727c07127eb8a">empty</a> () <a class="el" href="classmsd_1_1channel.html">const</a> <a class="el" href="classmsd_1_1channel.html">noexcept</a></td></tr>
+<tr class="memdesc:ad31e1563f9a9303d442727c07127eb8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the channel is empty.  <br /></td></tr>
+<tr class="separator:ad31e1563f9a9303d442727c07127eb8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad98b290872e2f606f427d47477049c7a" id="r_ad98b290872e2f606f427d47477049c7a"><td class="memItemLeft" align="right" valign="top"><a id="ad98b290872e2f606f427d47477049c7a" name="ad98b290872e2f606f427d47477049c7a"></a>
+<a class="el" href="classmsd_1_1channel.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>close</b> () <a class="el" href="classmsd_1_1channel.html">noexcept</a></td></tr>
+<tr class="memdesc:ad98b290872e2f606f427d47477049c7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes the channel, no longer accepting new elements. <br /></td></tr>
+<tr class="separator:ad98b290872e2f606f427d47477049c7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6494a6764b3c3e569bf0652982a5ecc8" id="r_a6494a6764b3c3e569bf0652982a5ecc8"><td class="memItemLeft" align="right" valign="top">NODISCARD <a class="el" href="classmsd_1_1channel.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmsd_1_1channel.html#a6494a6764b3c3e569bf0652982a5ecc8">closed</a> () <a class="el" href="classmsd_1_1channel.html">const</a> <a class="el" href="classmsd_1_1channel.html">noexcept</a></td></tr>
+<tr class="memdesc:a6494a6764b3c3e569bf0652982a5ecc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the channel has been closed.  <br /></td></tr>
+<tr class="separator:a6494a6764b3c3e569bf0652982a5ecc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3653bbd5e13fc9c93bb52d8f0d512f90" id="r_a3653bbd5e13fc9c93bb52d8f0d512f90"><td class="memItemLeft" align="right" valign="top">NODISCARD <a class="el" href="classmsd_1_1channel.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmsd_1_1channel.html#a3653bbd5e13fc9c93bb52d8f0d512f90">drained</a> () <a class="el" href="classmsd_1_1channel.html">noexcept</a></td></tr>
+<tr class="memdesc:a3653bbd5e13fc9c93bb52d8f0d512f90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the channel has been closed and is empty.  <br /></td></tr>
+<tr class="separator:a3653bbd5e13fc9c93bb52d8f0d512f90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af354e4d952ae42bfd2ed0d38393bd1f1" id="r_af354e4d952ae42bfd2ed0d38393bd1f1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmsd_1_1channel.html#a67e886b77387c86d7a71c168d9d5690b">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmsd_1_1channel.html#af354e4d952ae42bfd2ed0d38393bd1f1">begin</a> () <a class="el" href="classmsd_1_1channel.html">noexcept</a></td></tr>
+<tr class="memdesc:af354e4d952ae42bfd2ed0d38393bd1f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an iterator to the beginning of the channel.  <br /></td></tr>
+<tr class="separator:af354e4d952ae42bfd2ed0d38393bd1f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee2dafef5c18609b3cdb9d48345dbceb" id="r_aee2dafef5c18609b3cdb9d48345dbceb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmsd_1_1channel.html#a67e886b77387c86d7a71c168d9d5690b">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmsd_1_1channel.html#aee2dafef5c18609b3cdb9d48345dbceb">end</a> () <a class="el" href="classmsd_1_1channel.html">noexcept</a></td></tr>
+<tr class="memdesc:aee2dafef5c18609b3cdb9d48345dbceb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an iterator representing the end of the channel.  <br /></td></tr>
+<tr class="separator:aee2dafef5c18609b3cdb9d48345dbceb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0c937b48942adc5ecc28b151b52369a" id="r_ab0c937b48942adc5ecc28b151b52369a"><td class="memItemLeft" align="right" valign="top"><a id="ab0c937b48942adc5ecc28b151b52369a" name="ab0c937b48942adc5ecc28b151b52369a"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>channel</b> (<a class="el" href="classmsd_1_1channel.html">const</a> <a class="el" href="classmsd_1_1channel.html">channel</a> &amp;)=<a class="el" href="classmsd_1_1channel.html">delete</a></td></tr>
+<tr class="separator:ab0c937b48942adc5ecc28b151b52369a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7e4162cd0f54a2cc48616d2793c1f04" id="r_ab7e4162cd0f54a2cc48616d2793c1f04"><td class="memItemLeft" align="right" valign="top"><a id="ab7e4162cd0f54a2cc48616d2793c1f04" name="ab7e4162cd0f54a2cc48616d2793c1f04"></a>
+<a class="el" href="classmsd_1_1channel.html">channel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classmsd_1_1channel.html">const</a> <a class="el" href="classmsd_1_1channel.html">channel</a> &amp;)=<a class="el" href="classmsd_1_1channel.html">delete</a></td></tr>
+<tr class="separator:ab7e4162cd0f54a2cc48616d2793c1f04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8cb2b6b074c96c224e0bb63b5672fe0" id="r_aa8cb2b6b074c96c224e0bb63b5672fe0"><td class="memItemLeft" align="right" valign="top"><a id="aa8cb2b6b074c96c224e0bb63b5672fe0" name="aa8cb2b6b074c96c224e0bb63b5672fe0"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>channel</b> (<a class="el" href="classmsd_1_1channel.html">channel</a> &amp;&amp;)=<a class="el" href="classmsd_1_1channel.html">delete</a></td></tr>
+<tr class="separator:aa8cb2b6b074c96c224e0bb63b5672fe0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24e4bf7192c709a4cbb29732f874e180" id="r_a24e4bf7192c709a4cbb29732f874e180"><td class="memItemLeft" align="right" valign="top"><a id="a24e4bf7192c709a4cbb29732f874e180" name="a24e4bf7192c709a4cbb29732f874e180"></a>
+<a class="el" href="classmsd_1_1channel.html">channel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classmsd_1_1channel.html">channel</a> &amp;&amp;)=<a class="el" href="classmsd_1_1channel.html">delete</a></td></tr>
+<tr class="separator:a24e4bf7192c709a4cbb29732f874e180"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
 Friends</h2></td></tr>
-<tr class="memitem:aebf52a0fbdb345b1ab99751ff51df8de" id="r_aebf52a0fbdb345b1ab99751ff51df8de"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typename</a> <a class="el" href="classmsd_1_1blocking__writer__iterator.html">Type</a> &gt; </td></tr>
-<tr class="memitem:aebf52a0fbdb345b1ab99751ff51df8de"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmsd_1_1channel.html">channel</a>&lt; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">typename</a> std::decay&lt; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">Type</a> &gt;::type &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmsd_1_1channel.html#aebf52a0fbdb345b1ab99751ff51df8de">operator&lt;&lt;</a> (<a class="el" href="classmsd_1_1channel.html">channel</a>&lt; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">typename</a> std::decay&lt; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">Type</a> &gt;::type &gt; &amp;, <a class="el" href="classmsd_1_1blocking__writer__iterator.html">Type</a> &amp;&amp;)</td></tr>
-<tr class="memdesc:aebf52a0fbdb345b1ab99751ff51df8de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pushes an element into the channel.  <br /></td></tr>
-<tr class="separator:aebf52a0fbdb345b1ab99751ff51df8de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2585ea5fa54a5fec4ae0514bacebc5e4" id="r_a2585ea5fa54a5fec4ae0514bacebc5e4"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typename</a> <a class="el" href="classmsd_1_1blocking__writer__iterator.html">Type</a> &gt; </td></tr>
-<tr class="memitem:a2585ea5fa54a5fec4ae0514bacebc5e4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmsd_1_1channel.html">channel</a>&lt; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">Type</a> &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmsd_1_1channel.html#a2585ea5fa54a5fec4ae0514bacebc5e4">operator&gt;&gt;</a> (<a class="el" href="classmsd_1_1channel.html">channel</a>&lt; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">Type</a> &gt; &amp;, <a class="el" href="classmsd_1_1blocking__writer__iterator.html">Type</a> &amp;)</td></tr>
-<tr class="memdesc:a2585ea5fa54a5fec4ae0514bacebc5e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pops an element from the channel.  <br /></td></tr>
-<tr class="separator:a2585ea5fa54a5fec4ae0514bacebc5e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13bace1d4c6d787e3443e0912b5fd4d0" id="r_a13bace1d4c6d787e3443e0912b5fd4d0"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">Type</a> , <a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">Store</a> &gt; </td></tr>
+<tr class="memitem:a13bace1d4c6d787e3443e0912b5fd4d0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmsd_1_1channel.html">channel</a>&lt; <a class="el" href="classmsd_1_1channel.html">typename</a> std::decay&lt; <a class="el" href="classmsd_1_1channel.html">Type</a> &gt;<a class="el" href="classmsd_1_1channel.html#a5dfded699a019cf41ed610dda7433eaf">::type</a>, <a class="el" href="classmsd_1_1channel.html">Store</a> &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmsd_1_1channel.html#a13bace1d4c6d787e3443e0912b5fd4d0">operator&lt;&lt;</a> (<a class="el" href="classmsd_1_1channel.html">channel</a>&lt; <a class="el" href="classmsd_1_1channel.html">typename</a> std::decay&lt; <a class="el" href="classmsd_1_1channel.html">Type</a> &gt;<a class="el" href="classmsd_1_1channel.html#a5dfded699a019cf41ed610dda7433eaf">::type</a>, <a class="el" href="classmsd_1_1channel.html">Store</a> &gt; &amp;<a class="el" href="classmsd_1_1channel.html">chan</a>, <a class="el" href="classmsd_1_1channel.html">Type</a> &amp;&amp;<a class="el" href="classmsd_1_1channel.html">value</a>)</td></tr>
+<tr class="memdesc:a13bace1d4c6d787e3443e0912b5fd4d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pushes an element into the channel.  <br /></td></tr>
+<tr class="separator:a13bace1d4c6d787e3443e0912b5fd4d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbee18752fcca0b25c72ebbb0bc52dbd" id="r_adbee18752fcca0b25c72ebbb0bc52dbd"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">Type</a> , <a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">Store</a> &gt; </td></tr>
+<tr class="memitem:adbee18752fcca0b25c72ebbb0bc52dbd"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmsd_1_1channel.html">channel</a>&lt; <a class="el" href="classmsd_1_1channel.html">Type</a>, <a class="el" href="classmsd_1_1channel.html">Store</a> &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmsd_1_1channel.html#adbee18752fcca0b25c72ebbb0bc52dbd">operator&gt;&gt;</a> (<a class="el" href="classmsd_1_1channel.html">channel</a>&lt; <a class="el" href="classmsd_1_1channel.html">Type</a>, <a class="el" href="classmsd_1_1channel.html">Store</a> &gt; &amp;<a class="el" href="classmsd_1_1channel.html">chan</a>, <a class="el" href="classmsd_1_1channel.html">Type</a> &amp;<a class="el" href="classmsd_1_1channel.html">out</a>)</td></tr>
+<tr class="memdesc:adbee18752fcca0b25c72ebbb0bc52dbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pops an element from the channel.  <br /></td></tr>
+<tr class="separator:adbee18752fcca0b25c72ebbb0bc52dbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typename</a> <a class="el" href="classmsd_1_1blocking__writer__iterator.html">T</a>&gt;<br />
-class msd::channel&lt; T &gt;</div><p>Thread-safe container for sharing data between threads. </p>
+<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="classmsd_1_1channel.html#a5dfded699a019cf41ed610dda7433eaf">typename</a> <a class="el" href="classmsd_1_1channel.html#a5dfded699a019cf41ed610dda7433eaf">T</a>, <a class="el" href="classmsd_1_1channel.html#a5dfded699a019cf41ed610dda7433eaf">typename</a> <a class="el" href="classmsd_1_1channel.html#a5dfded699a019cf41ed610dda7433eaf">Storage</a> = default_storage&lt;T&gt;&gt;<br />
+class msd::channel&lt; T, Storage &gt;</div><p>Thread-safe container for sharing data between threads. </p>
 <ul>
 <li>Not movable, not copyable.</li>
 <li>Includes a blocking input iterator.</li>
@@ -174,25 +180,60 @@ class msd::channel&lt; T &gt;</div><p>Thread-safe container for sharing data bet
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td>The type of the elements. </td></tr>
+    <tr><td class="paramname">Storage</td><td>The storage type used to hold the elements. Default: <a class="el" href="classmsd_1_1queue__storage.html" title="A FIFO queue storage using std::queue.">msd::queue_storage</a>. </td></tr>
   </table>
   </dd>
 </dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="af2bb853987d690e5c5815d174013bb7b" name="af2bb853987d690e5c5815d174013bb7b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af2bb853987d690e5c5815d174013bb7b">&#9670;&#160;</a></span>channel()</h2>
+<a id="a5dfded699a019cf41ed610dda7433eaf" name="a5dfded699a019cf41ed610dda7433eaf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5dfded699a019cf41ed610dda7433eaf">&#9670;&#160;</a></span>channel() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typename</a> <a class="el" href="classmsd_1_1blocking__writer__iterator.html">T</a> &gt; </div>
+template&lt;<a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">T</a> , <a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">Storage</a>  = default_storage&lt;T&gt;&gt; </div>
+<div class="memtemplate">
+template&lt;<a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">S</a>  = Storage, <a class="el" href="classmsd_1_1channel.html">typename</a> std::enable_if&lt; <a class="el" href="structmsd_1_1is__static__storage.html">is_static_storage</a>&lt; <a class="el" href="classmsd_1_1channel.html">S</a> &gt;::value, <a class="el" href="classmsd_1_1channel.html">int</a> &gt;::type  = 0&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmsd_1_1blocking__writer__iterator.html">constexpr</a> <a class="el" href="classmsd_1_1channel.html">msd::channel</a>&lt; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">T</a> &gt;::channel </td>
+          <td class="memname"><a class="el" href="classmsd_1_1channel.html">constexpr</a> <a class="el" href="classmsd_1_1channel.html">msd::channel</a>&lt; <a class="el" href="classmsd_1_1channel.html">T</a>, <a class="el" href="classmsd_1_1channel.html">Storage</a> &gt;::channel </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classmsd_1_1blocking__writer__iterator.html">const</a> <a class="el" href="classmsd_1_1channel.html#ae458eca85e982f3a11a461c6dd8c264d">size_type</a>&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Creates a buffered channel if <b>Storage</b> is static (has static <b>capacity</b> member) </p>
+<dl class="section note"><dt>Note</dt><dd>Uses <b>Storage::capacity</b> as number of elements the channel can store before blocking. </dd></dl>
+
+</div>
+</div>
+<a id="a4b5c499065792d9547daf55de7763267" name="a4b5c499065792d9547daf55de7763267"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b5c499065792d9547daf55de7763267">&#9670;&#160;</a></span>channel() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">T</a> , <a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">Storage</a>  = default_storage&lt;T&gt;&gt; </div>
+<div class="memtemplate">
+template&lt;<a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">S</a>  = Storage, <a class="el" href="classmsd_1_1channel.html">typename</a> std::enable_if&lt;!<a class="el" href="structmsd_1_1is__static__storage.html">is_static_storage</a>&lt; <a class="el" href="classmsd_1_1channel.html">S</a> &gt;::value, <a class="el" href="classmsd_1_1channel.html">int</a> &gt;::type  = 0&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmsd_1_1channel.html">constexpr</a> <a class="el" href="classmsd_1_1channel.html">msd::channel</a>&lt; <a class="el" href="classmsd_1_1channel.html">T</a>, <a class="el" href="classmsd_1_1channel.html">Storage</a> &gt;::channel </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmsd_1_1channel.html">const</a> <a class="el" href="classmsd_1_1channel.html#aa1186e211293bd152f6028054b71247b">size_type</a>&#160;</td>
           <td class="paramname"><em>capacity</em></td><td>)</td>
           <td></td>
         </tr>
@@ -204,7 +245,7 @@ template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typ
 </table>
 </div><div class="memdoc">
 
-<p>Creates a buffered channel. </p>
+<p>Creates a buffered channel if <b>Storage</b> is not static (does not have static <b>capacity</b> member). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">capacity</td><td>Number of elements the channel can store before blocking. </td></tr>
@@ -215,19 +256,19 @@ template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typ
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a6f2181ba6724bf0dc0e74023739eb025" name="a6f2181ba6724bf0dc0e74023739eb025"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6f2181ba6724bf0dc0e74023739eb025">&#9670;&#160;</a></span>begin()</h2>
+<a id="af354e4d952ae42bfd2ed0d38393bd1f1" name="af354e4d952ae42bfd2ed0d38393bd1f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af354e4d952ae42bfd2ed0d38393bd1f1">&#9670;&#160;</a></span>begin()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typename</a> <a class="el" href="classmsd_1_1blocking__writer__iterator.html">T</a> &gt; </div>
+template&lt;<a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">T</a> , <a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">Storage</a>  = default_storage&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmsd_1_1channel.html#a7b06047c030bad429d12bbe7c3f7f377">iterator</a> <a class="el" href="classmsd_1_1channel.html">msd::channel</a>&lt; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">T</a> &gt;::begin </td>
+          <td class="memname"><a class="el" href="classmsd_1_1channel.html#a67e886b77387c86d7a71c168d9d5690b">iterator</a> <a class="el" href="classmsd_1_1channel.html">msd::channel</a>&lt; <a class="el" href="classmsd_1_1channel.html">T</a>, <a class="el" href="classmsd_1_1channel.html">Storage</a> &gt;::begin </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -245,19 +286,19 @@ template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typ
 
 </div>
 </div>
-<a id="ac761b63ea7435c496be86719aa98ddba" name="ac761b63ea7435c496be86719aa98ddba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac761b63ea7435c496be86719aa98ddba">&#9670;&#160;</a></span>closed()</h2>
+<a id="a6494a6764b3c3e569bf0652982a5ecc8" name="a6494a6764b3c3e569bf0652982a5ecc8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6494a6764b3c3e569bf0652982a5ecc8">&#9670;&#160;</a></span>closed()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typename</a> <a class="el" href="classmsd_1_1blocking__writer__iterator.html">T</a> &gt; </div>
+template&lt;<a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">T</a> , <a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">Storage</a>  = default_storage&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">NODISCARD <a class="el" href="classmsd_1_1blocking__writer__iterator.html">bool</a> <a class="el" href="classmsd_1_1channel.html">msd::channel</a>&lt; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">T</a> &gt;::closed </td>
+          <td class="memname">NODISCARD <a class="el" href="classmsd_1_1channel.html">bool</a> <a class="el" href="classmsd_1_1channel.html">msd::channel</a>&lt; <a class="el" href="classmsd_1_1channel.html">T</a>, <a class="el" href="classmsd_1_1channel.html">Storage</a> &gt;::closed </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -277,19 +318,19 @@ false Otherwise. </dd></dl>
 
 </div>
 </div>
-<a id="aa7fec0dd40ea520dc6908b3d21bb8d9e" name="aa7fec0dd40ea520dc6908b3d21bb8d9e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa7fec0dd40ea520dc6908b3d21bb8d9e">&#9670;&#160;</a></span>drained()</h2>
+<a id="a3653bbd5e13fc9c93bb52d8f0d512f90" name="a3653bbd5e13fc9c93bb52d8f0d512f90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3653bbd5e13fc9c93bb52d8f0d512f90">&#9670;&#160;</a></span>drained()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typename</a> <a class="el" href="classmsd_1_1blocking__writer__iterator.html">T</a> &gt; </div>
+template&lt;<a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">T</a> , <a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">Storage</a>  = default_storage&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">NODISCARD <a class="el" href="classmsd_1_1blocking__writer__iterator.html">bool</a> <a class="el" href="classmsd_1_1channel.html">msd::channel</a>&lt; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">T</a> &gt;::drained </td>
+          <td class="memname">NODISCARD <a class="el" href="classmsd_1_1channel.html">bool</a> <a class="el" href="classmsd_1_1channel.html">msd::channel</a>&lt; <a class="el" href="classmsd_1_1channel.html">T</a>, <a class="el" href="classmsd_1_1channel.html">Storage</a> &gt;::drained </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -309,19 +350,19 @@ false Otherwise. </dd></dl>
 
 </div>
 </div>
-<a id="abc51c869987c576b0876d3b00e591a1b" name="abc51c869987c576b0876d3b00e591a1b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abc51c869987c576b0876d3b00e591a1b">&#9670;&#160;</a></span>empty()</h2>
+<a id="ad31e1563f9a9303d442727c07127eb8a" name="ad31e1563f9a9303d442727c07127eb8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad31e1563f9a9303d442727c07127eb8a">&#9670;&#160;</a></span>empty()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typename</a> <a class="el" href="classmsd_1_1blocking__writer__iterator.html">T</a> &gt; </div>
+template&lt;<a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">T</a> , <a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">Storage</a>  = default_storage&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">NODISCARD <a class="el" href="classmsd_1_1blocking__writer__iterator.html">bool</a> <a class="el" href="classmsd_1_1channel.html">msd::channel</a>&lt; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">T</a> &gt;::empty </td>
+          <td class="memname">NODISCARD <a class="el" href="classmsd_1_1channel.html">bool</a> <a class="el" href="classmsd_1_1channel.html">msd::channel</a>&lt; <a class="el" href="classmsd_1_1channel.html">T</a>, <a class="el" href="classmsd_1_1channel.html">Storage</a> &gt;::empty </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -341,19 +382,19 @@ false Otherwise. </dd></dl>
 
 </div>
 </div>
-<a id="a3b6ec47f4c3ae6ede32d22584fa8e86d" name="a3b6ec47f4c3ae6ede32d22584fa8e86d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3b6ec47f4c3ae6ede32d22584fa8e86d">&#9670;&#160;</a></span>end()</h2>
+<a id="aee2dafef5c18609b3cdb9d48345dbceb" name="aee2dafef5c18609b3cdb9d48345dbceb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee2dafef5c18609b3cdb9d48345dbceb">&#9670;&#160;</a></span>end()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typename</a> <a class="el" href="classmsd_1_1blocking__writer__iterator.html">T</a> &gt; </div>
+template&lt;<a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">T</a> , <a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">Storage</a>  = default_storage&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmsd_1_1channel.html#a7b06047c030bad429d12bbe7c3f7f377">iterator</a> <a class="el" href="classmsd_1_1channel.html">msd::channel</a>&lt; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">T</a> &gt;::end </td>
+          <td class="memname"><a class="el" href="classmsd_1_1channel.html#a67e886b77387c86d7a71c168d9d5690b">iterator</a> <a class="el" href="classmsd_1_1channel.html">msd::channel</a>&lt; <a class="el" href="classmsd_1_1channel.html">T</a>, <a class="el" href="classmsd_1_1channel.html">Storage</a> &gt;::end </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -371,21 +412,21 @@ template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typ
 
 </div>
 </div>
-<a id="af10a793b2bf21de063ffc0464b24888f" name="af10a793b2bf21de063ffc0464b24888f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af10a793b2bf21de063ffc0464b24888f">&#9670;&#160;</a></span>read()</h2>
+<a id="ae9986c84eed35495933d9462608ab32e" name="ae9986c84eed35495933d9462608ab32e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9986c84eed35495933d9462608ab32e">&#9670;&#160;</a></span>read()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typename</a> <a class="el" href="classmsd_1_1blocking__writer__iterator.html">T</a> &gt; </div>
+template&lt;<a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">T</a> , <a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">Storage</a>  = default_storage&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmsd_1_1blocking__writer__iterator.html">bool</a> <a class="el" href="classmsd_1_1channel.html">msd::channel</a>&lt; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">T</a> &gt;::read </td>
+          <td class="memname"><a class="el" href="classmsd_1_1channel.html">bool</a> <a class="el" href="classmsd_1_1channel.html">msd::channel</a>&lt; <a class="el" href="classmsd_1_1channel.html">T</a>, <a class="el" href="classmsd_1_1channel.html">Storage</a> &gt;::read </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classmsd_1_1blocking__writer__iterator.html">T</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classmsd_1_1channel.html">T</a> &amp;&#160;</td>
           <td class="paramname"><em>out</em></td><td>)</td>
           <td></td>
         </tr>
@@ -410,19 +451,19 @@ false If the channel is closed and empty. </dd></dl>
 
 </div>
 </div>
-<a id="a2fd8202931fcc11d073160823bb29a76" name="a2fd8202931fcc11d073160823bb29a76"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2fd8202931fcc11d073160823bb29a76">&#9670;&#160;</a></span>size()</h2>
+<a id="aeee2d38bcbf67a6a3f07379b192e68bc" name="aeee2d38bcbf67a6a3f07379b192e68bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeee2d38bcbf67a6a3f07379b192e68bc">&#9670;&#160;</a></span>size()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typename</a> <a class="el" href="classmsd_1_1blocking__writer__iterator.html">T</a> &gt; </div>
+template&lt;<a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">T</a> , <a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">Storage</a>  = default_storage&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">NODISCARD <a class="el" href="classmsd_1_1channel.html#ae458eca85e982f3a11a461c6dd8c264d">size_type</a> <a class="el" href="classmsd_1_1channel.html">msd::channel</a>&lt; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">T</a> &gt;::size </td>
+          <td class="memname">NODISCARD <a class="el" href="classmsd_1_1channel.html#aa1186e211293bd152f6028054b71247b">size_type</a> <a class="el" href="classmsd_1_1channel.html">msd::channel</a>&lt; <a class="el" href="classmsd_1_1channel.html">T</a>, <a class="el" href="classmsd_1_1channel.html">Storage</a> &gt;::size </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -440,23 +481,23 @@ template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typ
 
 </div>
 </div>
-<a id="a4176bdfa034424200521e1de12217c84" name="a4176bdfa034424200521e1de12217c84"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4176bdfa034424200521e1de12217c84">&#9670;&#160;</a></span>write()</h2>
+<a id="a70420f278973ae1f2e5a617fcdbca5a9" name="a70420f278973ae1f2e5a617fcdbca5a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a70420f278973ae1f2e5a617fcdbca5a9">&#9670;&#160;</a></span>write()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typename</a> <a class="el" href="classmsd_1_1blocking__writer__iterator.html">T</a> &gt; </div>
+template&lt;<a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">T</a> , <a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">Storage</a>  = default_storage&lt;T&gt;&gt; </div>
 <div class="memtemplate">
-template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typename</a> <a class="el" href="classmsd_1_1blocking__writer__iterator.html">Type</a> &gt; </div>
+template&lt;<a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">Type</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmsd_1_1blocking__writer__iterator.html">bool</a> <a class="el" href="classmsd_1_1channel.html">msd::channel</a>&lt; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">T</a> &gt;::write </td>
+          <td class="memname"><a class="el" href="classmsd_1_1channel.html">bool</a> <a class="el" href="classmsd_1_1channel.html">msd::channel</a>&lt; <a class="el" href="classmsd_1_1channel.html">T</a>, <a class="el" href="classmsd_1_1channel.html">Storage</a> &gt;::write </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classmsd_1_1blocking__writer__iterator.html">Type</a> &amp;&amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classmsd_1_1channel.html">Type</a> &amp;&amp;&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
           <td></td>
         </tr>
@@ -488,30 +529,30 @@ false If the channel is closed. </dd></dl>
 </div>
 </div>
 <h2 class="groupheader">Friends And Related Symbol Documentation</h2>
-<a id="aebf52a0fbdb345b1ab99751ff51df8de" name="aebf52a0fbdb345b1ab99751ff51df8de"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aebf52a0fbdb345b1ab99751ff51df8de">&#9670;&#160;</a></span>operator&lt;&lt;</h2>
+<a id="a13bace1d4c6d787e3443e0912b5fd4d0" name="a13bace1d4c6d787e3443e0912b5fd4d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13bace1d4c6d787e3443e0912b5fd4d0">&#9670;&#160;</a></span>operator&lt;&lt;</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typename</a> <a class="el" href="classmsd_1_1blocking__writer__iterator.html">T</a> &gt; </div>
+template&lt;<a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">T</a> , <a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">Storage</a>  = default_storage&lt;T&gt;&gt; </div>
 <div class="memtemplate">
-template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typename</a> <a class="el" href="classmsd_1_1blocking__writer__iterator.html">Type</a> &gt; </div>
+template&lt;<a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">Type</a> , <a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">Store</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmsd_1_1channel.html">channel</a>&lt; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">typename</a> std::decay&lt; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">Type</a> &gt;::type &gt; &amp; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">operator</a>&lt;&lt; </td>
+          <td class="memname"><a class="el" href="classmsd_1_1channel.html">channel</a>&lt; <a class="el" href="classmsd_1_1channel.html">typename</a> std::decay&lt; <a class="el" href="classmsd_1_1channel.html">Type</a> &gt;<a class="el" href="classmsd_1_1channel.html#a5dfded699a019cf41ed610dda7433eaf">::type</a>, <a class="el" href="classmsd_1_1channel.html">Store</a> &gt; &amp; <a class="el" href="classmsd_1_1channel.html">operator</a>&lt;&lt; </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classmsd_1_1channel.html">channel</a>&lt; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">typename</a> std::decay&lt; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">Type</a> &gt;::type &gt; &amp;&#160;</td>
-          <td class="paramname">, </td>
+          <td class="paramtype"><a class="el" href="classmsd_1_1channel.html">channel</a>&lt; <a class="el" href="classmsd_1_1channel.html">typename</a> std::decay&lt; <a class="el" href="classmsd_1_1channel.html">Type</a> &gt;<a class="el" href="classmsd_1_1channel.html#a5dfded699a019cf41ed610dda7433eaf">::type</a>, <a class="el" href="classmsd_1_1channel.html">Store</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>chan</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classmsd_1_1blocking__writer__iterator.html">Type</a> &amp;&amp;&#160;</td>
-          <td class="paramname">&#160;</td>
+          <td class="paramtype"><a class="el" href="classmsd_1_1channel.html">Type</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -527,6 +568,14 @@ template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typ
 </div><div class="memdoc">
 
 <p>Pushes an element into the channel. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">chan</td><td>Channel to write to. </td></tr>
+    <tr><td class="paramname">value</td><td>Value to write. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Instance of channel. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="classmsd_1_1closed__channel.html" title="Exception thrown if trying to write on closed channel.">closed_channel</a></td><td>if channel is closed. </td></tr>
@@ -536,30 +585,30 @@ template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typ
 
 </div>
 </div>
-<a id="a2585ea5fa54a5fec4ae0514bacebc5e4" name="a2585ea5fa54a5fec4ae0514bacebc5e4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2585ea5fa54a5fec4ae0514bacebc5e4">&#9670;&#160;</a></span>operator&gt;&gt;</h2>
+<a id="adbee18752fcca0b25c72ebbb0bc52dbd" name="adbee18752fcca0b25c72ebbb0bc52dbd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adbee18752fcca0b25c72ebbb0bc52dbd">&#9670;&#160;</a></span>operator&gt;&gt;</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typename</a> <a class="el" href="classmsd_1_1blocking__writer__iterator.html">T</a> &gt; </div>
+template&lt;<a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">T</a> , <a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">Storage</a>  = default_storage&lt;T&gt;&gt; </div>
 <div class="memtemplate">
-template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typename</a> <a class="el" href="classmsd_1_1blocking__writer__iterator.html">Type</a> &gt; </div>
+template&lt;<a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">Type</a> , <a class="el" href="classmsd_1_1channel.html">typename</a> <a class="el" href="classmsd_1_1channel.html">Store</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmsd_1_1channel.html">channel</a>&lt; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">Type</a> &gt; &amp; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">operator</a>&gt;&gt; </td>
+          <td class="memname"><a class="el" href="classmsd_1_1channel.html">channel</a>&lt; <a class="el" href="classmsd_1_1channel.html">Type</a>, <a class="el" href="classmsd_1_1channel.html">Store</a> &gt; &amp; <a class="el" href="classmsd_1_1channel.html">operator</a>&gt;&gt; </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classmsd_1_1channel.html">channel</a>&lt; <a class="el" href="classmsd_1_1blocking__writer__iterator.html">Type</a> &gt; &amp;&#160;</td>
-          <td class="paramname">, </td>
+          <td class="paramtype"><a class="el" href="classmsd_1_1channel.html">channel</a>&lt; <a class="el" href="classmsd_1_1channel.html">Type</a>, <a class="el" href="classmsd_1_1channel.html">Store</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>chan</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classmsd_1_1blocking__writer__iterator.html">Type</a> &amp;&#160;</td>
-          <td class="paramname">&#160;</td>
+          <td class="paramtype"><a class="el" href="classmsd_1_1channel.html">Type</a> &amp;&#160;</td>
+          <td class="paramname"><em>out</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -575,12 +624,14 @@ template&lt;<a class="el" href="classmsd_1_1blocking__writer__iterator.html">typ
 </div><div class="memdoc">
 
 <p>Pops an element from the channel. </p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">Type</td><td>The type of the elements. </td></tr>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">chan</td><td>Channel to read from. </td></tr>
+    <tr><td class="paramname">out</td><td>Where to write read value. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>Instance of channel. </dd></dl>
 
 </div>
 </div>

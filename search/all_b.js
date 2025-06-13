@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['pointer_0',['pointer',['../classmsd_1_1blocking__iterator.html#a288a4698d3367260c139d357fd20d03f',1,'msd::blocking_iterator::pointer'],['../classmsd_1_1blocking__writer__iterator.html#adcf662449b5a167386885feb9e59c99e',1,'msd::blocking_writer_iterator::pointer']]]
+  ['newer_0',['Thread-safe container for sharing data between threads (synchronized queue). Header-only. Compatible with C++11 and newer.',['../index.html#autotoc_md1',1,'']]],
+  ['nodiscard_2ehpp_1',['nodiscard.hpp',['../nodiscard_8hpp.html',1,'']]]
 ];
