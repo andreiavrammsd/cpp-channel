@@ -5,13 +5,17 @@ on:
     branches:
       - master
     paths-ignore:
+      - '.devcontainer/**'
       - '.vscode/**'
       - 'LICENSE'
+      - 'Makefile'
       - '**/README.md'
   pull_request:
     paths-ignore:
+      - '.devcontainer/**'
       - '.vscode/**'
       - 'LICENSE'
+      - 'Makefile'
       - '**/README.md'
   workflow_dispatch:
 
