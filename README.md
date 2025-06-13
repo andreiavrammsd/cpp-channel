@@ -86,16 +86,17 @@ VERSION=X.Y.Z \
 int main() {
     msd::channel<int> chan; // Unbuffered
 
-    int in = 1;
-    int out = 0;
-
     // Send to channel
-    chan << in; << <<
+    chan << 1 << 2;
 
     // Read from channel
-    chan >> out; >> >> chain
+    int first{};
+    int second{};
 
-    assert(out == 1);
+    chan >> first >> second;
+
+    assert(first == 1);
+    assert(second == 2);
 }
 ```
 
