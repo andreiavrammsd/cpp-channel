@@ -80,48 +80,48 @@ $(function() {
   <div class="headertitle"><div class="title">channel.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;condition_variable&gt;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="blocking__iterator_8hpp_source.html">blocking_iterator.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="nodiscard_8hpp_source.html">nodiscard.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="storage_8hpp_source.html">storage.hpp</a>&quot;</code><br />
+<code>#include &lt;condition_variable&gt;</code><br />
 <code>#include &lt;cstdlib&gt;</code><br />
 <code>#include &lt;mutex&gt;</code><br />
 <code>#include &lt;stdexcept&gt;</code><br />
 <code>#include &lt;type_traits&gt;</code><br />
-<code>#include &quot;<a class="el" href="blocking__iterator_8hpp_source.html">blocking_iterator.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="nodiscard_8hpp_source.html">nodiscard.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="storage_8hpp_source.html">storage.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for channel.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="channel_8hpp__incl.png" border="0" usemap="#ainclude_2msd_2channel_8hpp" alt=""/></div>
 <map name="ainclude_2msd_2channel_8hpp" id="ainclude_2msd_2channel_8hpp">
-<area shape="rect" title=" " alt="" coords="283,5,467,31"/>
-<area shape="rect" title=" " alt="" coords="5,79,148,104"/>
-<area shape="poly" title=" " alt="" coords="328,33,139,78,138,73,327,28"/>
-<area shape="rect" title=" " alt="" coords="91,152,156,177"/>
-<area shape="poly" title=" " alt="" coords="347,33,298,54,245,81,193,114,150,145,147,141,190,109,242,76,296,49,345,28"/>
-<area shape="rect" title=" " alt="" coords="397,79,461,104"/>
-<area shape="poly" title=" " alt="" coords="386,29,414,66,410,69,382,33"/>
-<area shape="rect" title=" " alt="" coords="485,79,572,104"/>
-<area shape="poly" title=" " alt="" coords="401,28,492,70,490,75,399,33"/>
-<area shape="rect" title=" " alt="" coords="596,79,688,104"/>
-<area shape="poly" title=" " alt="" coords="419,28,586,72,585,78,417,33"/>
-<area shape="rect" href="blocking__iterator_8hpp.html" title=" " alt="" coords="712,79,871,104"/>
-<area shape="poly" title=" " alt="" coords="443,28,712,74,711,79,442,33"/>
-<area shape="rect" href="nodiscard_8hpp.html" title=" " alt="" coords="180,152,293,177"/>
-<area shape="poly" title=" " alt="" coords="338,33,299,52,280,65,264,80,249,109,242,139,236,137,244,107,260,77,277,61,296,47,335,28"/>
-<area shape="rect" href="storage_8hpp.html" title=" " alt="" coords="274,79,373,104"/>
-<area shape="poly" title=" " alt="" coords="369,33,342,69,338,66,365,29"/>
-<area shape="rect" title=" " alt="" coords="803,152,873,177"/>
-<area shape="poly" title=" " alt="" coords="801,103,825,139,821,142,797,106"/>
-<area shape="rect" title=" " alt="" coords="708,152,779,177"/>
-<area shape="poly" title=" " alt="" coords="786,106,761,142,756,139,781,103"/>
-<area shape="poly" title=" " alt="" coords="292,107,170,150,168,145,290,102"/>
-<area shape="poly" title=" " alt="" coords="311,106,263,145,260,141,308,102"/>
-<area shape="rect" title=" " alt="" coords="318,152,374,177"/>
-<area shape="poly" title=" " alt="" coords="330,104,341,138,336,140,325,105"/>
-<area shape="rect" title=" " alt="" coords="399,152,461,177"/>
-<area shape="poly" title=" " alt="" coords="342,102,403,142,400,147,339,106"/>
-<area shape="rect" title=" " alt="" coords="485,152,548,177"/>
-<area shape="poly" title=" " alt="" coords="355,102,473,145,472,150,353,107"/>
+<area shape="rect" title=" " alt="" coords="451,5,635,31"/>
+<area shape="rect" href="blocking__iterator_8hpp.html" title=" " alt="" coords="56,79,215,104"/>
+<area shape="poly" title=" " alt="" coords="478,33,215,79,214,74,477,28"/>
+<area shape="rect" href="nodiscard_8hpp.html" title=" " alt="" coords="195,152,308,177"/>
+<area shape="poly" title=" " alt="" coords="477,33,409,52,342,81,303,111,271,143,268,139,299,107,339,76,408,47,475,28"/>
+<area shape="rect" href="storage_8hpp.html" title=" " alt="" coords="353,79,451,104"/>
+<area shape="poly" title=" " alt="" coords="522,33,438,75,436,70,519,28"/>
+<area shape="rect" title=" " alt="" coords="587,152,652,177"/>
+<area shape="poly" title=" " alt="" coords="536,32,517,66,513,85,518,103,529,117,543,129,575,147,572,152,540,134,525,121,513,105,508,85,512,64,531,30"/>
+<area shape="rect" title=" " alt="" coords="527,79,669,104"/>
+<area shape="poly" title=" " alt="" coords="554,29,583,66,579,69,550,33"/>
+<area shape="rect" title=" " alt="" coords="694,79,758,104"/>
+<area shape="poly" title=" " alt="" coords="574,28,684,71,682,76,572,33"/>
+<area shape="rect" title=" " alt="" coords="783,79,869,104"/>
+<area shape="poly" title=" " alt="" coords="589,28,770,73,769,78,588,33"/>
+<area shape="rect" title=" " alt="" coords="893,79,985,104"/>
+<area shape="poly" title=" " alt="" coords="611,28,880,76,879,81,610,33"/>
+<area shape="rect" title=" " alt="" coords="5,152,76,177"/>
+<area shape="poly" title=" " alt="" coords="122,106,69,146,66,141,119,102"/>
+<area shape="rect" title=" " alt="" coords="100,152,171,177"/>
+<area shape="poly" title=" " alt="" coords="138,104,138,138,133,138,133,104"/>
+<area shape="poly" title=" " alt="" coords="379,106,290,148,287,144,377,102"/>
+<area shape="rect" title=" " alt="" coords="333,152,389,177"/>
+<area shape="poly" title=" " alt="" coords="397,106,377,141,372,139,393,103"/>
+<area shape="poly" title=" " alt="" coords="438,101,574,146,573,151,436,107"/>
+<area shape="rect" title=" " alt="" coords="413,152,476,177"/>
+<area shape="poly" title=" " alt="" coords="411,103,433,139,429,142,407,106"/>
+<area shape="rect" title=" " alt="" coords="500,152,563,177"/>
+<area shape="poly" title=" " alt="" coords="424,102,499,143,497,147,422,106"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
