@@ -7,7 +7,7 @@
 template <typename Storage>
 class StorageTest : public ::testing::Test {};
 
-using StorageTypes = ::testing::Types<msd::queue_storage<int>, msd::vector_storage<int>, msd::array_storage<int, 10>>;
+using StorageTypes = ::testing::Types<msd::queue_storage<int>, msd::vector_storage<int>>;
 
 TYPED_TEST_SUITE(StorageTest, StorageTypes, );
 
@@ -15,12 +15,12 @@ TYPED_TEST(StorageTest, PushAndPop)
 {
     TypeParam storage{10};
 
-    int in = 42;
+    const int in = 42;
     storage.push_back(in);
     storage.push_back(99);
     EXPECT_EQ(storage.size(), 2);
 
-    int out;
+    int out{};
     storage.pop_front(out);
     EXPECT_EQ(out, 42);
 
@@ -34,16 +34,15 @@ template <typename Storage>
 class StorageWithMovableOnlyTypeTest : public ::testing::Test {};
 
 using StorageWithMovableOnlyTypeTypes =
-    ::testing::Types<msd::queue_storage<std::unique_ptr<int>>, msd::vector_storage<std::unique_ptr<int>>,
-                     msd::array_storage<std::unique_ptr<int>, 10>>;
+    ::testing::Types<msd::queue_storage<std::unique_ptr<int>>, msd::vector_storage<std::unique_ptr<int>>>;
 
 TYPED_TEST_SUITE(StorageWithMovableOnlyTypeTest, StorageWithMovableOnlyTypeTypes, );
 
 TYPED_TEST(StorageWithMovableOnlyTypeTest, PushAndPop)
 {
-    TypeParam storage{10};
+    TypeParam storage{1};
 
-    storage.push_back(std::make_unique<int>(123));
+    storage.push_back(std::unique_ptr<int>(new int(123)));
     EXPECT_EQ(storage.size(), 1);
 
     std::unique_ptr<int> out;
@@ -53,4 +52,25 @@ TYPED_TEST(StorageWithMovableOnlyTypeTest, PushAndPop)
     EXPECT_EQ(*out, 123);
 }
 
-TEST(ArrayStorageTest, Capacity) { EXPECT_EQ((msd::array_storage<int, 10>::capacity), 10); }
+template <typename Storage>
+class StaticStorageTest : public ::testing::Test {};
+
+using StaticStorageTypes = ::testing::Types<msd::array_storage<std::unique_ptr<int>, 5>>;
+
+TYPED_TEST_SUITE(StaticStorageTest, StaticStorageTypes, );
+
+TYPED_TEST(StaticStorageTest, PushAndPop)
+{
+    EXPECT_EQ((TypeParam::capacity), 5);
+
+    TypeParam storage{};
+
+    storage.push_back(std::unique_ptr<int>(new int(123)));
+    EXPECT_EQ(storage.size(), 1);
+
+    std::unique_ptr<int> out;
+    storage.pop_front(out);
+
+    ASSERT_TRUE(out);
+    EXPECT_EQ(*out, 123);
+}

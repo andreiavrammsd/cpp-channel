@@ -82,9 +82,11 @@ class channel {
 
     /**
      * @brief Creates a buffered channel if **Storage** is static (has static **capacity** member)
+     *
+     * @note Uses **Storage::capacity** as number of elements the channel can store before blocking.
      */
     template <typename S = Storage, typename std::enable_if<is_static_storage<S>::value, int>::type = 0>
-    constexpr channel() : storage_{0}, capacity_{Storage::capacity}
+    constexpr channel() : capacity_{Storage::capacity}
     {
     }
 

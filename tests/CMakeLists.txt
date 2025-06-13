@@ -12,7 +12,7 @@ endif()
 
 include(FetchContent)
 if (NOT googletest_POPULATED)
-    FetchContent_Declare(googletest URL https://github.com/google/googletest/archive/refs/tags/v1.17.0.zip)
+    FetchContent_Declare(googletest URL https://github.com/google/googletest/archive/refs/tags/release-1.12.1.zip)
     FetchContent_MakeAvailable(googletest)
     set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
     set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
@@ -22,6 +22,8 @@ endif ()
 # Test macro
 function(package_add_test TESTNAME)
     add_executable(${TESTNAME} ${ARGN})
+
+    target_compile_options(${TESTNAME} PRIVATE -std=c++${CMAKE_CXX_STANDARD})
 
     set_target_warnings(${TESTNAME} PRIVATE)
     target_link_libraries(${TESTNAME} gtest gtest_main)
@@ -70,3 +72,4 @@ endif ()
 add_executable(channel_benchmark channel_benchmark.cpp)
 target_link_libraries(channel_benchmark benchmark)
 set_target_warnings(channel_benchmark PRIVATE)
+target_compile_options(channel_benchmark PRIVATE -std=c++${CMAKE_CXX_STANDARD})

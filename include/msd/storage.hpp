@@ -24,6 +24,8 @@ class queue_storage {
    public:
     /**
      * @brief Constructs the queue storage (parameter ignored, required for interface compatibility).
+     *
+     * @warning Do not construct manually. This constructor may change anytime.
      */
     explicit queue_storage(std::size_t) {}
 
@@ -75,6 +77,7 @@ class vector_storage {
      *
      * @param capacity Maximum number of elements the storage can hold.
      * @note Reserves the memory up-front.
+     * @warning Do not construct manually. This constructor may change anytime.
      */
     explicit vector_storage(std::size_t capacity) { vector_.reserve(capacity); }
 
@@ -118,6 +121,7 @@ class vector_storage {
  *
  * @tparam T Type of elements stored.
  * @tparam N Maximum number of elements (capacity).
+ * @warning Do not construct manually. The constructor may change anytime.
  */
 template <typename T, std::size_t N>
 class array_storage {
@@ -130,11 +134,6 @@ class array_storage {
      * @attention Required for static storage.
      */
     static constexpr std::size_t capacity = N;
-
-    /**
-     * @brief Constructs the array storage (parameter ignored, required for interface compatibility).
-     */
-    explicit array_storage(std::size_t) {}
 
     /**
      * @brief Adds an element to the back of the array.
@@ -175,6 +174,9 @@ class array_storage {
     std::size_t size_{0};
     std::size_t front_{0};
 };
+
+template <typename T, std::size_t N>
+constexpr std::size_t array_storage<T, N>::capacity;
 
 }  // namespace msd
 
