@@ -40,13 +40,13 @@ template <typename T>
 using default_storage = queue_storage<T>;
 
 /**
- * @brief Trait to check if a type has a static **capacity** member.
+ * @brief Trait to check if a storage type has a static **capacity** member.
  */
 template <typename, typename = void>
 struct is_static_storage : std::false_type {};
 
 /**
- * @brief Trait to check if a type has a static **capacity** member.
+ * @brief Trait to check if a storage type has a static **capacity** member.
  *
  * @tparam Storage The storage type to check.
  */

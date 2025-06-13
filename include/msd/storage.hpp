@@ -76,7 +76,7 @@ class vector_storage {
      * @brief Constructs a queue storage with a given capacity.
      *
      * @param capacity Maximum number of elements the storage can hold.
-     * @note Reserves the memory up-front.
+     * @note Reserves the memory in advance.
      * @warning Do not construct manually. This constructor may change anytime.
      */
     explicit vector_storage(std::size_t capacity) { vector_.reserve(capacity); }
