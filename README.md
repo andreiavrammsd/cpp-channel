@@ -36,6 +36,13 @@ A `storage` is:
 * Must implement [FIFO](https://en.wikipedia.org/wiki/FIFO) logic.
 * See [built-in storages](https://github.com/andreiavrammsd/cpp-channel/blob/master/include/msd/storage.hpp).
 
+Exceptions:
+* msd::operator<< throws `msd::closed_channel` if channel is closed.
+* `msd::channel::write` returns `bool` status instead of throwing.
+* Heap-allocated storages could throw.
+* Static-allocated storage does not throw.
+* Throws if stored elements throw.
+
 ## Features
 
 * Thread-safe push and fetch.

@@ -111,18 +111,24 @@ class channel {
     /**
      * @brief Pushes an element into the channel.
      *
+     * @param chan Channel to write to.
+     * @param value Value to write.
+     * @return Instance of channel.
      * @throws closed_channel if channel is closed.
      */
     template <typename Type, typename Store>
-    friend channel<typename std::decay<Type>::type, Store>& operator<<(channel<typename std::decay<Type>::type, Store>&,
-                                                                       Type&&);
+    friend channel<typename std::decay<Type>::type, Store>& operator<<(
+        channel<typename std::decay<Type>::type, Store>& chan, Type&& value);
+
     /**
      * @brief Pops an element from the channel.
      *
-     * @tparam Type The type of the elements.
+     * @param chan Channel to read from.
+     * @param out Where to write read value.
+     * @return Instance of channel.
      */
     template <typename Type, typename Store>
-    friend channel<Type, Store>& operator>>(channel<Type, Store>&, Type&);
+    friend channel<Type, Store>& operator>>(channel<Type, Store>& chan, Type& out);
 
     /**
      * @brief Pushes an element into the channel.
@@ -276,8 +282,7 @@ class channel {
 };
 
 /**
- * @copydoc msd::channel::write
- * @param chan
+ * @copydoc msd::channel::operator<<
  */
 template <typename T, typename Storage>
 channel<typename std::decay<T>::type, Storage>& operator<<(channel<typename std::decay<T>::type, Storage>& chan,
@@ -291,8 +296,7 @@ channel<typename std::decay<T>::type, Storage>& operator<<(channel<typename std:
 }
 
 /**
- * @copydoc msd::channel::read
- * @param chan
+ * @copydoc msd::channel::operator>>
  */
 template <typename T, typename Storage>
 channel<T, Storage>& operator>>(channel<T, Storage>& chan, T& out)

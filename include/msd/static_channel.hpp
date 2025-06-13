@@ -16,7 +16,7 @@ namespace msd {
  * @brief Thread-safe container for sharing data between threads.
  *
  * - Allocates elements on the stack.
- * - Does not throw exceptions.
+ * - Can be used so that it does not throw exceptions.
  * - Not movable, not copyable.
  * - Includes a blocking input iterator.
  * - Always buffered (with **Capacity**).
