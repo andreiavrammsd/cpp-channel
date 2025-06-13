@@ -30,7 +30,7 @@ ARG USERNAME=ubuntu
 RUN passwd -d ${USERNAME} \
     && mkdir -p /home/${USERNAME}/.cache && chown -R ${USERNAME}:${USERNAME} /home/${USERNAME}/.cache \
     && SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/home/${USERNAME}/.cache/.bash_history" \
-    && echo "$SNIPPET" >> "/home/${USERNAME}/.bash_aliases"
+    && echo "$SNIPPET" >> "/home/${USERNAME}/.bashrc"
 
 USER $USERNAME
 
