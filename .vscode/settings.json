@@ -29,11 +29,16 @@
     "cSpell.words": [
         "ARGN",
         "clangd",
+        "cpupower",
+        "ctest",
+        "DCMAKE",
+        "DCPP",
         "endfunction",
         "ensurepath",
         "fcoverage",
         "fprofile",
         "fsanitize",
+        "genhtml",
         "googletest",
         "graphviz",
         "gtest",
@@ -46,6 +51,7 @@
         "MSVC",
         "noninteractive",
         "pipx",
+        "powersave",
         "STREQUAL",
         "TESTNAME"
     ]

@@ -1,11 +1,15 @@
-DIRS = include tests examples
+PROJECT_DIRS = include tests examples
+BUILD_DIR = build
+BENCH_DIR = build/bench
+COV_DIR = build/coverage
+DOCS_DIR = docs
 
 all:
 
 bench:
 	- sudo cpupower frequency-set --governor performance
 	
-	mkdir -p build/bench && cd build/bench \
+	mkdir -p $(BENCH_DIR) && cd $(BENCH_DIR) \
 	&& cmake ../.. -DCMAKE_BUILD_TYPE=Release -DCPP_CHANNEL_BUILD_TESTS=ON \
 	&& cmake --build . --config Release --target channel_benchmark -j \
 	&& ./tests/channel_benchmark
@@ -13,7 +17,7 @@ bench:
 	- sudo cpupower frequency-set --governor powersave
 
 coverage:
-	mkdir -p build/coverage && cd build/coverage \
+	rm -rf $(COV_DIR) && mkdir -p $(COV_DIR) && cd $(COV_DIR) \
 	&& cmake ../.. -DCMAKE_BUILD_TYPE=Debug -DCPP_CHANNEL_BUILD_TESTS=ON -DCPP_CHANNEL_COVERAGE=ON \
 	&& cmake --build . --config Debug --target channel_tests -j \
 	&& ctest -C Debug --verbose -L channel_tests --output-on-failure -j \
@@ -26,11 +30,11 @@ coverage:
 
 doc:
 	doxygen
-	cd docs && python3 -m http.server 8000
+	cd $(DOCS_DIR) && python3 -m http.server 8000
 
 format:
-	clang-format -i $(shell find $(DIRS) -name *.*pp)
-	cmake-format -i $(shell find $(DIRS) -name CMakeLists.txt)
+	clang-format -i $(shell find $(PROJECT_DIRS) -name *.*pp)
+	cmake-format -i $(shell find $(PROJECT_DIRS) -name CMakeLists.txt)
 
 clean:
-	rm -rf build docs
+	rm -rf $(BUILD_DIR) $(DOCS_DIR)
