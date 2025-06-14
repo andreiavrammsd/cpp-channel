@@ -24,5 +24,14 @@
         "--compile-commands-dir=${workspaceFolder}/build",
         "--background-index",
         "--clang-tidy"
+    ],
+    "cSpell.words": [
+        "clangd",
+        "ensurepath",
+        "graphviz",
+        "HISTFILE",
+        "lldb",
+        "noninteractive",
+        "pipx"
     ]
 }
