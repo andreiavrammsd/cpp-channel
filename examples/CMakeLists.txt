@@ -6,8 +6,8 @@ function(add_example NAME)
     set_target_warnings(${NAME} PRIVATE)
 
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        target_link_libraries(${NAME} -ltsan)
         target_compile_options(${NAME} PRIVATE -fsanitize=thread)
+        target_link_libraries(${NAME} -ltsan)
     endif()
 
     add_dependencies(examples ${NAME})

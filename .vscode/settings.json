@@ -27,12 +27,25 @@
     ],
     "C_Cpp.intelliSenseEngine": "disabled",
     "cSpell.words": [
+        "ARGN",
         "clangd",
+        "endfunction",
         "ensurepath",
+        "fcoverage",
+        "fprofile",
+        "fsanitize",
+        "googletest",
         "graphviz",
+        "gtest",
         "HISTFILE",
+        "lgcov",
         "lldb",
+        "ltsan",
+        "lubsan",
+        "MSVC",
         "noninteractive",
-        "pipx"
+        "pipx",
+        "STREQUAL",
+        "TESTNAME"
     ]
 }
