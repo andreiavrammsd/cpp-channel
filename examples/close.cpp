@@ -2,6 +2,8 @@
 
 #include <future>
 #include <iostream>
+#include <mutex>
+#include <string>
 #include <thread>
 
 int main()
@@ -12,38 +14,37 @@ int main()
     const auto input = [](msd::channel<int>& chan, int time_ms) {
         static int inc = 0;
 
-        while (true) {
-            if (chan.closed()) {
-                break;
-            }
-
+        while (!chan.closed()) {
             chan << ++inc;
-            std::cout << "in: " << inc << "\n";
 
             std::this_thread::sleep_for(std::chrono::milliseconds{time_ms});
         }
-
-        std::cout << "exit input\n";
     };
     const auto input_future = std::async(input, std::ref(channel), 10);
 
     // Close the channel after some time
     const auto timeout = [](msd::channel<int>& chan, int time_ms) {
         std::this_thread::sleep_for(std::chrono::milliseconds{time_ms});
+
         chan.close();
-        std::cout << "exit timeout\n";
     };
     auto timeout_future = std::async(timeout, std::ref(channel), 100);
 
     // Display all the data from the channel
     // When the channel is closed and empty, the iteration will end
-    const auto write = [](msd::channel<int>& chan, int time_ms) {
+    std::mutex cout_mutex;
+
+    const auto write = [&cout_mutex](msd::channel<int>& chan, int time_ms) {
         for (auto out : chan) {
-            std::cout << "out: " << out << "\n";
+            std::string msg{"out: " + std::to_string(out) + "\n"};
+
+            {
+                std::lock_guard<std::mutex> lock(cout_mutex);
+                std::cout << msg;
+            }
+
             std::this_thread::sleep_for(std::chrono::milliseconds{time_ms});
         }
-
-        std::cout << "exit write\n";
     };
     const auto write_future1 = std::async(write, std::ref(channel), 1);
     const auto write_future2 = std::async(write, std::ref(channel), 100);

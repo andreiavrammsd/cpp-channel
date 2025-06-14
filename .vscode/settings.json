@@ -47,6 +47,7 @@
         "HISTFILE",
         "hwrap",
         "lgcov",
+        "libclang",
         "lldb",
         "ltsan",
         "lubsan",

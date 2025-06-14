@@ -4,6 +4,7 @@
 #include <chrono>
 #include <future>
 #include <iostream>
+#include <mutex>
 #include <sstream>
 #include <thread>
 
@@ -12,25 +13,36 @@ int main()
     msd::channel<int> input_chan{30};
     msd::channel<int> output_chan{10};
 
+    std::mutex cout_mutex;
+
     // Send to channel
-    const auto writer = [&input_chan](int begin, int end) {
+    const auto writer = [&input_chan, &cout_mutex](int begin, int end) {
         for (int i = begin; i <= end; ++i) {
             input_chan.write(i);
 
             std::stringstream msg;
             msg << "Sent " << i << " from " << std::this_thread::get_id() << "\n";
-            std::cout << msg.str();
+
+            {
+                std::lock_guard<std::mutex> lock(cout_mutex);
+                std::cout << msg.str();
+            }
 
             std::this_thread::sleep_for(std::chrono::milliseconds(10));  // simulate work
         }
         input_chan.close();
     };
 
-    const auto reader = [&output_chan]() {
+    // Read
+    const auto reader = [&output_chan, &cout_mutex]() {
         for (const auto out : output_chan) {  // blocking until channel is drained (closed and empty)
             std::stringstream msg;
             msg << "Received " << out << " on " << std::this_thread::get_id() << "\n";
-            std::cout << msg.str();
+
+            {
+                std::lock_guard<std::mutex> lock(cout_mutex);
+                std::cout << msg.str();
+            }
 
             std::this_thread::sleep_for(std::chrono::milliseconds(200));  // simulate work
         }

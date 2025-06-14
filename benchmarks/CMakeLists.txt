@@ -1,4 +1,5 @@
 include(FetchContent)
+
 if(NOT benchmark_POPULATED)
     set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "" FORCE)
     set(BENCHMARK_ENABLE_GTEST_TESTS OFF CACHE BOOL "" FORCE)
@@ -10,7 +11,7 @@ endif()
 function(package_add_benchmark TESTNAME)
     add_executable(${TESTNAME} ${ARGN})
     set_target_warnings(${TESTNAME} PRIVATE)
-    target_link_libraries(${TESTNAME} benchmark)
+    target_link_libraries(${TESTNAME} msd_channel benchmark)
 endfunction()
 
 package_add_benchmark(channel_benchmark channel_benchmark.cpp)

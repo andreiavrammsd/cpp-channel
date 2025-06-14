@@ -1,13 +1,10 @@
-if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
-    cmake_policy(SET CMP0135 NEW)
-endif()
-
 # Testing framework
 if(MSVC)
     option(gtest_force_shared_crt "Use shared (DLL) run-time lib even when Google Test is built as static lib." ON)
 endif()
 
 include(FetchContent)
+
 if(NOT googletest_POPULATED)
     set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
     set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
@@ -22,7 +19,7 @@ function(package_add_test TESTNAME)
     add_executable(${TESTNAME} ${ARGN})
 
     set_target_warnings(${TESTNAME} PRIVATE)
-    target_link_libraries(${TESTNAME} gtest gtest_main)
+    target_link_libraries(${TESTNAME} msd_channel gtest gtest_main)
 
     if(CPP_CHANNEL_COVERAGE)
         target_compile_options(${TESTNAME} PRIVATE --coverage)
@@ -35,14 +32,18 @@ function(package_add_test TESTNAME)
         endif()
     endif()
 
+    set(CPP_CHANNEL_SANITIZER_FLAGS "")
     if(CPP_CHANNEL_SANITIZERS)
-        target_compile_options(${TESTNAME} PRIVATE -fsanitize=undefined)
-        target_link_libraries(${TESTNAME} -lubsan)
+        set(SANITIZERS -fsanitize=address -fno-sanitize-recover=address -fsanitize=undefined
+                       -fno-sanitize-recover=undefined)
+
+        target_compile_options(${TESTNAME} PRIVATE ${SANITIZERS})
+        target_link_options(${TESTNAME} PRIVATE ${SANITIZERS})
     endif()
 
     if(CPP_CHANNEL_SANITIZE_THREADS)
         target_compile_options(${TESTNAME} PRIVATE -fsanitize=thread)
-        target_link_libraries(${TESTNAME} -fsanitize=thread)
+        target_link_options(${TESTNAME} PRIVATE -fsanitize=thread)
     endif()
 
     add_test(NAME ${TESTNAME} COMMAND ${TESTNAME})
@@ -57,8 +58,3 @@ add_custom_target(channel_tests)
 package_add_test(channel_test channel_test.cpp)
 package_add_test(blocking_iterator_test blocking_iterator_test.cpp)
 package_add_test(storage_test storage_test.cpp)
-
-if(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
-    # Disable warnings about C++17 extensions
-    target_compile_options(channel_test PRIVATE -Wno-c++17-extensions)
-endif()
