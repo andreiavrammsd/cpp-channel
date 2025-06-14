@@ -9,15 +9,15 @@ all:
 bench:
 	- sudo cpupower frequency-set --governor performance
 	
-	rm -rf $(BENCH_DIR) && mkdir $(BENCH_DIR) && cd $(BENCH_DIR) \
+	mkdir -p $(BENCH_DIR) && cd $(BENCH_DIR) \
 	&& cmake ../.. -DCMAKE_BUILD_TYPE=Release -DCPP_CHANNEL_BUILD_BENCHMARKS=ON \
 	&& cmake --build . --config Release --target channel_benchmark -j \
-	&& ./benchmarks/channel_benchmark
+	&& ./benchmarks/channel_benchmark --benchmark_repetitions=10 --benchmark_report_aggregates_only=true
 	
 	- sudo cpupower frequency-set --governor powersave
 
 coverage:
-	rm -rf $(COV_DIR) && mkdir $(COV_DIR) && cd $(COV_DIR) \
+	mkdir -p $(COV_DIR) && cd $(COV_DIR) \
 	&& cmake ../.. -DCMAKE_BUILD_TYPE=Debug -DCPP_CHANNEL_BUILD_TESTS=ON -DCPP_CHANNEL_COVERAGE=ON \
 	&& cmake --build . --config Debug --target channel_tests -j \
 	&& ctest -C Debug --verbose -L channel_tests --output-on-failure -j \
