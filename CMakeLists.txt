@@ -1,15 +1,12 @@
 cmake_minimum_required(VERSION 3.15)
-project(cpp_channel)
-set(PROJECT_VERSION 1.3.0)
+project(cpp_channel VERSION 1.3.0)
 
 set(CMAKE_CXX_STANDARD 11 CACHE STRING "C++ standard")
-set(CMAKE_CXX_STANDARD_REQUIRED YES)
-set(CXX_EXTENSIONS NO)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CXX_EXTENSIONS OFF)
 
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 include(warnings)
-
-include_directories(include)
 
 add_library(msd_channel INTERFACE)
 target_include_directories(msd_channel INTERFACE include)
