@@ -137,6 +137,7 @@ jobs:
 
       - name: CMake
         run: |
+          pip install cmake-format
           cmake-format -i $(find -name CMakeLists.txt)
           git diff --exit-code
 
