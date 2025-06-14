@@ -38,6 +38,7 @@
         "graphviz",
         "gtest",
         "HISTFILE",
+        "hwrap",
         "lgcov",
         "lldb",
         "ltsan",
