@@ -1,3 +1,5 @@
+DIRS = include tests examples
+
 all:
 
 bench:
@@ -25,3 +27,7 @@ coverage:
 doc:
 	doxygen
 	cd docs && python3 -m http.server 8000
+
+format:
+	clang-format -i $(shell find $(DIRS) -name *.*pp)
+	cmake-format -i $(shell find $(DIRS) -name CMakeLists.txt)

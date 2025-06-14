@@ -5,10 +5,10 @@ function(add_example NAME)
 
     set_target_warnings(${NAME} PRIVATE)
 
-    if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         target_link_libraries(${NAME} -ltsan)
         target_compile_options(${NAME} PRIVATE -fsanitize=thread)
-    endif()    
+    endif()
 
     add_dependencies(examples ${NAME})
 endfunction()
@@ -18,8 +18,7 @@ function(run_example NAME)
         TARGET ${NAME}
         POST_BUILD
         COMMAND ${NAME}
-        COMMENT "Running example: ${NAME}"
-    )
+        COMMENT "Running example: ${NAME}")
 endfunction()
 
 add_custom_target(examples)

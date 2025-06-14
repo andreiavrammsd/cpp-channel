@@ -19,6 +19,7 @@ RUN apt-get update && apt-get install -y \
     lldb \
     llvm \
     nano \
+    pipx \
     software-properties-common \
     sudo \
     unzip \
@@ -33,5 +34,7 @@ RUN passwd -d ${USERNAME} \
     && echo "$SNIPPET" >> "/home/${USERNAME}/.bashrc"
 
 USER $USERNAME
+
+RUN pipx install cmake-format --include-deps && pipx ensurepath
 
 WORKDIR /workspace

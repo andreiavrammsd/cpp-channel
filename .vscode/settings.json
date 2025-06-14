@@ -17,6 +17,9 @@
     "[jsonc]": {
         "editor.defaultFormatter": "vscode.json-language-features"
     },
+    "[cmake]": {
+        "editor.defaultFormatter": "cheshirekow.cmake-format"
+    },
     "clangd.arguments": [
         "--compile-commands-dir=${workspaceFolder}/build",
         "--background-index",

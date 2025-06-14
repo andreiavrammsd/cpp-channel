@@ -20,12 +20,12 @@ option(CPP_CHANNEL_COVERAGE "Generate test coverage." OFF)
 option(CPP_CHANNEL_SANITIZERS "Build with sanitizers." OFF)
 option(CPP_CHANNEL_SANITIZE_THREADS "Build with thread sanitizer." OFF)
 
-if (CPP_CHANNEL_BUILD_TESTS)
+if(CPP_CHANNEL_BUILD_TESTS)
     enable_testing()
     add_subdirectory(tests)
 endif()
 
-if (CPP_CHANNEL_BUILD_EXAMPLES)
+if(CPP_CHANNEL_BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif()
 

@@ -11,7 +11,8 @@
                 "twxs.cmake",
                 "fredericbonnet.cmake-test-adapter",
                 "llvm-vs-code-extensions.vscode-clangd",
-                "vadimcn.vscode-lldb"
+                "vadimcn.vscode-lldb",
+                "cheshirekow.cmake-format"
             ]
         }
     },

@@ -125,15 +125,20 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ${{github.workspace}}/build/coverage.info
 
-  clang-format:
-    name: Clang Format
+  format:
+    name: Format
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Run Clang Format
-        run: clang-format --dry-run --Werror $(find include tests examples -type f -name *.*pp)
+      - name: C++
+        run: clang-format --dry-run --Werror $(find . -name *.*pp)
+
+      - name: CMake
+        run: |
+          cmake-format -i $(find -name CMakeLists.txt)
+          git diff --exit-code
 
   clang-tidy:
     name: Clang Tidy
