@@ -35,9 +35,10 @@ class closed_channel : public std::runtime_error {
  *
  * @tparam T The type of the elements.
  * @typedef default_storage
+ * @warning Do not rely on this. Can be changed anytime.
  */
 template <typename T>
-using default_storage = queue_storage<T>;
+using default_storage = vector_storage<T>;
 
 /**
  * @brief Trait to check if a storage type has a static **capacity** member.
@@ -60,7 +61,7 @@ struct is_static_storage<Storage, decltype((void)Storage::capacity, void())> : s
  * - Includes a blocking input iterator.
  *
  * @tparam T The type of the elements.
- * @tparam Storage The storage type used to hold the elements. Default: msd::queue_storage.
+ * @tparam Storage The storage type used to hold the elements. Default: msd::vector_storage.
  */
 template <typename T, typename Storage = default_storage<T>>
 class channel {

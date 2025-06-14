@@ -14,29 +14,32 @@
 * Uses a customizable `storage` to store elements.
 
 It's a class that can be constructed in several ways:
+
 * Buffered:
-    * The channel accepts a specified number of elements, after which it blocks the writer threads and waits for a reader thread to read an element.
-    * It blocks the reader threads when channel is empty until a writer thread writes elements.
-    * `msd::channel<int> chan{2};`
+  * The channel accepts a specified number of elements, after which it blocks the writer threads and waits for a reader thread to read an element.
+  * It blocks the reader threads when channel is empty until a writer thread writes elements.
+  * `msd::channel<int> chan{2};`
 * Unbuffered:
-    * Never blocks writes.
-    * It blocks the reader threads when channel is empty until a writer thread writes elements.
-    * `msd::channel<int> chan{};`
+  * Never blocks writes.
+  * It blocks the reader threads when channel is empty until a writer thread writes elements.
+  * `msd::channel<int> chan{};`
 * Heap- or stack-allocated: pass a custom storage or choose a [built-in storage](https://github.com/andreiavrammsd/cpp-channel/blob/master/include/msd/storage.hpp):
-    * `msd::queue_storage` (default): uses [std::queue](https://en.cppreference.com/w/cpp/container/queue.html)
-    * `msd::vector_storage`: uses [std::vector](https://en.cppreference.com/w/cpp/container/vector.html) (if cache locality is important)
-        * `msd::channel<int, msd::vector_storage<int>> chan{2};`
-    * `msd::array_storage` (always buffered): uses [std::array](https://en.cppreference.com/w/cpp/container/array.html) (if you want stack allocation)
-        * `msd::channel<int, msd::array_storage<int, 10>> chan{};`
-        * `msd::channel<int, msd::array_storage<int, 10>> chan{10}; // does not compile because capacity is already passed as template argument`
-        * aka `msd::static_channel<int, 10>`
+  * `msd::vector_storage` (default): uses [std::vector](https://en.cppreference.com/w/cpp/container/vector.html)
+  * `msd::queue_storage`: uses [std::queue](https://en.cppreference.com/w/cpp/container/queue.html)
+    * `msd::channel<int, msd::queue_storage<int>> chan{2};`
+  * `msd::array_storage` (always buffered): uses [std::array](https://en.cppreference.com/w/cpp/container/array.html) (if you want stack allocation)
+    * `msd::channel<int, msd::array_storage<int, 10>> chan{};`
+    * `msd::channel<int, msd::array_storage<int, 10>> chan{10}; // does not compile because capacity is already passed as template argument`
+    * aka `msd::static_channel<int, 10>`
 
 A `storage` is:
+
 * A class with a specific interface for storing elements.
 * Must implement [FIFO](https://en.wikipedia.org/wiki/FIFO) logic.
 * See [built-in storages](https://github.com/andreiavrammsd/cpp-channel/blob/master/include/msd/storage.hpp).
 
 Exceptions:
+
 * msd::operator<< throws `msd::closed_channel` if channel is closed.
 * `msd::channel::write` returns `bool` status instead of throwing.
 * Heap-allocated storages could throw.
