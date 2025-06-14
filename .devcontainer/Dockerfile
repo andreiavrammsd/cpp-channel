@@ -1,15 +1,17 @@
 FROM ubuntu:24.04
 
 ENV DEBIAN_FRONTEND=noninteractive
+ARG USER=ubuntu
 
-RUN apt-get update && apt-get install -y \
+# Install packages and clean up after
+RUN apt-get update && apt-get install -y --no-install-recommends \
     bash-completion \
     build-essential \
     cmake \
     clang \
-    clangd \
     clang-format \
     clang-tidy \
+    clangd \
     curl \
     doxygen \
     gdb \
@@ -19,22 +21,25 @@ RUN apt-get update && apt-get install -y \
     lldb \
     llvm \
     nano \
+    openssh-client \
     pipx \
     software-properties-common \
     sudo \
     unzip \
     wget \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-ARG USERNAME=ubuntu
-RUN passwd -d ${USERNAME} \
-    && mkdir -p /home/${USERNAME}/.cache && chown -R ${USERNAME}:${USERNAME} /home/${USERNAME}/.cache \
-    && SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/home/${USERNAME}/.cache/.bash_history" \
-    && echo "$SNIPPET" >> "/home/${USERNAME}/.bashrc"
+# Configure user environment and permissions
+RUN passwd -d ${USER} \
+    && mkdir -p /home/${USER}/.cache \
+    && chown -R ${USER}:${USER} /home/${USER}/.cache \
+    && echo "export PROMPT_COMMAND='history -a'" >> /home/${USER}/.bashrc \
+    && echo "export HISTFILE=/home/${USER}/.cache/.bash_history" >> /home/${USER}/.bashrc
 
-USER $USERNAME
+USER ${USER}
 
-RUN pipx install cmake-format --include-deps && pipx ensurepath
+# Install cmake-format
+RUN pipx install cmake-format --include-deps \
+    && pipx ensurepath
 
 WORKDIR /workspace
