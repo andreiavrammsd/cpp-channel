@@ -1,11 +1,12 @@
 {
     "cmake.configureArgs": [
-        "-DCPP_CHANNEL_BUILD_EXAMPLES=ON",
+        "-DCMAKE_CXX_STANDARD=11",
         "-DCPP_CHANNEL_BUILD_TESTS=ON",
+        "-DCPP_CHANNEL_BUILD_BENCHMARKS=ON",
+        "-DCPP_CHANNEL_BUILD_EXAMPLES=ON",
         "-DCPP_CHANNEL_COVERAGE=ON",
         "-DCPP_CHANNEL_SANITIZERS=ON",
         "-DCPP_CHANNEL_SANITIZE_THREADS=OFF",
-        "-DCMAKE_CXX_STANDARD=11",
         "-DCMAKE_INSTALL_PREFIX=${workspaceFolder}/install"
     ],
     "editor.formatOnSave": true,
@@ -29,6 +30,7 @@
     "cSpell.words": [
         "ARGN",
         "clangd",
+        "cppcoreguidelines",
         "cpupower",
         "ctest",
         "DCMAKE",

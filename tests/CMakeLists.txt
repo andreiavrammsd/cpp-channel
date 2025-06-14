@@ -9,7 +9,8 @@ endif()
 
 include(FetchContent)
 if(NOT googletest_POPULATED)
-    FetchContent_Declare(googletest URL https://github.com/google/googletest/archive/refs/tags/release-1.12.1.zip)
+    FetchContent_Declare(googletest URL https://github.com/google/googletest/archive/refs/tags/release-1.12.1.zip
+                                        DOWNLOAD_EXTRACT_TIMESTAMP TRUE)
     FetchContent_MakeAvailable(googletest)
     set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
     set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
@@ -19,10 +20,6 @@ endif()
 # Test macro
 function(package_add_test TESTNAME)
     add_executable(${TESTNAME} ${ARGN})
-
-    if(MSVC)
-        target_compile_options(${TESTNAME} PRIVATE /std:c++${CMAKE_CXX_STANDARD})
-    endif()
 
     set_target_warnings(${TESTNAME} PRIVATE)
     target_link_libraries(${TESTNAME} gtest gtest_main)
@@ -65,15 +62,3 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
     # Disable warnings about C++17 extensions
     target_compile_options(channel_test PRIVATE -Wno-c++17-extensions)
 endif()
-
-# Benchmark
-if(NOT benchmark_POPULATED)
-    FetchContent_Declare(benchmark URL https://github.com/google/benchmark/archive/refs/tags/v1.9.4.zip)
-    FetchContent_MakeAvailable(benchmark)
-    set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "" FORCE)
-    set(BENCHMARK_ENABLE_GTEST_TESTS OFF CACHE BOOL "" FORCE)
-endif()
-
-add_executable(channel_benchmark channel_benchmark.cpp)
-set_target_warnings(channel_benchmark PRIVATE)
-target_link_libraries(channel_benchmark benchmark)

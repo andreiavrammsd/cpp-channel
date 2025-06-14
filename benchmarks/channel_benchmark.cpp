@@ -20,12 +20,12 @@
     ------------------------------------------------------------------------------
     Benchmark                           Time            CPU             Iterations
     ------------------------------------------------------------------------------
-    bm_channel_with_queue_storage       42602 ns        42598 ns        16407
-    bm_channel_with_vector_storage      42724 ns        42723 ns        16288
-    bm_channel_with_vector_storage      51332 ns        51328 ns        11776
+    channel_with_queue_storage       42602 ns        42598 ns        16407
+    channel_with_vector_storage      42724 ns        42723 ns        16288
+    channel_with_vector_storage      51332 ns        51328 ns        11776
  */
 
-static void bm_channel_with_queue_storage(benchmark::State& state)
+static void channel_with_queue_storage(benchmark::State& state)
 {
     msd::channel<std::string, msd::queue_storage<std::string>> channel{10};
 
@@ -39,14 +39,14 @@ static void bm_channel_with_queue_storage(benchmark::State& state)
     }
 }
 
-BENCHMARK(bm_channel_with_queue_storage);
+BENCHMARK(channel_with_queue_storage);
 
-static void bm_channel_with_vector_storage(benchmark::State& state)
+static void channel_with_vector_storage(benchmark::State& state)
 {
     msd::channel<std::string, msd::vector_storage<std::string>> channel{10};
 
     std::string input(1000000, 'x');
-    std::string out = "";
+    std::string out{};
     out.resize(input.size());
 
     for (auto _ : state) {
@@ -55,9 +55,9 @@ static void bm_channel_with_vector_storage(benchmark::State& state)
     }
 }
 
-BENCHMARK(bm_channel_with_vector_storage);
+BENCHMARK(channel_with_vector_storage);
 
-static void bm_channel_with_array_storage(benchmark::State& state)
+static void channel_with_array_storage(benchmark::State& state)
 {
     msd::channel<std::string, msd::array_storage<std::string, 10>> channel{};
 
@@ -71,6 +71,6 @@ static void bm_channel_with_array_storage(benchmark::State& state)
     }
 }
 
-BENCHMARK(bm_channel_with_array_storage);
+BENCHMARK(channel_with_array_storage);
 
 BENCHMARK_MAIN();
