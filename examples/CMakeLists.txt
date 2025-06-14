@@ -5,8 +5,11 @@ function(add_example NAME)
     target_link_libraries(${NAME} msd_channel)
 
     if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-        target_compile_options(${NAME} PRIVATE -fsanitize=thread)
-        target_link_options(${NAME} PRIVATE -fsanitize=thread)
+        # target_compile_options(${NAME} PRIVATE -fsanitize=thread) target_link_options(${NAME} PRIVATE
+        # -fsanitize=thread)
+        set(FLAGS -fsanitize=thread -g -O1 -fno-omit-frame-pointer)
+        target_compile_options(${NAME} PRIVATE ${FLAGS})
+        target_link_options(${NAME} PRIVATE ${FLAGS})
     endif()
 
     add_dependencies(examples ${NAME})
