@@ -3,31 +3,31 @@
 #include <iostream>
 
 class Data final {
-    int i_{};
+    int value_{};
 
    public:
     Data() = default;
-    explicit Data(int i) : i_{i} {}
+    explicit Data(int value) : value_{value} {}
 
-    int getI() const { return i_; }
+    int get_value() const { return value_; }
 
-    Data(const Data& other) noexcept : i_{other.i_} { std::cout << "copy " << i_ << '\n'; }
+    Data(const Data& other) noexcept : value_{other.value_} { std::cout << "copy " << value_ << '\n'; }
     Data& operator=(const Data& other)
     {
         if (this != &other) {
-            i_ = other.i_;
+            value_ = other.value_;
         }
-        std::cout << "copy " << i_ << '\n';
+        std::cout << "copy " << value_ << '\n';
 
         return *this;
     }
 
-    Data(Data&& other) noexcept : i_{other.i_} { std::cout << "move " << i_ << '\n'; }
+    Data(Data&& other) noexcept : value_{other.value_} { std::cout << "move " << value_ << '\n'; }
     Data& operator=(Data&& other) noexcept
     {
         if (this != &other) {
-            i_ = other.i_;
-            std::cout << "move " << i_ << '\n';
+            value_ = other.value_;
+            std::cout << "move " << value_ << '\n';
         }
 
         return *this;
@@ -49,7 +49,7 @@ int main()
     chan << std::move(in3);
 
     for (const auto& out : chan) {
-        std::cout << out.getI() << '\n';
+        std::cout << out.get_value() << '\n';
 
         if (chan.empty()) {
             break;

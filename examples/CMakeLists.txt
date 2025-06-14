@@ -1,14 +1,12 @@
 function(add_example NAME)
     add_executable(${NAME} ${ARGN})
 
-    target_compile_options(${NAME} PRIVATE -std=c++${CMAKE_CXX_STANDARD})
-
     set_target_warnings(${NAME} PRIVATE)
 
-    if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        target_link_libraries(${NAME} -ltsan)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         target_compile_options(${NAME} PRIVATE -fsanitize=thread)
-    endif()    
+        target_link_libraries(${NAME} -ltsan)
+    endif()
 
     add_dependencies(examples ${NAME})
 endfunction()
@@ -18,8 +16,7 @@ function(run_example NAME)
         TARGET ${NAME}
         POST_BUILD
         COMMAND ${NAME}
-        COMMENT "Running example: ${NAME}"
-    )
+        COMMENT "Running example: ${NAME}")
 endfunction()
 
 add_custom_target(examples)

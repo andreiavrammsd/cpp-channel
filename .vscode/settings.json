@@ -1,11 +1,12 @@
 {
     "cmake.configureArgs": [
-        "-DCPP_CHANNEL_BUILD_EXAMPLES=ON",
+        "-DCMAKE_CXX_STANDARD=11",
         "-DCPP_CHANNEL_BUILD_TESTS=ON",
+        "-DCPP_CHANNEL_BUILD_BENCHMARKS=ON",
+        "-DCPP_CHANNEL_BUILD_EXAMPLES=ON",
         "-DCPP_CHANNEL_COVERAGE=ON",
         "-DCPP_CHANNEL_SANITIZERS=ON",
         "-DCPP_CHANNEL_SANITIZE_THREADS=OFF",
-        "-DCMAKE_CXX_STANDARD=11",
         "-DCMAKE_INSTALL_PREFIX=${workspaceFolder}/install"
     ],
     "editor.formatOnSave": true,
@@ -17,9 +18,43 @@
     "[jsonc]": {
         "editor.defaultFormatter": "vscode.json-language-features"
     },
+    "[cmake]": {
+        "editor.defaultFormatter": "cheshirekow.cmake-format"
+    },
     "clangd.arguments": [
         "--compile-commands-dir=${workspaceFolder}/build",
         "--background-index",
         "--clang-tidy"
+    ],
+    "C_Cpp.intelliSenseEngine": "disabled",
+    "cSpell.words": [
+        "ARGN",
+        "clangd",
+        "cppcoreguidelines",
+        "cpupower",
+        "ctest",
+        "DCMAKE",
+        "DCPP",
+        "endfunction",
+        "ensurepath",
+        "fcoverage",
+        "fprofile",
+        "fsanitize",
+        "genhtml",
+        "googletest",
+        "graphviz",
+        "gtest",
+        "HISTFILE",
+        "hwrap",
+        "lgcov",
+        "lldb",
+        "ltsan",
+        "lubsan",
+        "MSVC",
+        "noninteractive",
+        "pipx",
+        "powersave",
+        "STREQUAL",
+        "TESTNAME"
     ]
 }
