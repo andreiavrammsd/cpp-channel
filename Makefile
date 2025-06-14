@@ -31,3 +31,6 @@ doc:
 format:
 	clang-format -i $(shell find $(DIRS) -name *.*pp)
 	cmake-format -i $(shell find $(DIRS) -name CMakeLists.txt)
+
+clean:
+	rm -rf build docs
