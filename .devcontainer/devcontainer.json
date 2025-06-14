@@ -12,7 +12,8 @@
                 "fredericbonnet.cmake-test-adapter",
                 "llvm-vs-code-extensions.vscode-clangd",
                 "vadimcn.vscode-lldb",
-                "cheshirekow.cmake-format"
+                "cheshirekow.cmake-format",
+                "ms-vscode.cpptools"
             ]
         }
     },
@@ -22,10 +23,5 @@
         "source=cache,target=/home/ubuntu/.cache,type=volume"
     ],
     "workspaceFolder": "/workspace",
-    "runArgs": [
-        "--cap-add=SYS_PTRACE",
-        "--security-opt",
-        "seccomp=unconfined"
-    ],
     "remoteUser": "ubuntu"
 }

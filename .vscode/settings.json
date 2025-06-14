@@ -25,6 +25,7 @@
         "--background-index",
         "--clang-tidy"
     ],
+    "C_Cpp.intelliSenseEngine": "disabled",
     "cSpell.words": [
         "clangd",
         "ensurepath",
