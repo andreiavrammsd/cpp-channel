@@ -1,0 +1,18 @@
+[
+  {
+    "name": "Clang 18.1.3 x86_64-pc-linux-gnu",
+    "compilers": {
+      "C": "/usr/bin/clang",
+      "CXX": "/usr/bin/clang++"
+    },
+    "isTrusted": true
+  },
+  {
+    "name": "GCC 13.3.0 x86_64-linux-gnu",
+    "compilers": {
+      "C": "/usr/bin/gcc",
+      "CXX": "/usr/bin/g++"
+    },
+    "isTrusted": true
+  }
+]
