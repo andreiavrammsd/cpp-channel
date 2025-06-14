@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     graphviz \
     lcov \
+    libclang-rt-18-dev \
     lldb \
     llvm \
     nano \
