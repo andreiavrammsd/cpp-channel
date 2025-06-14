@@ -20,8 +20,6 @@ endif()
 function(package_add_test TESTNAME)
     add_executable(${TESTNAME} ${ARGN})
 
-    target_compile_options(${TESTNAME} PRIVATE -std=c++${CMAKE_CXX_STANDARD})
-
     set_target_warnings(${TESTNAME} PRIVATE)
     target_link_libraries(${TESTNAME} gtest gtest_main)
 

@@ -8,6 +8,7 @@
 #include <atomic>
 #include <cstdint>
 #include <future>
+#include <memory>
 #include <numeric>
 #include <string>
 #include <thread>
@@ -16,6 +17,8 @@
 
 TEST(ChannelTest, Traits)
 {
+    auto x = std::make_unique<int>(1);
+    (void)x;
     using type = int;
     using channel = msd::channel<type>;
     EXPECT_TRUE((std::is_same<channel::value_type, type>::value));
