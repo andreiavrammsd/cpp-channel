@@ -3,6 +3,7 @@
 #include <chrono>
 #include <future>
 #include <iostream>
+#include <mutex>
 #include <sstream>
 #include <thread>
 
@@ -10,25 +11,36 @@ int main()
 {
     msd::static_channel<int, 50> chan{};  // always buffered
 
+    std::mutex cout_mutex;
+
     // Send to channel
-    const auto writer = [&chan](int begin, int end) {
+    const auto writer = [&chan, &cout_mutex](int begin, int end) {
         for (int i = begin; i <= end; ++i) {
             chan.write(i);
 
             std::stringstream msg;
             msg << "Sent " << i << " from " << std::this_thread::get_id() << "\n";
-            std::cout << msg.str();
+
+            {
+                std::lock_guard<std::mutex> lock(cout_mutex);
+                std::cout << msg.str();
+            }
 
             std::this_thread::sleep_for(std::chrono::milliseconds(10));  // simulate work
         }
         chan.close();
     };
 
-    const auto reader = [&chan]() {
+    // Read
+    const auto reader = [&chan, &cout_mutex]() {
         for (const auto out : chan) {  // blocking until channel is drained (closed and empty)
             std::stringstream msg;
             msg << "Received " << out << " on " << std::this_thread::get_id() << "\n";
-            std::cout << msg.str();
+
+            {
+                std::lock_guard<std::mutex> lock(cout_mutex);
+                std::cout << msg.str();
+            }
 
             std::this_thread::sleep_for(std::chrono::milliseconds(200));  // simulate work
         }
