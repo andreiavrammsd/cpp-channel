@@ -14,7 +14,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     clangd \
     curl \
     doxygen \
-    gdb \
     git \
     graphviz \
     lcov \
@@ -23,7 +22,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     nano \
     openssh-client \
     pipx \
-    software-properties-common \
     sudo \
     unzip \
     wget \
