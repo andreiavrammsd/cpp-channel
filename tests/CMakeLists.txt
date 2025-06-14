@@ -20,6 +20,10 @@ endif()
 function(package_add_test TESTNAME)
     add_executable(${TESTNAME} ${ARGN})
 
+    if(MSVC)
+        target_compile_options(${TESTNAME} PRIVATE /std:c++${CMAKE_CXX_STANDARD})
+    endif()
+
     set_target_warnings(${TESTNAME} PRIVATE)
     target_link_libraries(${TESTNAME} gtest gtest_main)
 
@@ -72,5 +76,4 @@ endif()
 
 add_executable(channel_benchmark channel_benchmark.cpp)
 set_target_warnings(channel_benchmark PRIVATE)
-target_compile_options(channel_benchmark PRIVATE -std=c++${CMAKE_CXX_STANDARD})
 target_link_libraries(channel_benchmark benchmark)
