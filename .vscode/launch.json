@@ -27,10 +27,7 @@
                 "--gtest_color=yes"
             ],
             "cwd": "${workspaceFolder}",
-            "terminal": "integrated",
-            "initCommands": [
-                "settings set target.disable-aslr false"
-            ]
+            "terminal": "integrated"
         }
     ]
 }
