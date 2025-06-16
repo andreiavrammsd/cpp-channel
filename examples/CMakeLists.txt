@@ -13,14 +13,17 @@ function(add_example NAME)
 endfunction()
 
 function(run_example NAME)
-    add_custom_command(
-        TARGET ${NAME}
-        POST_BUILD
-        COMMAND ${NAME}
+    add_custom_target(
+        run_${NAME}
+        COMMAND $<TARGET_FILE:${NAME}>
+        DEPENDS ${NAME}
         COMMENT "Running example: ${NAME}")
+
+    add_dependencies(run_examples run_${NAME})
 endfunction()
 
 add_custom_target(examples)
+add_custom_target(run_examples)
 
 # Examples
 add_example(example_basic basic.cpp)
