@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['11_20and_20newer_0',['Thread-safe container for sharing data between threads (synchronized queue). Header-only. Compatible with C++11 and newer.',['../index.html#autotoc_md1',1,'']]]
+  ['about_0',['About',['../index.html#autotoc_md1',1,'']]],
+  ['array_5fstorage_1',['array_storage',['../classmsd_1_1array__storage.html',1,'msd']]]
 ];

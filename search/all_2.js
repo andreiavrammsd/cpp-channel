@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['back_5finserter_0',['back_inserter',['../blocking__iterator_8hpp.html#afa239867a3153604d6d73cd4c1a8cf39',1,'msd']]],
-  ['begin_1',['begin',['../classmsd_1_1channel.html#af354e4d952ae42bfd2ed0d38393bd1f1',1,'msd::channel']]],
-  ['between_20threads_20synchronized_20queue_20header_20only_20compatible_20with_20c_2011_20and_20newer_2',['Thread-safe container for sharing data between threads (synchronized queue). Header-only. Compatible with C++11 and newer.',['../index.html#autotoc_md1',1,'']]],
-  ['blocking_5fiterator_3',['blocking_iterator',['../classmsd_1_1blocking__iterator.html',1,'msd::blocking_iterator&lt; Channel &gt;'],['../classmsd_1_1blocking__iterator.html#a331c6d5ca659bafef14047811b3afa54',1,'msd::blocking_iterator::blocking_iterator()']]],
-  ['blocking_5fiterator_2ehpp_4',['blocking_iterator.hpp',['../blocking__iterator_8hpp.html',1,'']]],
-  ['blocking_5fwriter_5fiterator_5',['blocking_writer_iterator',['../classmsd_1_1blocking__writer__iterator.html',1,'msd::blocking_writer_iterator&lt; Channel &gt;'],['../classmsd_1_1blocking__writer__iterator.html#ada2a37c69017a4c38eed03e37f15227c',1,'msd::blocking_writer_iterator::blocking_writer_iterator()']]]
+  ['capacity_0',['capacity',['../classmsd_1_1array__storage.html#a49f85395a59ef7b43be3c33bf9a35d67',1,'msd::array_storage']]],
+  ['channel_1',['channel',['../classmsd_1_1channel.html',1,'msd::channel&lt; T, Storage &gt;'],['../classmsd_1_1channel.html#a5dfded699a019cf41ed610dda7433eaf',1,'msd::channel::channel()'],['../classmsd_1_1channel.html#a5dfded699a019cf41ed610dda7433eaf',1,'msd::channel::channel()'],['../classmsd_1_1channel.html#a4b5c499065792d9547daf55de7763267',1,'msd::channel::channel(const size_type capacity)'],['../index.html',1,'Channel']]],
+  ['channel_2ehpp_2',['channel.hpp',['../channel_8hpp.html',1,'']]],
+  ['close_3',['close',['../classmsd_1_1channel.html#ad98b290872e2f606f427d47477049c7a',1,'msd::channel']]],
+  ['closed_4',['closed',['../classmsd_1_1channel.html#a6494a6764b3c3e569bf0652982a5ecc8',1,'msd::channel']]],
+  ['closed_5fchannel_5',['closed_channel',['../classmsd_1_1closed__channel.html',1,'msd::closed_channel'],['../classmsd_1_1closed__channel.html#a924bd9ea14c29e7d968e9f6cb768e5f5',1,'msd::closed_channel::closed_channel()']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['known_20limitations_0',['Known limitations',['../index.html#autotoc_md6',1,'']]]
+  ['nodiscard_2ehpp_0',['nodiscard.hpp',['../nodiscard_8hpp.html',1,'']]]
 ];
