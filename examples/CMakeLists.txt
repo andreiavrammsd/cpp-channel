@@ -42,3 +42,6 @@ run_example(example_multithreading_static_channel)
 
 add_example(example_merge_channels merge_channels.cpp)
 run_example(example_merge_channels)
+
+add_example(example_semaphore semaphore.cpp)
+run_example(example_semaphore)
