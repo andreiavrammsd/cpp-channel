@@ -65,9 +65,9 @@ int main()
         return sum;
     };
 
-    // Close: this just to end the process, but depending on your needs, you might want to run the flow forever
+    // Close: this is just to end the process, but depending on your needs, you might want to run the flow forever
     const auto close = [&input_chan, &mapped_chan]() {
-        std::this_thread::sleep_for(std::chrono::milliseconds{3000});
+        std::this_thread::sleep_for(std::chrono::milliseconds{5000});
         input_chan.close();
         mapped_chan.close();
     };
