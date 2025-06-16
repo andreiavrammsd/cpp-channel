@@ -1,6 +1,5 @@
 #include <msd/channel.hpp>
 
-#include <cassert>
 #include <chrono>
 #include <future>
 #include <iostream>
@@ -53,5 +52,8 @@ int main()
                                        [](int acc, std::future<int>& future) { return acc + future.get(); });
     std::cout << "Result: " << result << "\n";
 
-    assert(result == 110);
+    if (result != 110) {
+        std::cerr << "Error: result is " << result << ", expected 420\n";
+        std::terminate();
+    }
 }

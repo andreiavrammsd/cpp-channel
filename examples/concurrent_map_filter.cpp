@@ -1,7 +1,6 @@
 #include <msd/channel.hpp>
 
 #include <algorithm>
-#include <cassert>
 #include <chrono>
 #include <future>
 #include <iostream>
@@ -81,8 +80,11 @@ int main()
     const auto producer_2 = std::async(produce, 31, 40);
     const auto closer = std::async(close);
 
-    const int sum = consume();
-    assert(sum == 420);
+    const int result = consume();
+    if (result != 420) {
+        std::cerr << "Error: result is " << result << ", expected 420\n";
+        std::terminate();
+    }
 
     mapper_1.wait();
     mapper_2.wait();

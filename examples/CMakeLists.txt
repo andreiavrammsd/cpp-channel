@@ -15,7 +15,7 @@ endfunction()
 function(run_example NAME)
     add_custom_target(
         run_${NAME}
-        COMMAND $<TARGET_FILE:${NAME}>
+        COMMAND ${NAME}
         DEPENDS ${NAME}
         COMMENT "Running example: ${NAME}")
 
