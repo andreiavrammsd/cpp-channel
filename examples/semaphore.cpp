@@ -18,7 +18,7 @@ class semaphore {
    private:
     struct empty {};
     msd::channel<empty> chan_;
-    empty empty_{};
+    empty empty_{};  // See EBO starting C++20: https://en.cppreference.com/w/cpp/language/ebo.html
 };
 
 int simulate_heavy_computation(const int value)
