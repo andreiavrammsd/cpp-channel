@@ -81,8 +81,10 @@ int main()
     const auto closer = std::async(close);
 
     const int result = consume();
-    if (result != 420) {
-        std::cerr << "Error: result is " << result << ", expected 420\n";
+    const int expected = 420;
+
+    if (result != expected) {
+        std::cerr << "Error: result is " << result << ", expected " << expected << "\n";
         std::terminate();
     }
 

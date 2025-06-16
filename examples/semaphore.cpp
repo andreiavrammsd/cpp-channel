@@ -50,10 +50,11 @@ int main()
     std::cout << "Waiting for result...\n";
     const int result = std::accumulate(futures.begin(), futures.end(), 0,
                                        [](int acc, std::future<int>& future) { return acc + future.get(); });
-    std::cout << "Result: " << result << "\n";
+    std::cout << "Result is: " << result << "\n";
 
-    if (result != 110) {
-        std::cerr << "Error: result is " << result << ", expected 420\n";
+    const int expected = 110;
+    if (result != expected) {
+        std::cerr << "Error: result is " << result << ", expected " << expected << "\n";
         std::terminate();
     }
 }
