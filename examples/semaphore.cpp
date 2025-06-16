@@ -18,8 +18,8 @@ class semaphore {
 
    private:
     struct empty {};
-    [[no_unique_address]] empty empty_{};
     msd::channel<empty> chan_;
+    empty empty_{};
 };
 
 int simulate_heavy_computation(const int value)

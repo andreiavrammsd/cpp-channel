@@ -156,7 +156,7 @@ int main()
 
     std::copy_if(src.begin(), src.end(), msd::back_inserter(dst), [](int value) { return value % 2 == 0; });
 
-    dst.size();  // 1;
+    dst.size();  // 1
 }
 ```
 
