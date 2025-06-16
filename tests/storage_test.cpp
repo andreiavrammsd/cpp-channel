@@ -48,7 +48,7 @@ TYPED_TEST(StorageWithMovableOnlyTypeTest, PushAndPop)
     std::unique_ptr<int> out;
     storage.pop_front(out);
 
-    ASSERT_TRUE(out);
+    EXPECT_TRUE(out);
     EXPECT_EQ(*out, 123);
 }
 
@@ -71,6 +71,6 @@ TYPED_TEST(StaticStorageTest, PushAndPop)
     std::unique_ptr<int> out;
     storage.pop_front(out);
 
-    ASSERT_TRUE(out);
+    EXPECT_TRUE(out);
     EXPECT_EQ(*out, 123);
 }

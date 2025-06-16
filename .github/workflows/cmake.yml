@@ -88,7 +88,7 @@ jobs:
 
       - name: Run examples
         working-directory: ${{github.workspace}}/build
-        run: cmake --build . --config ${{ matrix.config.build_type }} --target examples -j
+        run: cmake --build . --config ${{ matrix.config.build_type }} --target run_examples -j
 
   coverage:
     name: Coverage

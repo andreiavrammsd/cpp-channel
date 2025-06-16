@@ -13,14 +13,17 @@ function(add_example NAME)
 endfunction()
 
 function(run_example NAME)
-    add_custom_command(
-        TARGET ${NAME}
-        POST_BUILD
+    add_custom_target(
+        run_${NAME}
         COMMAND ${NAME}
+        DEPENDS ${NAME}
         COMMENT "Running example: ${NAME}")
+
+    add_dependencies(run_examples run_${NAME})
 endfunction()
 
 add_custom_target(examples)
+add_custom_target(run_examples)
 
 # Examples
 add_example(example_basic basic.cpp)
@@ -40,5 +43,8 @@ run_example(example_streaming)
 add_example(example_multithreading_static_channel multithreading_static_channel.cpp)
 run_example(example_multithreading_static_channel)
 
-add_example(example_merge_channels merge_channels.cpp)
-run_example(example_merge_channels)
+add_example(example_concurrent_map_filter concurrent_map_filter.cpp)
+run_example(example_concurrent_map_filter)
+
+add_example(example_semaphore semaphore.cpp)
+run_example(example_semaphore)

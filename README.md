@@ -3,40 +3,44 @@
 [![build](https://github.com/andreiavrammsd/cpp-channel/actions/workflows/cmake.yml/badge.svg)](https://github.com/andreiavrammsd/cpp-channel/actions) [![codecov](https://codecov.io/github/andreiavrammsd/cpp-channel/graph/badge.svg?token=CKQ0TVW62Z)](https://codecov.io/github/andreiavrammsd/cpp-channel)
 [![documentation](https://github.com/andreiavrammsd/cpp-channel/actions/workflows/doc.yml/badge.svg)](https://andreiavrammsd.github.io/cpp-channel/)
 
-### Thread-safe container for sharing data between threads (synchronized queue). Header-only. Compatible with C++11 and newer.
+> Thread-safe container for sharing data between threads (synchronized queue). Header-only. Compatible with C++11 and newer.
 
 ## About
 
 `msd::channel`
+
 * A synchronized queue that can be easily and safely shared between multiple threads.
 * Tested with GCC, Clang, and MSVC.
 * Uses [std::mutex](https://en.cppreference.com/w/cpp/thread/mutex.html) for synchronization.
 * Uses a customizable `storage` to store elements.
 
 It's a class that can be constructed in several ways:
+
 * Buffered:
-    * The channel accepts a specified number of elements, after which it blocks the writer threads and waits for a reader thread to read an element.
-    * It blocks the reader threads when channel is empty until a writer thread writes elements.
-    * `msd::channel<int> chan{2};`
+  * The channel accepts a specified number of elements, after which it blocks the writer threads and waits for a reader thread to read an element.
+  * It blocks the reader threads when channel is empty until a writer thread writes elements.
+  * `msd::channel<int> chan{2};`
 * Unbuffered:
-    * Never blocks writes.
-    * It blocks the reader threads when channel is empty until a writer thread writes elements.
-    * `msd::channel<int> chan{};`
+  * Never blocks writes.
+  * It blocks the reader threads when channel is empty until a writer thread writes elements.
+  * `msd::channel<int> chan{};`
 * Heap- or stack-allocated: pass a custom storage or choose a [built-in storage](https://github.com/andreiavrammsd/cpp-channel/blob/master/include/msd/storage.hpp):
-    * `msd::queue_storage` (default): uses [std::queue](https://en.cppreference.com/w/cpp/container/queue.html)
-    * `msd::vector_storage`: uses [std::vector](https://en.cppreference.com/w/cpp/container/vector.html) (if cache locality is important)
-        * `msd::channel<int, msd::vector_storage<int>> chan{2};`
-    * `msd::array_storage` (always buffered): uses [std::array](https://en.cppreference.com/w/cpp/container/array.html) (if you want stack allocation)
-        * `msd::channel<int, msd::array_storage<int, 10>> chan{};`
-        * `msd::channel<int, msd::array_storage<int, 10>> chan{10}; // does not compile because capacity is already passed as template argument`
-        * aka `msd::static_channel<int, 10>`
+  * `msd::queue_storage` (default): uses [std::queue](https://en.cppreference.com/w/cpp/container/queue.html)
+  * `msd::vector_storage`: uses [std::vector](https://en.cppreference.com/w/cpp/container/vector.html) (if cache locality is important)
+    * `msd::channel<int, msd::vector_storage<int>> chan{2};`
+  * `msd::array_storage` (always buffered): uses [std::array](https://en.cppreference.com/w/cpp/container/array.html) (if you want stack allocation)
+    * `msd::channel<int, msd::array_storage<int, 10>> chan{};`
+    * `msd::channel<int, msd::array_storage<int, 10>> chan{10}; // does not compile because capacity is already passed as template argument`
+    * aka `msd::static_channel<int, 10>`
 
 A `storage` is:
+
 * A class with a specific interface for storing elements.
 * Must implement [FIFO](https://en.wikipedia.org/wiki/FIFO) logic.
 * See [built-in storages](https://github.com/andreiavrammsd/cpp-channel/blob/master/include/msd/storage.hpp).
 
 Exceptions:
+
 * msd::operator<< throws `msd::closed_channel` if channel is closed.
 * `msd::channel::write` returns `bool` status instead of throwing.
 * Heap-allocated storages could throw.
@@ -78,104 +82,85 @@ VERSION=X.Y.Z \
 
 ## Usage
 
-```c++
-#include <cassert>
+```cpp
+// Unbuffered channel
 
 #include <msd/channel.hpp>
 
-int main() {
-    msd::channel<int> chan; // Unbuffered
+int main()
+{
+    msd::channel<int> chan;
 
-    // Send to channel
-    chan << 1 << 2;
+    chan << 1 << 2;  // Send
 
-    // Read from channel
-    int first{};
-    int second{};
-
-    chan >> first >> second;
-
-    assert(first == 1);
-    assert(second == 2);
+    int first_value{};
+    int second_value{};
+    chan >> first_value >> second_value;  // Receive
+    chan.read(first_value);  // Returns channel close status (true/false), blocks thread when channel is empty
 }
 ```
 
-```c++
-#include <cassert>
+```cpp
+// Buffered channel with custom storage
 
 #include <msd/channel.hpp>
 
-int main() {
-    msd::channel<int, msd::vector_storage<int>> chan{2}; // Buffered with vector storage
+int main()
+{
+    msd::channel<int, msd::vector_storage<int>> chan{2};
 
-    // Send to channel
-    chan << 1; // Throws if the channel is closed (after chan.close())
-    assert(chan.write(2)); // Returns false if the channel is closed (after chan.close())
-    chan << 3; // Blocks because the capacity is 2 (and no one reads from channel)
+    chan << 1;      // Throws if channel is closed
+    chan.write(2);  // Non-throwing write, returns channel close status (true/false)
+    chan << 3;      // Blocks thread (no space, no reader)
 }
 ```
 
-```c++
+```cpp
+// Range-based iteration
+
 #include <msd/channel.hpp>
 
-int main() {
-    msd::channel<int> chan{2}; // Buffered
-
-    int in = 1;
-    int out = 0;
-
-    // Send to channel
-    chan << in;
-    chan << in;
-
-    // Read from channel
-    chan.read(out);
-    chan >> out;
-    chan >> out; // Blocks because the channel is empty (and no one writes on it)
-}
-```
-
-```c++
 #include <iostream>
 
-#include <msd/channel.hpp>
+int main()
+{
+    msd::channel<int> chan{2};
 
-int main() {
-    msd::channel<int, msd::vector_storage<int>> chan;
+    chan << 1 << 2;
+    for (int value : chan) {
+        if (chan.closed()) {
+            // You can break before it's empty
+            break;
+        }
 
-    int in1 = 1;
-    int in2 = 2;
-
-    chan << in1 << in2;
-
-    for (const auto out : chan) { // Blocks: waits forever for channel items
-        std::cout << out << '\n';
+        std::cout << value << '\n';  // Blocks thread until there is data to read or channel is closed and empty
     }
 }
 ```
 
-```c++
+```cpp
+// Channel with statically-allocated storage (always buffered)
+
 #include <msd/static_channel.hpp>
 
-int main() {
-    msd::static_channel<int, 2> chan{}; // Always buffered
-    // Same as msd::channel<int, msd::array_storage<int, 2>>
+#include <algorithm>
 
-    int in = 1;
-    int out = 0;
+int main()
+{
+    msd::static_channel<int, 2> src{};
+    msd::static_channel<int, 2> dst{};
 
-    // Send to channel
-    chan.write(in);
-    chan.write(in);
+    src.write(1);
+    src.write(2);
+    src.close();
 
-    // Read from channel
-    chan.read(out);
-    chan.read(out);
-    chan.read(out); // Blocks because the channel is empty (and no one writes on it)
+    std::copy_if(src.begin(), src.end(), msd::back_inserter(dst), [](int value) { return value % 2 == 0; });
+
+    dst.size();  // 1
 }
 ```
 
-See [examples](https://github.com/andreiavrammsd/cpp-channel/tree/master/examples) and [documentation](https://andreiavrammsd.github.io/cpp-channel/).
+See [examples](https://github.com/andreiavrammsd/cpp-channel/tree/master/examples) and [tests](https://github.com/andreiavrammsd/cpp-channel/tree/master/tests). Read the [documentation](https://andreiavrammsd.github.io/cpp-channel/) for full API reference.
 
 ## Known limitations
 
