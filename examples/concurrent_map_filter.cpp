@@ -58,7 +58,7 @@ int main()
             sum += value;
 
             std::stringstream msg;
-            msg << "Consumer received " << value << "\n";
+            msg << "Consumer received " << value << '\n';
             std::cout << msg.str();
         }
 
@@ -84,7 +84,7 @@ int main()
     const int expected = 420;
 
     if (result != expected) {
-        std::cerr << "Error: result is " << result << ", expected " << expected << "\n";
+        std::cerr << "Error: result is " << result << ", expected " << expected << '\n';
         std::terminate();
     }
 

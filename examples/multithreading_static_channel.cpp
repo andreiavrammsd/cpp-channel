@@ -19,7 +19,7 @@ int main()
             chan.write(i);
 
             std::stringstream msg;
-            msg << "Sent " << i << " from " << std::this_thread::get_id() << "\n";
+            msg << "Sent " << i << " from " << std::this_thread::get_id() << '\n';
 
             {
                 std::lock_guard<std::mutex> lock(cout_mutex);
@@ -35,7 +35,7 @@ int main()
     const auto reader = [&chan, &cout_mutex]() {
         for (const auto out : chan) {  // blocking until channel is drained (closed and empty)
             std::stringstream msg;
-            msg << "Received " << out << " on " << std::this_thread::get_id() << "\n";
+            msg << "Received " << out << " on " << std::this_thread::get_id() << '\n';
 
             {
                 std::lock_guard<std::mutex> lock(cout_mutex);
