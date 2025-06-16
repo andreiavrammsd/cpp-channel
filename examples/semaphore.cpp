@@ -1,7 +1,7 @@
 #include <msd/channel.hpp>
 
+#include <cassert>
 #include <chrono>
-#include <cstddef>
 #include <future>
 #include <iostream>
 #include <numeric>
@@ -52,4 +52,6 @@ int main()
     const int result = std::accumulate(futures.begin(), futures.end(), 0,
                                        [](int acc, std::future<int>& future) { return acc + future.get(); });
     std::cout << "Result: " << result << "\n";
+
+    assert(result == 110);
 }
