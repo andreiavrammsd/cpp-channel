@@ -29,8 +29,6 @@ add_custom_target(run_examples)
 add_example(example_move move.cpp)
 run_example(example_move)
 
-add_example(example_multithreading multithreading.cpp)
-
 add_example(example_streaming streaming.cpp)
 run_example(example_streaming)
 
