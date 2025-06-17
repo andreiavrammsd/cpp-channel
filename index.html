@@ -133,7 +133,7 @@ Features</h1>
 <ul>
 <li>Thread-safe push and fetch.</li>
 <li>Use stream operators to push (&lt;&lt;) and fetch (&gt;&gt;) items.</li>
-<li>Value type must be default constructible.</li>
+<li>Value type must be default constructible, move constructible, move assignable, and destructible.</li>
 <li>Blocking (forever waiting to fetch).</li>
 <li>Range-based for loop supported.</li>
 <li>Close to prevent pushing and stop waiting to fetch.</li>
@@ -180,8 +180,8 @@ Usage</h1>
 <div class="line">    chan.<a class="code hl_function" href="classmsd_1_1channel.html#ae9986c84eed35495933d9462608ab32e">read</a>(first_value);  <span class="comment">// Returns channel close status (true/false), blocks thread when channel is empty</span></div>
 <div class="line">}</div>
 <div class="ttc" id="achannel_8hpp_html"><div class="ttname"><a href="channel_8hpp.html">channel.hpp</a></div></div>
-<div class="ttc" id="aclassmsd_1_1channel_html"><div class="ttname"><a href="classmsd_1_1channel.html">msd::channel</a></div><div class="ttdoc">Thread-safe container for sharing data between threads.</div><div class="ttdef"><b>Definition</b> channel.hpp:66</div></div>
-<div class="ttc" id="aclassmsd_1_1channel_html_ae9986c84eed35495933d9462608ab32e"><div class="ttname"><a href="classmsd_1_1channel.html#ae9986c84eed35495933d9462608ab32e">msd::channel::read</a></div><div class="ttdeci">bool read(T &amp;out)</div><div class="ttdoc">Pops an element from the channel.</div><div class="ttdef"><b>Definition</b> channel.hpp:167</div></div>
+<div class="ttc" id="aclassmsd_1_1channel_html"><div class="ttname"><a href="classmsd_1_1channel.html">msd::channel</a></div><div class="ttdoc">Thread-safe container for sharing data between threads.</div><div class="ttdef"><b>Definition</b> channel.hpp:87</div></div>
+<div class="ttc" id="aclassmsd_1_1channel_html_ae9986c84eed35495933d9462608ab32e"><div class="ttname"><a href="classmsd_1_1channel.html#ae9986c84eed35495933d9462608ab32e">msd::channel::read</a></div><div class="ttdeci">bool read(T &amp;out)</div><div class="ttdoc">Pops an element from the channel.</div><div class="ttdef"><b>Definition</b> channel.hpp:190</div></div>
 </div><!-- fragment --><div class="fragment"><div class="line"><span class="comment">// Buffered channel with custom storage</span></div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#include &lt;<a class="code" href="channel_8hpp.html">msd/channel.hpp</a>&gt;</span></div>
@@ -194,7 +194,7 @@ Usage</h1>
 <div class="line">    chan.<a class="code hl_function" href="classmsd_1_1channel.html#a70420f278973ae1f2e5a617fcdbca5a9">write</a>(2);  <span class="comment">// Non-throwing write, returns channel close status (true/false)</span></div>
 <div class="line">    chan &lt;&lt; 3;      <span class="comment">// Blocks thread (no space, no reader)</span></div>
 <div class="line">}</div>
-<div class="ttc" id="aclassmsd_1_1channel_html_a70420f278973ae1f2e5a617fcdbca5a9"><div class="ttname"><a href="classmsd_1_1channel.html#a70420f278973ae1f2e5a617fcdbca5a9">msd::channel::write</a></div><div class="ttdeci">bool write(Type &amp;&amp;value)</div><div class="ttdoc">Pushes an element into the channel.</div><div class="ttdef"><b>Definition</b> channel.hpp:142</div></div>
+<div class="ttc" id="aclassmsd_1_1channel_html_a70420f278973ae1f2e5a617fcdbca5a9"><div class="ttname"><a href="classmsd_1_1channel.html#a70420f278973ae1f2e5a617fcdbca5a9">msd::channel::write</a></div><div class="ttdeci">bool write(Type &amp;&amp;value)</div><div class="ttdoc">Pushes an element into the channel.</div><div class="ttdef"><b>Definition</b> channel.hpp:165</div></div>
 </div><!-- fragment --><div class="fragment"><div class="line"><span class="comment">// Range-based iteration</span></div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#include &lt;<a class="code" href="channel_8hpp.html">msd/channel.hpp</a>&gt;</span></div>
@@ -215,7 +215,7 @@ Usage</h1>
 <div class="line">        std::cout &lt;&lt; value &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;  <span class="comment">// Blocks thread until there is data to read or channel is closed and empty</span></div>
 <div class="line">    }</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassmsd_1_1channel_html_a6494a6764b3c3e569bf0652982a5ecc8"><div class="ttname"><a href="classmsd_1_1channel.html#a6494a6764b3c3e569bf0652982a5ecc8">msd::channel::closed</a></div><div class="ttdeci">NODISCARD bool closed() const noexcept</div><div class="ttdoc">Checks if the channel has been closed.</div><div class="ttdef"><b>Definition</b> channel.hpp:226</div></div>
+<div class="ttc" id="aclassmsd_1_1channel_html_a6494a6764b3c3e569bf0652982a5ecc8"><div class="ttname"><a href="classmsd_1_1channel.html#a6494a6764b3c3e569bf0652982a5ecc8">msd::channel::closed</a></div><div class="ttdeci">NODISCARD bool closed() const noexcept</div><div class="ttdoc">Checks if the channel has been closed.</div><div class="ttdef"><b>Definition</b> channel.hpp:249</div></div>
 </div><!-- fragment --><div class="fragment"><div class="line"><span class="comment">// Channel with statically-allocated storage (always buffered)</span></div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#include &lt;<a class="code" href="static__channel_8hpp.html">msd/static_channel.hpp</a>&gt;</span></div>
@@ -235,7 +235,7 @@ Usage</h1>
 <div class="line"> </div>
 <div class="line">    dst.size();  <span class="comment">// 1</span></div>
 <div class="line">}</div>
-<div class="ttc" id="aclassmsd_1_1channel_html_ad98b290872e2f606f427d47477049c7a"><div class="ttname"><a href="classmsd_1_1channel.html#ad98b290872e2f606f427d47477049c7a">msd::channel::close</a></div><div class="ttdeci">void close() noexcept</div><div class="ttdoc">Closes the channel, no longer accepting new elements.</div><div class="ttdef"><b>Definition</b> channel.hpp:211</div></div>
+<div class="ttc" id="aclassmsd_1_1channel_html_ad98b290872e2f606f427d47477049c7a"><div class="ttname"><a href="classmsd_1_1channel.html#ad98b290872e2f606f427d47477049c7a">msd::channel::close</a></div><div class="ttdeci">void close() noexcept</div><div class="ttdoc">Closes the channel, no longer accepting new elements.</div><div class="ttdef"><b>Definition</b> channel.hpp:234</div></div>
 <div class="ttc" id="astatic__channel_8hpp_html"><div class="ttname"><a href="static__channel_8hpp.html">static_channel.hpp</a></div></div>
 </div><!-- fragment --><p>See <a href="https://github.com/andreiavrammsd/cpp-channel/tree/master/examples">examples</a> and <a href="https://github.com/andreiavrammsd/cpp-channel/tree/master/tests">tests</a>. Read the <a href="https://andreiavrammsd.github.io/cpp-channel/">documentation</a> for full API reference.</p>
 <h1><a class="anchor" id="autotoc_md5"></a>
