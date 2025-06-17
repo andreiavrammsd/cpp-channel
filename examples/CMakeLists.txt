@@ -26,9 +26,6 @@ add_custom_target(examples)
 add_custom_target(run_examples)
 
 # Examples
-add_example(example_close close.cpp)
-run_example(example_close)
-
 add_example(example_move move.cpp)
 run_example(example_move)
 
