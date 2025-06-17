@@ -9,6 +9,8 @@ if(NOT googletest_POPULATED)
     set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
     set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
     set(BUILD_GTEST_TESTS OFF CACHE BOOL "" FORCE)
+
+    # We need an older googletest version to be compatible with C++11
     FetchContent_Declare(googletest URL https://github.com/google/googletest/archive/refs/tags/release-1.12.1.zip
                                         DOWNLOAD_EXTRACT_TIMESTAMP TRUE)
     FetchContent_MakeAvailable(googletest)
