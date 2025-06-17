@@ -58,6 +58,8 @@ class data final {
 std::size_t data::copies_{};
 std::size_t data::moves_{};
 
+// Copy and move semantics with a user-defined type.
+
 int main()
 {
     msd::channel<data> chan{10};
