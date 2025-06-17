@@ -5,12 +5,20 @@ on:
     branches:
       - master
     paths-ignore:
+      - '.devcontainer/**'
       - '.vscode/**'
+      - 'benchmarks/**'
+      - 'tests/**'
       - 'LICENSE'
+      - 'Makefile'
   pull_request:
     paths-ignore:
+      - '.devcontainer/**'
       - '.vscode/**'
+      - 'benchmarks/**'
+      - 'tests/**'
       - 'LICENSE'
+      - 'Makefile'
   workflow_dispatch:
 
 concurrency:
