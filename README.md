@@ -51,7 +51,7 @@ Exceptions:
 
 * Thread-safe push and fetch.
 * Use stream operators to push (<<) and fetch (>>) items.
-* Value type must be default constructible.
+* Value type must be default constructible, move constructible, move assignable, and destructible.
 * Blocking (forever waiting to fetch).
 * Range-based for loop supported.
 * Close to prevent pushing and stop waiting to fetch.
