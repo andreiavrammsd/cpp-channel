@@ -29,6 +29,8 @@ int simulate_heavy_computation(const int value)
     return result;
 };
 
+// https://en.wikipedia.org/wiki/Semaphore_(programming)
+
 int main()
 {
     semaphore sem{2};
