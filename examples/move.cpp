@@ -49,7 +49,7 @@ class data final {
         return *this;
     }
 
-    virtual ~data() = default;
+    ~data() = default;
 
    private:
     int value_{};
