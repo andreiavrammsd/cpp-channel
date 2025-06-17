@@ -40,6 +40,27 @@ template <typename T>
 using default_storage = queue_storage<T>;
 
 /**
+ * @brief Trait to check if a type is supported by msd::channel.
+ *
+ * This trait ensures the type meets all requirements to be safely used
+ * within the channel:
+ * - Default constructible: must be able to create a default instance.
+ * - Move constructible: must be movable to allow efficient element transfer.
+ * - Move assignable: must support move assignment for storage management.
+ * - Destructible: must have a valid destructor.
+ *
+ * @tparam T The type to check.
+ */
+template <typename T>
+struct is_supported_type {
+    /**
+     * @brief Indicates if the type meets all channel requirements.
+     */
+    static constexpr bool value = std::is_default_constructible<T>::value && std::is_move_constructible<T>::value &&
+                                  std::is_move_assignable<T>::value && std::is_destructible<T>::value;
+};
+
+/**
  * @brief Trait to check if a storage type has a static **capacity** member.
  */
 template <typename, typename = void>
@@ -65,6 +86,8 @@ struct is_static_storage<Storage, decltype((void)Storage::capacity, void())> : s
 template <typename T, typename Storage = default_storage<T>>
 class channel {
    public:
+    static_assert(is_supported_type<T>::value, "Type T does not meet all requirements.");
+
     /**
      * @brief The type of elements stored in the channel.
      */
