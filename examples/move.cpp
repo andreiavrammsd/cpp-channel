@@ -88,11 +88,8 @@ int main()
         }
     }
 
-    const std::vector<int> expected{
-        1,
-        2,
-        3,
-    };
+    // Read values
+    const std::vector<int> expected{1, 2, 3};
 
     if (actual != expected) {
         std::cerr << "Error: got: ";
