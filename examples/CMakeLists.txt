@@ -26,22 +26,11 @@ add_custom_target(examples)
 add_custom_target(run_examples)
 
 # Examples
-add_example(example_basic basic.cpp)
-run_example(example_basic)
-
-add_example(example_close close.cpp)
-run_example(example_close)
-
 add_example(example_move move.cpp)
 run_example(example_move)
 
-add_example(example_multithreading multithreading.cpp)
-
 add_example(example_streaming streaming.cpp)
 run_example(example_streaming)
-
-add_example(example_multithreading_static_channel multithreading_static_channel.cpp)
-run_example(example_multithreading_static_channel)
 
 add_example(example_concurrent_map_filter concurrent_map_filter.cpp)
 run_example(example_concurrent_map_filter)

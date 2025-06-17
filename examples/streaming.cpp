@@ -7,6 +7,8 @@
 #include <thread>
 #include <vector>
 
+// Spawns multiple producers that send strings into a channel, which are streamed to std::cout from a consumer.
+
 int main()
 {
     using messages = msd::channel<std::string>;
@@ -15,7 +17,7 @@ int main()
     messages channel{threads};
 
     // Continuously get some data on multiple threads and send it all to a channel
-    const auto input = [](messages& chan, std::size_t thread, std::chrono::milliseconds pause) {
+    const auto produce = [](const std::size_t thread, const std::chrono::milliseconds pause, messages& chan) {
         thread_local static std::size_t inc = 0U;
 
         while (!chan.closed()) {
@@ -26,24 +28,24 @@ int main()
         }
     };
 
-    std::vector<std::future<void>> in_futures;
+    std::vector<std::future<void>> producers;
     for (std::size_t i = 0U; i < threads; ++i) {
-        in_futures.push_back(std::async(input, std::ref(channel), i, std::chrono::milliseconds{500}));
+        producers.push_back(std::async(produce, i, std::chrono::milliseconds{500}, std::ref(channel)));
     }
 
     // Close the channel after some time
-    const auto timeout = [](messages& chan, std::chrono::milliseconds after) {
+    const auto close = [](const std::chrono::milliseconds after, messages& chan) {
         std::this_thread::sleep_for(after);
         chan.close();
     };
-    const auto timeout_future = std::async(timeout, std::ref(channel), std::chrono::milliseconds{3000U});
+    const auto closer = std::async(close, std::chrono::milliseconds{3000U}, std::ref(channel));
 
-    // Stream incoming data to a destination
+    // Stream incoming messages
     std::move(channel.begin(), channel.end(), std::ostream_iterator<std::string>(std::cout, "\n"));
 
-    // Wait for other threads
-    for (auto& future : in_futures) {
-        future.wait();
+    // Wait all tasks
+    for (auto& producer : producers) {
+        producer.wait();
     }
-    timeout_future.wait();
+    closer.wait();
 }
