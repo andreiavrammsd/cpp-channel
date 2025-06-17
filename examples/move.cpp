@@ -1,4 +1,4 @@
-#include <msd/channel.hpp>
+#include <msd/static_channel.hpp>
 
 #include <cstddef>
 #include <iostream>
@@ -62,7 +62,7 @@ std::size_t data::moves_{};
 
 int main()
 {
-    msd::channel<data> chan{10};
+    msd::static_channel<data, 10> chan{};
 
     // l-value: will be copied
     const auto in1 = data{1};
