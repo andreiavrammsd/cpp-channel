@@ -42,7 +42,7 @@ int main()
 
     // Continuously write to channel until process shutdown is requested
     const auto produce = [&channel]() {
-        thread_local static int inc = 0;
+        static int inc = 0;
 
         while (!shutdown.load(std::memory_order_seq_cst)) {
             ++inc;
