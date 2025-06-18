@@ -5,6 +5,7 @@
 
 #include "blocking_iterator.hpp"
 #include "nodiscard.hpp"
+#include "result.hpp"
 #include "storage.hpp"
 
 #include <condition_variable>
@@ -16,19 +17,6 @@
 /** @file */
 
 namespace msd {
-
-/**
- * @brief Exception thrown if trying to write on closed channel.
- */
-class closed_channel : public std::runtime_error {
-   public:
-    /**
-     * @brief Constructs the exception with an error message.
-     *
-     * @param msg A descriptive message explaining the cause of the error.
-     */
-    explicit closed_channel(const char* msg) : std::runtime_error{msg} {}
-};
 
 /**
  * @brief Default storage for msd::channel.
@@ -73,6 +61,35 @@ struct is_static_storage : std::false_type {};
  */
 template <typename Storage>
 struct is_static_storage<Storage, decltype((void)Storage::capacity, void())> : std::true_type {};
+
+/**
+ * @brief Exception thrown if trying to write on closed channel.
+ */
+class closed_channel : public std::runtime_error {
+   public:
+    /**
+     * @brief Constructs the exception with an error message.
+     *
+     * @param msg A descriptive message explaining the cause of the error.
+     */
+    explicit closed_channel(const char* msg) : std::runtime_error{msg} {}
+};
+
+/**
+ * @brief Possible errors during a batch write operation.
+ */
+enum class batch_write_error {
+    /**
+     * @brief The specified range exceeds the available capacity.
+     */
+    range_exceeds_capacity,
+
+    /**
+     * @brief The receiving channel is closed and cannot accept data.
+     */
+    channel_is_closed,
+};
+
 
 /**
  * @brief Thread-safe container for sharing data between threads.
@@ -178,6 +195,48 @@ class channel {
         cnd_.notify_one();
 
         return true;
+    }
+
+    /**
+     * @brief Writes a range of elements into the channel in batch mode.
+     *
+     * This function attempts to write all elements from the input range [begin, end)
+     * into the channel. If the channel has a capacity and the range exceeds that capacity,
+     * the function returns an error. If the channel is closed, it also returns an error.
+     *
+     * @tparam InputIterator An input iterator type pointing to elements of type `T`.
+     * @param begin Iterator pointing to the beginning of the range to write.
+     * @param end Iterator pointing to the end of the range to write (exclusive).
+     * @return A result indicating success or containing a `batch_write_error`:
+     *   - `batch_write_error::range_exceeds_capacity` if the range is too large to fit.
+     *   - `batch_write_error::channel_is_closed` if the channel is already closed.
+     *   - Empty (success) if all elements were successfully written.
+     *
+     * @note It takes the lock on the channel once for all elements and release it at the end.
+     */
+    template <typename InputIterator>
+    result<void, batch_write_error> batch_write(const InputIterator begin, const InputIterator end)
+    {
+        if (capacity_ > 0 && (static_cast<std::size_t>(std::distance(begin, end)) + storage_.size()) > capacity_) {
+            return result<void, batch_write_error>{batch_write_error::range_exceeds_capacity};
+        }
+
+        {
+            std::unique_lock<std::mutex> lock{mtx_};
+            wait_before_write(lock);
+
+            if (is_closed_) {
+                return result<void, batch_write_error>{batch_write_error::channel_is_closed};
+            }
+
+            for (InputIterator it = begin; it != end; ++it) {
+                storage_.push_back(*it);
+            }
+        }
+
+        cnd_.notify_one();
+
+        return result<void, batch_write_error>{};
     }
 
     /**

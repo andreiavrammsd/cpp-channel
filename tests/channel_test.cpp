@@ -8,6 +8,7 @@
 #include <atomic>
 #include <cstdint>
 #include <future>
+#include <iterator>
 #include <numeric>
 #include <string>
 #include <thread>
@@ -153,6 +154,62 @@ TEST(ChannelTest, PushByMoveAndFetch)
 
     channel >> out;
     EXPECT_EQ("def", out);
+}
+
+TEST(ChannelTest, BatchWriteOnUnbufferedChannel)
+{
+    msd::channel<int> channel{};
+
+    msd::result<void, msd::batch_write_error> result;
+    std::vector<int> input(100);
+    std::iota(input.begin(), input.end(), 0);
+
+    result = channel.batch_write(input.cbegin(), input.cend());
+    EXPECT_TRUE(result);
+    EXPECT_EQ(channel.size(), 100);
+    EXPECT_EQ(input.size(), 100);
+
+    std::vector<int> output(100);
+    auto iter = output.begin();
+    while (!channel.empty()) {
+        channel >> *iter;
+        ++iter;
+    }
+    for (std::size_t i = 0; i < output.size(); ++i) {
+        EXPECT_EQ(output[i], i);
+    }
+}
+
+TEST(ChannelTest, BatchWriteOnBufferedChannel)
+{
+    msd::channel<int> channel{10};
+
+    msd::result<void, msd::batch_write_error> result;
+    std::vector<int> input(100);
+    std::iota(input.begin(), input.end(), 0);
+
+    // Too many
+    result = channel.batch_write(input.cbegin(), input.cend());
+    EXPECT_FALSE(result);
+    EXPECT_EQ(result.error(), msd::batch_write_error::range_exceeds_capacity);
+    EXPECT_EQ(channel.size(), 0);
+    EXPECT_EQ(input.size(), 100);
+
+    // Ok
+    result = channel.batch_write(std::next(input.begin(), 2), std::next(input.begin(), 7));
+    EXPECT_TRUE(result);
+    EXPECT_EQ(channel.size(), 5);
+    EXPECT_EQ(input.size(), 100);
+
+    std::vector<int> output(5);
+    auto iter = output.begin();
+    while (!channel.empty()) {
+        channel >> *iter;
+        ++iter;
+    }
+    for (std::size_t i = 0; i < output.size(); ++i) {
+        EXPECT_EQ(output[i], i + 2);
+    }
 }
 
 TEST(ChannelTest, size)
