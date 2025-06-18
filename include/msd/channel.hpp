@@ -9,6 +9,7 @@
 #include "storage.hpp"
 
 #include <condition_variable>
+#include <cstdint>
 #include <cstdlib>
 #include <mutex>
 #include <stdexcept>
@@ -78,7 +79,7 @@ class closed_channel : public std::runtime_error {
 /**
  * @brief Possible errors during a batch write operation.
  */
-enum class batch_write_error {
+enum class batch_write_error : std::int8_t {
     /**
      * @brief The specified range exceeds the available capacity.
      */
