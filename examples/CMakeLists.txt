@@ -37,3 +37,5 @@ run_example(example_concurrent_map_filter)
 
 add_example(example_semaphore semaphore.cpp)
 run_example(example_semaphore)
+
+add_example(example_graceful_shutdown graceful_shutdown.cpp)
