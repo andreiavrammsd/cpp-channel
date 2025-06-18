@@ -91,7 +91,6 @@ enum class batch_write_error : std::int8_t {
     channel_is_closed,
 };
 
-
 /**
  * @brief Thread-safe container for sharing data between threads.
  *
