@@ -212,6 +212,23 @@ TEST(ChannelTest, BatchWriteOnBufferedChannel)
     }
 }
 
+TEST(ChannelTest, BatchWriteOnClosedChannel)
+{
+    msd::channel<int> channel{10};
+
+    msd::result<void, msd::batch_write_error> result;
+    std::vector<int> input(100);
+    std::iota(input.begin(), input.end(), 0);
+
+    channel.close();
+
+    result = channel.batch_write(input.cbegin(), input.cend());
+    EXPECT_FALSE(result);
+    EXPECT_EQ(result.error(), msd::batch_write_error::channel_is_closed);
+    EXPECT_TRUE(channel.empty());
+    EXPECT_EQ(input.size(), 100);
+}
+
 TEST(ChannelTest, size)
 {
     msd::channel<int> channel;
