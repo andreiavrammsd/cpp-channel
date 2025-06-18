@@ -217,16 +217,16 @@ class channel {
     template <typename InputIterator>
     result<void, batch_write_error> batch_write(const InputIterator begin, const InputIterator end)
     {
-        if (capacity_ > 0 && (static_cast<std::size_t>(std::distance(begin, end)) + storage_.size()) > capacity_) {
-            return result<void, batch_write_error>{batch_write_error::range_exceeds_capacity};
-        }
-
         {
             std::unique_lock<std::mutex> lock{mtx_};
             wait_before_write(lock);
 
             if (is_closed_) {
                 return result<void, batch_write_error>{batch_write_error::channel_is_closed};
+            }
+
+            if (capacity_ > 0 && (static_cast<std::size_t>(std::distance(begin, end)) + storage_.size()) > capacity_) {
+                return result<void, batch_write_error>{batch_write_error::range_exceeds_capacity};
             }
 
             for (InputIterator it = begin; it != end; ++it) {
