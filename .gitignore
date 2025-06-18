@@ -3,3 +3,4 @@
 install
 docs
 .cache
+*.profraw
