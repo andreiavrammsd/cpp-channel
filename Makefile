@@ -7,6 +7,7 @@ DOCS_DIR = docs
 all:
 
 bench:
+	# If needed: sudo cpupower frequency-set --governor <performance|powersave>
 	mkdir -p $(BENCH_DIR) && cd $(BENCH_DIR) \
 	&& cmake ../.. -DCMAKE_BUILD_TYPE=Release -DCPP_CHANNEL_BUILD_BENCHMARKS=ON \
 	&& cmake --build . --config Release --target channel_benchmark -j \
