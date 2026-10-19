@@ -1,15 +1,12 @@
 cmake_minimum_required(VERSION 3.15)
 project(cpp_channel VERSION 1.3.1)
 
-set(CMAKE_CXX_STANDARD 11 CACHE STRING "C++ standard")
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 include(warnings)
 
 add_library(msd_channel INTERFACE)
 target_include_directories(msd_channel INTERFACE include)
+target_compile_features(msd_channel INTERFACE cxx_std_11)
 
 option(CPP_CHANNEL_BUILD_TESTS "Build all of cpp_channel's own tests." OFF)
 option(CPP_CHANNEL_BUILD_BENCHMARKS "Build all of cpp_channel's own benchmark tests." OFF)
@@ -17,6 +14,10 @@ option(CPP_CHANNEL_BUILD_EXAMPLES "Build cpp_channel's example programs." OFF)
 option(CPP_CHANNEL_COVERAGE "Generate test coverage." OFF)
 option(CPP_CHANNEL_SANITIZERS "Build with sanitizers." OFF)
 option(CPP_CHANNEL_SANITIZE_THREADS "Build with thread sanitizer." OFF)
+
+function(cpp_channel_configure_target TARGET)
+    set_target_properties(${TARGET} PROPERTIES CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF)
+endfunction()
 
 if(CPP_CHANNEL_BUILD_TESTS)
     enable_testing()

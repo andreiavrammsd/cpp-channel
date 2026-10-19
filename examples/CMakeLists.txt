@@ -1,5 +1,6 @@
 function(add_example NAME)
     add_executable(${NAME} ${ARGN})
+    cpp_channel_configure_target(${NAME})
 
     set_target_warnings(${NAME} PRIVATE)
     target_link_libraries(${NAME} msd_channel)

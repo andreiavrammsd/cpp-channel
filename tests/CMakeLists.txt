@@ -19,6 +19,7 @@ endif()
 # Test macro
 function(package_add_test TESTNAME)
     add_executable(${TESTNAME} ${ARGN})
+    cpp_channel_configure_target(${TESTNAME})
 
     set_target_warnings(${TESTNAME} PRIVATE)
     target_link_libraries(${TESTNAME} msd_channel gtest gtest_main)

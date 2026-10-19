@@ -10,6 +10,8 @@ endif()
 
 function(package_add_benchmark TESTNAME)
     add_executable(${TESTNAME} ${ARGN})
+    cpp_channel_configure_target(${TESTNAME})
+
     set_target_warnings(${TESTNAME} PRIVATE)
     target_link_libraries(${TESTNAME} msd_channel benchmark)
 endfunction()
