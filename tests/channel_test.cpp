@@ -201,6 +201,30 @@ TEST(ChannelTest, close)
     EXPECT_THROW(channel << std::move(in), msd::closed_channel);
 }
 
+TEST(ChannelTest, CloseUnblocksWriterOnFullBoundedChannel)
+{
+    msd::channel<int> channel{1};
+
+    // Fill the channel to capacity so the next write blocks.
+    channel << 1;
+
+    std::atomic<bool> write_returned{false};
+    std::future<bool> write_result = std::async(std::launch::async, [&channel, &write_returned]() {
+        const bool ok = channel.write(2);
+        write_returned = true;
+        return ok;
+    });
+
+    // Give the writer thread time to block on the full channel.
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    EXPECT_FALSE(write_returned);
+
+    channel.close();
+
+    EXPECT_FALSE(write_result.get());
+    EXPECT_TRUE(write_returned);
+}
+
 TEST(ChannelTest, drained)
 {
     msd::channel<int> channel;
