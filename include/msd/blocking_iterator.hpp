@@ -52,6 +52,14 @@ class blocking_iterator {
      * @param chan Reference to the channel this iterator will iterate over.
      * @param is_end If true, the iterator is in an end state (no elements to read).
      */
+#ifdef _MSC_VER
+// False positive in MSVC (Release).
+// https://github.com/stephenberry/glaze/issues/2545
+// https://github.com/stephenberry/glaze/pull/2556
+// https://developercommunity.visualstudio.com/t/Wrong-C4702-unreachable-code-in-template/10978308
+#pragma warning(push)
+#pragma warning(disable : 4702)
+#endif
     explicit blocking_iterator(Channel& chan,
                                bool is_end = false) noexcept(std::is_nothrow_default_constructible<value_type>::value &&
                                                              std::is_nothrow_move_assignable<value_type>::value)
@@ -61,12 +69,19 @@ class blocking_iterator {
             is_end_ = true;
         }
     }
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
     /**
      * @brief Retrieves the next element from the channel.
      *
      * @return The iterator itself.
      */
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable : 4702)  // See the comment on the constructor above.
+#endif
     blocking_iterator<Channel>& operator++() noexcept(std::is_nothrow_move_assignable<value_type>::value)
     {
         if (!chan_->read(value_)) {
@@ -74,6 +89,9 @@ class blocking_iterator {
         }
         return *this;
     }
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
     /**
      * @brief Returns the latest element retrieved from the channel.
