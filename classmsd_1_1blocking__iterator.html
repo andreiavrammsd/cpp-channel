@@ -108,13 +108,13 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>pointer</b> = const 
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a331c6d5ca659bafef14047811b3afa54" id="r_a331c6d5ca659bafef14047811b3afa54"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a331c6d5ca659bafef14047811b3afa54">blocking_iterator</a> (Channel &amp;chan, bool is_end=false)</td></tr>
-<tr class="memdesc:a331c6d5ca659bafef14047811b3afa54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a blocking iterator from a channel reference.  <br /></td></tr>
-<tr class="memitem:a2509d637932b686aabca166ca402c087" id="r_a2509d637932b686aabca166ca402c087"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a331c6d5ca659bafef14047811b3afa54">blocking_iterator</a>&lt; Channel &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2509d637932b686aabca166ca402c087">operator++</a> () noexcept</td></tr>
-<tr class="memdesc:a2509d637932b686aabca166ca402c087"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the next element from the channel.  <br /></td></tr>
+<tr class="memitem:ab1097c78095ba96d083b1e35a7a39251" id="r_ab1097c78095ba96d083b1e35a7a39251"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab1097c78095ba96d083b1e35a7a39251">blocking_iterator</a> (Channel &amp;chan, bool is_end=false) noexcept(std::is_nothrow_default_constructible&lt; <a class="el" href="#ae07231ca822083cc5d324cb2f31c4755">value_type</a> &gt;::value &amp;&amp;std::is_nothrow_move_assignable&lt; <a class="el" href="#ae07231ca822083cc5d324cb2f31c4755">value_type</a> &gt;::value)</td></tr>
+<tr class="memdesc:ab1097c78095ba96d083b1e35a7a39251"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a blocking iterator from a channel reference.  <br /></td></tr>
+<tr class="memitem:ade792317ad570bf860b0d6791155d171" id="r_ade792317ad570bf860b0d6791155d171"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#ab1097c78095ba96d083b1e35a7a39251">blocking_iterator</a>&lt; Channel &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ade792317ad570bf860b0d6791155d171">operator++</a> () noexcept(std::is_nothrow_move_assignable&lt; <a class="el" href="#ae07231ca822083cc5d324cb2f31c4755">value_type</a> &gt;::value)</td></tr>
+<tr class="memdesc:ade792317ad570bf860b0d6791155d171"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the next element from the channel.  <br /></td></tr>
 <tr class="memitem:a021d6d7eab5c1a7c012b46196074a47c" id="r_a021d6d7eab5c1a7c012b46196074a47c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a584eb190837cc23a6e4351d5a9206fa4">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a021d6d7eab5c1a7c012b46196074a47c">operator*</a> ()</td></tr>
 <tr class="memdesc:a021d6d7eab5c1a7c012b46196074a47c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the latest element retrieved from the channel.  <br /></td></tr>
-<tr class="memitem:a5ba077efa58f8c500bf7c2e7c989a3b7" id="r_a5ba077efa58f8c500bf7c2e7c989a3b7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5ba077efa58f8c500bf7c2e7c989a3b7">operator!=</a> (const <a class="el" href="#a331c6d5ca659bafef14047811b3afa54">blocking_iterator</a> &amp;other)</td></tr>
+<tr class="memitem:a5ba077efa58f8c500bf7c2e7c989a3b7" id="r_a5ba077efa58f8c500bf7c2e7c989a3b7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5ba077efa58f8c500bf7c2e7c989a3b7">operator!=</a> (const <a class="el" href="#ab1097c78095ba96d083b1e35a7a39251">blocking_iterator</a> &amp;other)</td></tr>
 <tr class="memdesc:a5ba077efa58f8c500bf7c2e7c989a3b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes iteration continue until the channel is closed and empty.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
@@ -128,8 +128,8 @@ class msd::blocking_iterator&lt; Channel &gt;</div><p>An iterator that blocks th
   </dd>
 </dl>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a331c6d5ca659bafef14047811b3afa54" name="a331c6d5ca659bafef14047811b3afa54"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a331c6d5ca659bafef14047811b3afa54">&#9670;&#160;</a></span>blocking_iterator()</h2>
+<a id="ab1097c78095ba96d083b1e35a7a39251" name="ab1097c78095ba96d083b1e35a7a39251"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1097c78095ba96d083b1e35a7a39251">&#9670;&#160;</a></span>blocking_iterator()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -152,7 +152,7 @@ template&lt;typename Channel&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel explicit">explicit</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel explicit">explicit</span><span class="mlabel noexcept">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -183,7 +183,7 @@ template&lt;typename Channel&gt; </div>
         <tr>
           <td class="memname">bool <a class="el" href="classmsd_1_1blocking__iterator.html">msd::blocking_iterator</a>&lt; Channel &gt;::operator!= </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="#a331c6d5ca659bafef14047811b3afa54">blocking_iterator</a>&lt; Channel &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>other</em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="#ab1097c78095ba96d083b1e35a7a39251">blocking_iterator</a>&lt; Channel &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>other</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -237,8 +237,8 @@ template&lt;typename Channel&gt; </div>
 
 </div>
 </div>
-<a id="a2509d637932b686aabca166ca402c087" name="a2509d637932b686aabca166ca402c087"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2509d637932b686aabca166ca402c087">&#9670;&#160;</a></span>operator++()</h2>
+<a id="ade792317ad570bf860b0d6791155d171" name="ade792317ad570bf860b0d6791155d171"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade792317ad570bf860b0d6791155d171">&#9670;&#160;</a></span>operator++()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -249,7 +249,7 @@ template&lt;typename Channel&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="#a331c6d5ca659bafef14047811b3afa54">blocking_iterator</a>&lt; Channel &gt; &amp; <a class="el" href="classmsd_1_1blocking__iterator.html">msd::blocking_iterator</a>&lt; Channel &gt;::operator++ </td>
+          <td class="memname"><a class="el" href="#ab1097c78095ba96d083b1e35a7a39251">blocking_iterator</a>&lt; Channel &gt; &amp; <a class="el" href="classmsd_1_1blocking__iterator.html">msd::blocking_iterator</a>&lt; Channel &gt;::operator++ </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>

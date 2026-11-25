@@ -129,10 +129,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>close</b> () noexcept
 <tr class="memdesc:a6494a6764b3c3e569bf0652982a5ecc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the channel has been closed.  <br /></td></tr>
 <tr class="memitem:a3653bbd5e13fc9c93bb52d8f0d512f90" id="r_a3653bbd5e13fc9c93bb52d8f0d512f90"><td class="memItemLeft" align="right" valign="top">NODISCARD bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3653bbd5e13fc9c93bb52d8f0d512f90">drained</a> () noexcept</td></tr>
 <tr class="memdesc:a3653bbd5e13fc9c93bb52d8f0d512f90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the channel has been closed and is empty.  <br /></td></tr>
-<tr class="memitem:af354e4d952ae42bfd2ed0d38393bd1f1" id="r_af354e4d952ae42bfd2ed0d38393bd1f1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#adeb18eef7d5a6bd0d32d08a8a2963967">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af354e4d952ae42bfd2ed0d38393bd1f1">begin</a> () noexcept</td></tr>
-<tr class="memdesc:af354e4d952ae42bfd2ed0d38393bd1f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an iterator to the beginning of the channel.  <br /></td></tr>
-<tr class="memitem:aee2dafef5c18609b3cdb9d48345dbceb" id="r_aee2dafef5c18609b3cdb9d48345dbceb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#adeb18eef7d5a6bd0d32d08a8a2963967">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aee2dafef5c18609b3cdb9d48345dbceb">end</a> () noexcept</td></tr>
-<tr class="memdesc:aee2dafef5c18609b3cdb9d48345dbceb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an iterator representing the end of the channel.  <br /></td></tr>
+<tr class="memitem:a4db1506832348fb26ab00fd40451d82f" id="r_a4db1506832348fb26ab00fd40451d82f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#adeb18eef7d5a6bd0d32d08a8a2963967">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4db1506832348fb26ab00fd40451d82f">begin</a> () noexcept(std::is_nothrow_default_constructible&lt; T &gt;::value &amp;&amp;std::is_nothrow_move_assignable&lt; T &gt;::value)</td></tr>
+<tr class="memdesc:a4db1506832348fb26ab00fd40451d82f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an iterator to the beginning of the channel.  <br /></td></tr>
+<tr class="memitem:a06bbec13d22f50953bbf2be6db82cc2f" id="r_a06bbec13d22f50953bbf2be6db82cc2f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#adeb18eef7d5a6bd0d32d08a8a2963967">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a06bbec13d22f50953bbf2be6db82cc2f">end</a> () noexcept(std::is_nothrow_default_constructible&lt; T &gt;::value &amp;&amp;std::is_nothrow_move_assignable&lt; T &gt;::value)</td></tr>
+<tr class="memdesc:a06bbec13d22f50953bbf2be6db82cc2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an iterator representing the end of the channel.  <br /></td></tr>
 <tr class="memitem:ab0c937b48942adc5ecc28b151b52369a" id="r_ab0c937b48942adc5ecc28b151b52369a"><td class="memItemLeft" align="right" valign="top"><a id="ab0c937b48942adc5ecc28b151b52369a" name="ab0c937b48942adc5ecc28b151b52369a"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>channel</b> (const channel &amp;)=delete</td></tr>
 <tr class="memitem:ab7e4162cd0f54a2cc48616d2793c1f04" id="r_ab7e4162cd0f54a2cc48616d2793c1f04"><td class="memItemLeft" align="right" valign="top"><a id="ab7e4162cd0f54a2cc48616d2793c1f04" name="ab7e4162cd0f54a2cc48616d2793c1f04"></a>
@@ -236,8 +236,8 @@ template&lt;typename S = Storage, typename std::enable_if&lt;!<a class="el" href
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
-<a id="af354e4d952ae42bfd2ed0d38393bd1f1" name="af354e4d952ae42bfd2ed0d38393bd1f1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af354e4d952ae42bfd2ed0d38393bd1f1">&#9670;&#160;</a></span>begin()</h2>
+<a id="a4db1506832348fb26ab00fd40451d82f" name="a4db1506832348fb26ab00fd40451d82f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4db1506832348fb26ab00fd40451d82f">&#9670;&#160;</a></span>begin()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -362,8 +362,8 @@ false Otherwise. </dd></dl>
 
 </div>
 </div>
-<a id="aee2dafef5c18609b3cdb9d48345dbceb" name="aee2dafef5c18609b3cdb9d48345dbceb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aee2dafef5c18609b3cdb9d48345dbceb">&#9670;&#160;</a></span>end()</h2>
+<a id="a06bbec13d22f50953bbf2be6db82cc2f" name="a06bbec13d22f50953bbf2be6db82cc2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06bbec13d22f50953bbf2be6db82cc2f">&#9670;&#160;</a></span>end()</h2>
 
 <div class="memitem">
 <div class="memproto">
