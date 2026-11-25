@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['channel_0',['Channel',['../index.html',1,'']]]
+  ['about_0',['About',['../index.html#autotoc_md1',1,'']]]
 ];
