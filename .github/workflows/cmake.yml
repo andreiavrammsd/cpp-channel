@@ -164,3 +164,19 @@ jobs:
 
       - name: Run Clang Tidy
         run: clang-tidy -p ${{github.workspace}}/build $(find include -type f) -- -std=c++11
+
+  gate:
+      name: gate
+      needs: [test, coverage, format, clang-tidy]
+      if: ${{ always() }}
+      runs-on: ubuntu-slim
+      permissions: {}
+      steps:
+        - name: Check results
+          env:
+            RESULTS: ${{ toJSON(needs.*.result) }}
+          run: |
+            echo "$RESULTS"
+            if echo "$RESULTS" | grep -qE 'failure|cancelled'; then
+              exit 1
+            fi
