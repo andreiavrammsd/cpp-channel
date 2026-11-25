@@ -4,7 +4,14 @@ BENCH_DIR = build/bench
 COV_DIR = build/coverage
 DOCS_DIR = docs
 
-all:
+.PHONY: all test bench coverage doc format clean
+
+all: test
+
+test:
+	cmake -S . -B $(BUILD_DIR) -DCMAKE_BUILD_TYPE=Debug -DCPP_CHANNEL_BUILD_TESTS=ON
+	cmake --build $(BUILD_DIR) --config Debug --target channel_tests -j
+	ctest --test-dir $(BUILD_DIR) -C Debug --output-on-failure -L channel_tests -j
 
 bench:
 	# If needed: sudo cpupower frequency-set --governor <performance|powersave>
