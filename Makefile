@@ -4,7 +4,14 @@ BENCH_DIR = build/bench
 COV_DIR = build/coverage
 DOCS_DIR = docs
 
-all:
+.PHONY: all test bench coverage doc format clean
+
+all: test
+
+test:
+	cmake -S . -B $(BUILD_DIR) -DCMAKE_BUILD_TYPE=Debug -DCPP_CHANNEL_BUILD_TESTS=ON
+	cmake --build $(BUILD_DIR) --config Debug --target channel_tests -j
+	ctest --test-dir $(BUILD_DIR) -C Debug --output-on-failure -L channel_tests -j
 
 bench:
 	# If needed: sudo cpupower frequency-set --governor <performance|powersave>
@@ -20,7 +27,7 @@ coverage:
 	&& cmake ../.. -DCMAKE_BUILD_TYPE=Debug -DCPP_CHANNEL_BUILD_TESTS=ON -DCPP_CHANNEL_COVERAGE=ON \
 	&& cmake --build . --config Debug --target channel_tests -j \
 	&& ctest -C Debug --verbose -L channel_tests --output-on-failure -j \
-	&& lcov  --capture --directory . --output-file coverage.info  --ignore-errors mismatch \
+	&& lcov  --capture --directory . --output-file coverage.info  --ignore-errors mismatch,inconsistent,negative \
 	&& lcov --remove coverage.info "*/usr/*" -o coverage.info \
 	&& lcov --remove coverage.info "*/gtest/*" -o coverage.info \
 	&& genhtml coverage.info --output-directory coverage-report \

@@ -299,7 +299,7 @@ class channel {
     void wait_before_write(std::unique_lock<std::mutex>& lock)
     {
         if (capacity_ > 0) {
-            cnd_.wait(lock, [this]() { return storage_.size() < capacity_; });
+            cnd_.wait(lock, [this]() { return storage_.size() < capacity_ || is_closed_; });
         }
     }
 };

@@ -1,4 +1,4 @@
-FROM ubuntu:24.04
+FROM ubuntu:26.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 ARG USER=ubuntu
@@ -21,12 +21,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libclang-rt-18-dev \
     lldb \
     llvm \
+    locales \
     nano \
     openssh-client \
     pipx \
     sudo \
     unzip \
     wget \
+    && locale-gen en_US.UTF-8 \
+    && update-locale LANG=en_US.UTF-8 \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Configure user environment and permissions
@@ -39,7 +42,6 @@ RUN passwd -d ${USER} \
 USER ${USER}
 
 # Install cmake-format
-RUN pipx install cmake-format --include-deps \
-    && pipx ensurepath
+RUN pipx install cmake-format --include-deps && pipx ensurepath
 
 WORKDIR /workspace

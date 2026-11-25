@@ -175,6 +175,9 @@ class array_storage {
     std::size_t front_{0};
 };
 
+/**
+ * @brief Out-of-class definition of array_storage::capacity, required pre-C++17 when the member is odr-used.
+ */
 template <typename T, std::size_t N>
 constexpr std::size_t array_storage<T, N>::capacity;
 

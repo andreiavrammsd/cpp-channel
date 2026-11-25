@@ -120,7 +120,7 @@ jobs:
         working-directory: ${{github.workspace}}/build
         run: |
           sudo apt-get install lcov -y
-          lcov --capture --directory . --output-file coverage.info --ignore-errors mismatch
+          lcov --capture --directory . --output-file coverage.info --ignore-errors mismatch,inconsistent,negative
           lcov --remove coverage.info "*/usr/*" -o coverage.info
 
       - name: Upload coverage reports to Codecov
@@ -164,3 +164,19 @@ jobs:
 
       - name: Run Clang Tidy
         run: clang-tidy -p ${{github.workspace}}/build $(find include -type f) -- -std=c++11
+
+  gate:
+      name: gate
+      needs: [test, coverage, format, clang-tidy]
+      if: ${{ always() }}
+      runs-on: ubuntu-slim
+      permissions: {}
+      steps:
+        - name: Check results
+          env:
+            RESULTS: ${{ toJSON(needs.*.result) }}
+          run: |
+            echo "$RESULTS"
+            if echo "$RESULTS" | grep -qE 'failure|cancelled'; then
+              exit 1
+            fi
