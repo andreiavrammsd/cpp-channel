@@ -269,14 +269,22 @@ class channel {
      *
      * @return A blocking iterator pointing to the start of the channel.
      */
-    iterator begin() noexcept { return blocking_iterator<channel<T, Storage>>{*this}; }
+    iterator begin() noexcept(std::is_nothrow_default_constructible<T>::value &&
+                              std::is_nothrow_move_assignable<T>::value)
+    {
+        return blocking_iterator<channel<T, Storage>>{*this};
+    }
 
     /**
      * @brief Returns an iterator representing the end of the channel.
      *
      * @return A blocking iterator representing the end condition.
      */
-    iterator end() noexcept { return blocking_iterator<channel<T, Storage>>{*this, true}; }
+    iterator end() noexcept(std::is_nothrow_default_constructible<T>::value &&
+                            std::is_nothrow_move_assignable<T>::value)
+    {
+        return blocking_iterator<channel<T, Storage>>{*this, true};
+    }
 
     channel(const channel&) = delete;
     channel& operator=(const channel&) = delete;

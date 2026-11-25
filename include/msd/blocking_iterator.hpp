@@ -5,6 +5,7 @@
 
 #include <cstddef>
 #include <iterator>
+#include <type_traits>
 
 /** @file */
 
@@ -51,7 +52,10 @@ class blocking_iterator {
      * @param chan Reference to the channel this iterator will iterate over.
      * @param is_end If true, the iterator is in an end state (no elements to read).
      */
-    explicit blocking_iterator(Channel& chan, bool is_end = false) : chan_{&chan}, is_end_{is_end}
+    explicit blocking_iterator(Channel& chan,
+                               bool is_end = false) noexcept(std::is_nothrow_default_constructible<value_type>::value &&
+                                                             std::is_nothrow_move_assignable<value_type>::value)
+        : chan_{&chan}, is_end_{is_end}
     {
         if (!is_end_ && !chan_->read(value_)) {
             is_end_ = true;
@@ -63,7 +67,7 @@ class blocking_iterator {
      *
      * @return The iterator itself.
      */
-    blocking_iterator<Channel>& operator++() noexcept
+    blocking_iterator<Channel>& operator++() noexcept(std::is_nothrow_move_assignable<value_type>::value)
     {
         if (!chan_->read(value_)) {
             is_end_ = true;

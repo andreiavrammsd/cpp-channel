@@ -9,9 +9,11 @@
 #include <cstdint>
 #include <future>
 #include <numeric>
+#include <stdexcept>
 #include <string>
 #include <thread>
 #include <type_traits>
+#include <utility>
 #include <vector>
 
 TEST(ChannelTest, Traits)
@@ -520,4 +522,74 @@ TEST(ChannelTest, CopyToVector)
     std::copy(chan.begin(), chan.end(), std::back_inserter(results));
 
     EXPECT_EQ(results, std::vector<int>({0, 0, 0, 0, 1, 2, 3, 4}));
+}
+
+// Always throws on default construction.
+class ThrowingDefaultConstruct {
+    int value_{0};
+
+   public:
+    ThrowingDefaultConstruct() { throw std::runtime_error("default construction failed"); }
+
+    explicit ThrowingDefaultConstruct(int value) : value_{value} {}
+
+    int get_value() const { return value_; }
+};
+
+// Throws on move assignment, but only when moving value 2, so a first read can succeed
+// before a second read triggers the throw.
+class ThrowingMoveAssign {
+    int value_{0};
+
+   public:
+    explicit ThrowingMoveAssign(int value = 0) : value_{value} {}
+
+    ThrowingMoveAssign(ThrowingMoveAssign&&) noexcept = default;
+
+    ThrowingMoveAssign& operator=(ThrowingMoveAssign&& other)
+    {
+        if (other.value_ == 2) {
+            throw std::runtime_error("move assignment failed");
+        }
+        value_ = other.value_;
+        return *this;
+    }
+
+    ThrowingMoveAssign(const ThrowingMoveAssign&) = delete;
+    ThrowingMoveAssign& operator=(const ThrowingMoveAssign&) = delete;
+    ~ThrowingMoveAssign() = default;
+};
+
+// noexcept is conditional on T: it holds for nothrow types like int, but not for the
+// throwing types above.
+static_assert(noexcept(std::declval<msd::channel<int>&>().begin()), "begin() should be noexcept for int");
+static_assert(noexcept(std::declval<msd::channel<int>&>().end()), "end() should be noexcept for int");
+static_assert(noexcept(++std::declval<msd::channel<int>::iterator&>()), "operator++ should be noexcept for int");
+static_assert(!noexcept(std::declval<msd::channel<ThrowingDefaultConstruct>&>().begin()),
+              "begin() should not be noexcept for ThrowingDefaultConstruct");
+static_assert(!noexcept(std::declval<msd::channel<ThrowingMoveAssign>&>().begin()),
+              "begin() should not be noexcept for ThrowingMoveAssign");
+static_assert(!noexcept(++std::declval<msd::channel<ThrowingMoveAssign>::iterator&>()),
+              "operator++ should not be noexcept for ThrowingMoveAssign");
+
+TEST(ChannelTest, BeginPropagatesExceptionFromThrowingDefaultConstruction)
+{
+    msd::channel<ThrowingDefaultConstruct> chan{1};
+    chan.write(ThrowingDefaultConstruct{1});
+    chan.close();
+
+    // Exception must propagate, not call std::terminate().
+    EXPECT_THROW({ chan.begin(); }, std::runtime_error);
+}
+
+TEST(ChannelTest, IncrementPropagatesExceptionFromThrowingMoveAssignment)
+{
+    msd::channel<ThrowingMoveAssign> chan{2};
+    chan.write(ThrowingMoveAssign{1});
+    chan.write(ThrowingMoveAssign{2});
+    chan.close();
+
+    // Exception must propagate, not call std::terminate().
+    auto it = chan.begin();                       // Reads value 1 successfully.
+    EXPECT_THROW({ ++it; }, std::runtime_error);  // Reads value 2 -> move assignment throws.
 }
